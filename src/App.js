@@ -235,6 +235,28 @@ const App = () => {
                 ))}
               </div>
             </div>
+         <div className="ml-4 flex items-center space-x-4">
+          <a
+            href="https://www.facebook.com/profile.php?id=100083210768748"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Facebook"
+            className="transition-opacity hover:opacity-80"
+          >
+            {/* Use an img tag with the imported icon */}
+            <img src={require("./assets/fb.png")} alt="Facebook" className="h-6 w-6 rounded-md" />
+          </a>
+          <a
+            href="YOUR_LINKEDIN_URL_HERE"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="LinkedIn"
+            className="transition-opacity hover:opacity-80"
+          >
+             {/* Use an img tag with the imported icon */}
+            <img src={require("./assets/linkedin.png")} alt="LinkedIn" className="h-6 w-6 rounded-md" />
+          </a>
+        </div>
             <button type="button" onClick={handleChangeLanguage} className="text-white">
               {currentLanguage}
             </button>
