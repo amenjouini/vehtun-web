@@ -56,20 +56,25 @@
   "sector_env": "Environment & Recycling",
   "achiev":"Testimony of Achievements",
   "benne_gravats": {
-    "title": "Debris skips",
-    "desc": "10T carrier trucks",
+    "title": "10T Tipper Trucks",
+    "desc": "Heavy-duty trucks equipped with robust tippers for transporting rubble and bulk materials",
     "imgText": "10T Debris Skip"
   },
   "plateau_bache": {
-    "title": "Covered flatbeds",
-    "desc": "Delivered for distribution company",
+    "title": "Tarp-Covered Flatbeds for Distribution",
+    "desc": "Custom-made flatbeds with tarpaulin covers delivered to a national distribution company",
     "imgText": "Covered Flatbed"
   },
   "citerne_15000": {
-    "title": "15,000 L Tanker",
-    "desc": "Designed for chemical products",
+    "title": "15,000L Chemical Tank",
+    "desc": "High-capacity tank designed for the safe transport of chemical products",
     "imgText": "Chemical Tanker"
   },
+  "ridelles": {
+        "title": "Reinforced Agricultural Sideboards",
+        "desc": "Sturdy, reinforced sideboards built for intensive transport in agricultural environments",
+        "imgText": "Ridelles"
+      },
   "key_figures_year": "Year of Creation",
   "key_figures_staff": "Employees",
   "key_figures_projects": "Projects Completed",
@@ -79,14 +84,19 @@
   "contact_address": "Workshop Address:",
   "contact_address_value": "[Your Full Address]",
   "contact_phone": "Phone:",
-  "contact_website": "Website:",
   "footer_copyright": "© {{year}} VehTun. All rights reserved.",
   "footer_made_in": "Designed with passion in Tunisia.",
+  "contact_form_name":"Firstname and Lastname",
+  "contact_form_email":"Email",
+  "contact_form_phone":"Phone number",
+  "contact_form_message":"Message",
     "plateaux_simples": "Flatbeds",
   "ridelles_fixes_ou_amovibles": "Fixed or removable sideboards",
   "plateaux_baches": "Tarpaulin-covered flatbeds",
   "bennes_basculantes": "Tipper trucks (construction, waste...)",
   "citernes_liquides": "Tanks (industrial/food liquids)",
-  "equipements_sur_mesure": "Custom-made equipment"
+  "equipements_sur_mesure": "Custom-made equipment",
+  "modal_success_title": "Success!",
+  "modal_success_message": "Your message has been sent successfully. We'll be in touch shortly."
   }
 }

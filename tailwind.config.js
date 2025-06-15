@@ -5,6 +5,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        // Change 'Urbaniva' to '"Exo 2"'
+        'poppins': ['"Exo 2"', 'sans-serif'] 
+      },
       colors: {
         primary: {
           '300': '#FFB565', // Lighter orange

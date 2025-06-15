@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useInView } from "react-intersection-observer";
 import { motion, useAnimation, animate } from "framer-motion";
 import { useTranslation } from "react-i18next";
-
+import SuccessModal from "./SuccessModal";
 
 // Import icons from lucide-react
 import {
@@ -24,44 +24,6 @@ import {
   Dot,
   Globe,
 } from "lucide-react";
-
-// --- Reusable Animated Components ---
-
-// --- i18n Configuration ---
-
-// Component for the animated number counter
-const Counter = ({ from = 0, to }) => {
-  const nodeRef = useRef();
-  const [ref, inView] = useInView({ triggerOnce: true });
-
-  useEffect(() => {
-    if (inView) {
-      const node = nodeRef.current;
-      const controls = animate(from, to, {
-        duration: 3,
-        onUpdate(value) {
-          // Check if the node is still mounted before updating
-          if (node) {
-            node.textContent = Math.round(value).toLocaleString();
-          }
-        },
-      });
-      return () => controls.stop();
-    }
-  }, [from, to, inView]);
-
-  return <span ref={nodeRef} />;
-};
-
-const products = [
-  { key: "plateaux_simples", icon: "PS" },
-  { key: "ridelles_fixes_ou_amovibles", icon: "RF" },
-  { key: "plateaux_baches", icon: "PB" },
-  { key: "bennes_basculantes", icon: "BB" },
-  { key: "citernes_liquides", icon: "CI" },
-  { key: "equipements_sur_mesure", icon: "EM" },
-];
-
 
 // Component to handle scroll-triggered animations for sections
 const AnimatedSection = ({ children, threshold = 0.2 }) => {
@@ -145,7 +107,7 @@ const App = () => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   // Navigation Links Data
-const navLinks = [
+  const navLinks = [
     { href: "#about", text: t("nav_about") },
     { href: "#products", text: t("nav_products") },
     { href: "#workshop", text: t("nav_workshop") },
@@ -155,6 +117,25 @@ const navLinks = [
     { href: "#goals", text: t("nav_goals") },
     { href: "#contact", text: t("nav_contact") },
   ];
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // ⛔️ prevent default navigation
+
+    const formData = new FormData(e.target);
+
+    try {
+      await fetch("https://formsubmit.co/contact@hamilcar.tn", {
+        method: "POST",
+        body: formData,
+      });
+
+      setIsModalOpen(true); // ✅ open modal on success
+      e.target.reset(); // optionally clear form after submit
+    } catch (err) {
+      console.error("Form submission error", err);
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -170,7 +151,7 @@ const navLinks = [
     <a
       href={href}
       onClick={onClick}
-      className="block sm:inline-block px-4 py-2 rounded-lg text-sm font-semibold text-gray-300 hover:text-white hover:bg-primary-500/80 transition-all duration-300"
+      className="block sm:inline-block px-4 py-2 rounded-lg text-sm font-semibold text-white hover:text-white hover:bg-primary-500/80 transition-all duration-300"
     >
       {children}
     </a>
@@ -230,7 +211,17 @@ const navLinks = [
             <div className="flex items-center">
               <a href="#" className="flex-shrink-0">
                 <h1 className="text-3xl font-bold text-primary-400 tracking-wider">
-                  Veh<span className="text-white">Tun</span>
+                  {/* Veh<span className="text-white">Tun</span> */}
+                  <div className="flex items-center">
+                    <a href="#" className="flex-shrink-0">
+                      {/* Replace the h1 with an img tag */}
+                      <img
+                        src={require("./assets/vehtun-stroke.png")}
+                        alt="VehTun Logo"
+                        className="h-10 w-auto" // Control the height here, width will adjust automatically
+                      />
+                    </a>
+                  </div>
                 </h1>
               </a>
             </div>
@@ -243,7 +234,7 @@ const navLinks = [
                 ))}
               </div>
             </div>
-            <button type="button" onClick={handleChangeLanguage}>
+            <button type="button" onClick={handleChangeLanguage} className="text-white">
               {currentLanguage}
             </button>
             <div className="md:hidden">
@@ -333,7 +324,7 @@ const navLinks = [
         <AnimatedSection>
           <section id="about" className="scroll-mt-20">
             <SectionTitle title={t("about_title")} icon={Building} />
-            <div className="grid md:grid-cols-2 gap-10 sm:gap-16 items-center">
+            <div className="grid md:grid-cols-2 gap-10 sm:gap-4 items-center">
               <motion.div
                 className="bg-secondary-800 p-8 rounded-2xl shadow-2xl border border-secondary-700"
                 whileHover={{ y: -5, transition: { duration: 0.2 } }}
@@ -364,34 +355,27 @@ const navLinks = [
                   </li>
                 </ul>
               </motion.div>
-              <div className="relative h-72 md:h-full rounded-2xl overflow-hidden shadow-2xl">
- <div className="relative w-full aspect-video rounded-2xl overflow-hidden">
-        <motion.div
-          className="w-full h-full"
-          whileHover={{ scale: 1.05, transition: { duration: 0.4 } }}
-        >
-          <video
-            className="w-full h-full object-cover"
-            src="/assets/vid.mp4"
-            alt={t("about_video_alt")}
-            loop
-            autoPlay
-            muted
-            playsInline // Important for autoplay on mobile
-            controls={false} // Hide controls for a cleaner look
-          >
-            {t("about_video_not_supported")}
-          </video>
-        </motion.div>
-        
-        {/* Gradient Overlay */}
-        <div 
-          className="absolute inset-0 bg-gradient-to-t from-secondary-900/60 to-transparent pointer-events-none"
-        ></div>
-      </div>
+              <div className="flex justify-center items-center h-full">
+                <div className="relative w-full max-w-sm rounded-2xl overflow-hidden shadow-2xl">
+                  <motion.div
+                    className="w-full h-full"
+                    whileHover={{ scale: 1.05, transition: { duration: 0.4 } }}
+                  >
+                    <video
+                      className="w-full h-full object-cover block"
+                      src={require("./assets/vid.mp4")}
+                      loop
+                      autoPlay
+                      muted
+                      playsInline
+                      controls={false}
+                    >
+                      {t("about_video_not_supported")}
+                    </video>
+                  </motion.div>
 
-
-                <div className="absolute inset-0 bg-gradient-to-t from-secondary-900/60 to-transparent"></div>
+                  <div className="absolute inset-0 from-secondary-900/60 to-transparent pointer-events-none"></div>
+                </div>
               </div>
             </div>
           </section>
@@ -477,10 +461,10 @@ const navLinks = [
         {/* --- Workshop Section --- */}
         <AnimatedSection>
           <section id="workshop" className="scroll-mt-20">
-            <SectionTitle title={t("our_workshop")}  icon={Wrench} />
+            <SectionTitle title={t("our_workshop")} icon={Wrench} />
             <div className="bg-secondary-800 p-8 sm:p-10 rounded-2xl shadow-2xl border border-secondary-700">
               <h3 className="text-2xl font-bold text-primary-400 mb-8 text-center sm:text-left">
-                {t("technical_capabilities")} 
+                {t("technical_capabilities")}
               </h3>
               <div className="grid md:grid-cols-2 gap-x-10 gap-y-5">
                 {[
@@ -497,9 +481,9 @@ const navLinks = [
                   </div>
                 ))}
               </div>
-              <div className="mt-10 relative h-72 md:h-96 rounded-2xl overflow-hidden shadow-lg">
+              <div className="mt-10 relative h-72 md:h-96 rounded-2xl overflow-hidden">
                 <img
-                  src={placeholderImg(800, 400, "Machines Atelier VehTun")}
+                  src={require("./assets/img.jpg")}
                   alt="Machines Atelier VehTun"
                   className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
                   onError={(e) =>
@@ -510,7 +494,7 @@ const navLinks = [
                     ))
                   }
                 />
-                <div className="absolute inset-0 bg-secondary-900/40"></div>
+                <div className="absolute inset-0"></div>
               </div>
             </div>
           </section>
@@ -565,12 +549,12 @@ const navLinks = [
             </p>
             <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
               {[
-                  t("sector_trans"),
-                  t("sector_const"),
-                  t("sector_agr"),
-                  t("sector_loc"),
-                  t("sector_indus"),
-                  t("sector_env"),
+                t("sector_trans"),
+                t("sector_const"),
+                t("sector_agr"),
+                t("sector_loc"),
+                t("sector_indus"),
+                t("sector_env"),
               ].map((client) => (
                 <span
                   key={client}
@@ -589,21 +573,26 @@ const navLinks = [
             <SectionTitle title={t("achiev")} icon={Award} />
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {[
-               {
-    title: t("products.benne_gravats.title"),
-    desc: t("products.benne_gravats.desc"),
-    imgText: t("products.benne_gravats.imgText"),
-  },
-  {
-    title: t("products.plateaux_baches.title"),
-    desc: t("products.plateaux_baches.desc"),
-    imgText: t("products.plateaux_baches.imgText"),
-  },
-  {
-    title: t("products.citerne_15000l.title"),
-    desc: t("products.citerne_15000l.desc"),
-    imgText: t("products.citerne_15000l.imgText"),
-  },
+                {
+                  title: t("benne_gravats.title"),
+                  desc: t("benne_gravats.desc"),
+                  imgText: t("benne_gravats.imgText"),
+                },
+                {
+                  title: t("plateau_bache.title"),
+                  desc: t("plateau_bache.desc"),
+                  imgText: t("plateau_bache.imgText"),
+                },
+                {
+                  title: t("citerne_15000.title"),
+                  desc: t("citerne_15000.desc"),
+                  imgText: t("citerne_15000.imgText"),
+                },
+                {
+                  title: t("ridelles.title"),
+                  desc: t("ridelles.desc"),
+                  imgText: t("ridelles.imgText"),
+                },
               ].map((item) => (
                 <div
                   key={item.title}
@@ -639,9 +628,7 @@ const navLinks = [
                 </div>
               ))}
             </div>
-            <p className="text-center text-gray-500 mt-10 text-sm">
-              (Photos réelles à insérer ici)
-            </p>
+            <p className="text-center text-gray-500 mt-10 text-sm"></p>
           </section>
         </AnimatedSection>
 
@@ -675,140 +662,151 @@ const navLinks = [
         </AnimatedSection>
 
         {/* --- Contact Section --- */}
-<AnimatedSection>
-  <section id="contact" className="scroll-mt-20">
-    <SectionTitle title={t("contact_title")} icon={Users} />
-    <div className="max-w-4xl mx-auto bg-gradient-to-br from-secondary-800 to-secondary-700/80 p-8 sm:p-12 rounded-2xl shadow-2xl border border-secondary-700">
-      <h3 className="text-3xl font-bold text-primary-400 mb-8 text-center">
-        {t("contact_heading")}
-      </h3>
+        <AnimatedSection>
+          <section id="contact" className="scroll-mt-20">
+            <SectionTitle title={t("contact_title")} icon={Users} />
+            <div className="max-w-4xl mx-auto bg-gradient-to-br from-secondary-800 to-secondary-700/80 p-8 sm:p-12 rounded-2xl shadow-2xl border border-secondary-700">
+              <h3 className="text-3xl font-bold text-primary-400 mb-8 text-center">
+                {t("contact_heading")}
+              </h3>
 
-      {/* --- Contact Details --- */}
-      <div className="flex flex-wrap justify-center items-start gap-x-12 gap-y-8 text-center sm:text-left">
-        <div className="flex items-center gap-4">
-          <MapPin className="w-7 h-7 text-primary-500 flex-shrink-0" />
-          <div>
-            <p className="font-bold text-lg text-white">
-              {t("contact_address")}
-            </p>
-            <p className="text-gray-400">{t("contact_address_value")}</p>
-          </div>
-        </div>
+              {/* --- Contact Details --- */}
+              <div className="flex flex-wrap justify-center items-start gap-x-12 gap-y-8 text-center sm:text-left">
+                <div className="flex items-center gap-4">
+                  <MapPin className="w-7 h-7 text-primary-500 flex-shrink-0" />
+                  <div>
+                    <p className="font-bold text-lg text-white">
+                      {t("contact_address")}
+                    </p>
+                    <p className="text-gray-400">
+                      {t("contact_address_value")}
+                    </p>
+                  </div>
+                </div>
 
-        <div className="flex items-center gap-4">
-          <Phone className="w-7 h-7 text-primary-500 flex-shrink-0" />
-          <div>
-            <p className="font-bold text-lg text-white">
-              {t("contact_phone")}
-            </p>
-            <a
-              href={`tel:${t("contact_phone_value")}`}
-              className="text-primary-400 hover:text-primary-300 transition-colors"
-            >
-              {t("contact_phone_value")}
-            </a>
-          </div>
-        </div>
+                <div className="flex items-center gap-4">
+                  <Phone className="w-7 h-7 text-primary-500 flex-shrink-0" />
+                  <div>
+                    <p className="font-bold text-lg text-white">
+                      {t("contact_phone")}
+                    </p>
+                    <a
+                      href={`tel:${t("contact_phone_value")}`}
+                      className="text-primary-400 hover:text-primary-300 transition-colors"
+                    >
+                      {t("contact_phone_value")}
+                    </a>
+                  </div>
+                </div>
 
-        <div className="flex items-center gap-4">
-          <Mail className="w-7 h-7 text-primary-500 flex-shrink-0" />
-          <div>
-            <p className="font-bold text-lg text-white">
-              {t("contact_email")}
-            </p>
-            <a
-              href={`mailto:${t("contact_email_value")}`}
-              className="text-primary-400 hover:text-primary-300 transition-colors"
-            >
-              {t("contact_email_value")}
-            </a>
-          </div>
-        </div>
-      </div>
+                <div className="flex items-center gap-4">
+                  <Mail className="w-7 h-7 text-primary-500 flex-shrink-0" />
+                  <div>
+                    <p className="font-bold text-lg text-white">Email</p>
+                    <a
+                      href={`mailto:${t("contact_email_value")}`}
+                      className="text-primary-400 hover:text-primary-300 transition-colors"
+                    >
+                      contact@vehtun.com
+                    </a>
+                  </div>
+                </div>
+              </div>
 
-      {/* --- Divider --- */}
-      <hr className="my-10 border-t-2 border-dashed border-secondary-700" />
+              {/* --- Divider --- */}
+              <hr className="my-10 border-t-2 border-dashed border-secondary-700" />
 
-      {/* --- Contact Form --- */}
-      <div className="max-w-2xl mx-auto">
-        <form action="#" method="POST" className="space-y-6">
-          <div className="grid sm:grid-cols-2 gap-6">
-            <div>
-              <label htmlFor="full-name" className="block text-sm font-semibold text-gray-300 mb-2">
-                {t("contact_form_name")}
-              </label>
-              <input
-                type="text"
-                name="full-name"
-                id="full-name"
-                required
-                className="block w-full rounded-lg border-secondary-600 bg-secondary-900/50 px-4 py-3 text-white shadow-sm transition-colors focus:border-primary-400 focus:ring-1 focus:ring-primary-400"
-                placeholder={t("contact_form_name_placeholder")}
-              />
+              {/* --- Contact Form --- */}
+              <div className="max-w-2xl mx-auto">
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid sm:grid-cols-2 gap-6">
+                    <div>
+                      <label
+                        htmlFor="full-name"
+                        className="block text-sm font-semibold text-gray-300 mb-2"
+                      >
+                        {t("contact_form_name")}
+                      </label>
+                      <input
+                        type="text"
+                        name="full-name"
+                        id="full-name"
+                        required
+                        className="block w-full rounded-lg border-secondary-600 bg-secondary-900/50 px-4 py-3 text-white shadow-sm transition-colors focus:border-primary-400 focus:ring-1 focus:ring-primary-400"
+                      />
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="phone"
+                        className="block text-sm font-semibold text-gray-300 mb-2"
+                      >
+                        {t("contact_form_phone")}
+                      </label>
+                      <input
+                        type="tel"
+                        name="phone"
+                        id="phone"
+                        className="block w-full rounded-lg border-secondary-600 bg-secondary-900/50 px-4 py-3 text-white shadow-sm transition-colors focus:border-primary-400 focus:ring-1 focus:ring-primary-400"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="email"
+                      className="block text-sm font-semibold text-gray-300 mb-2"
+                    >
+                      {t("contact_form_email")}
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      id="email"
+                      required
+                      className="block w-full rounded-lg border-secondary-600 bg-secondary-900/50 px-4 py-3 text-white shadow-sm transition-colors focus:border-primary-400 focus:ring-1 focus:ring-primary-400"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="message"
+                      className="block text-sm font-semibold text-gray-300 mb-2"
+                    >
+                      {t("contact_form_message")}
+                    </label>
+                    <textarea
+                      name="message"
+                      id="message"
+                      rows={5}
+                      required
+                      className="block w-full rounded-lg border-secondary-600 bg-secondary-900/50 px-4 py-3 text-white shadow-sm transition-colors focus:border-primary-400 focus:ring-1 focus:ring-primary-400"
+                    />
+                  </div>
+                  <div>
+                    <button
+                      type="submit"
+                      className="w-full flex justify-center items-center gap-3 py-3 px-4 rounded-xl font-bold text-secondary-black bg-primary-500 hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-secondary-800 transition-all duration-300 transform hover:scale-105"
+                    >
+                      Contact
+                    </button>
+                  </div>
+                  <input type="hidden" name="_captcha" value="false" />
+                </form>
+              </div>
             </div>
-            <div>
-              <label htmlFor="email" className="block text-sm font-semibold text-gray-300 mb-2">
-                {t("contact_form_email")}
-              </label>
-              <input
-                type="email"
-                name="email"
-                id="email"
-                required
-                className="block w-full rounded-lg border-secondary-600 bg-secondary-900/50 px-4 py-3 text-white shadow-sm transition-colors focus:border-primary-400 focus:ring-1 focus:ring-primary-400"
-                placeholder={t("contact_form_email_placeholder")}
-              />
-            </div>
-          </div>
-          <div>
-            <label htmlFor="phone" className="block text-sm font-semibold text-gray-300 mb-2">
-              {t("contact_form_phone")}
-            </label>
-            <input
-              type="tel"
-              name="phone"
-              id="phone"
-              className="block w-full rounded-lg border-secondary-600 bg-secondary-900/50 px-4 py-3 text-white shadow-sm transition-colors focus:border-primary-400 focus:ring-1 focus:ring-primary-400"
-              placeholder={t("contact_form_phone_placeholder")}
-            />
-          </div>
-          <div>
-            <label htmlFor="message" className="block text-sm font-semibold text-gray-300 mb-2">
-              {t("contact_form_message")}
-            </label>
-            <textarea
-              name="message"
-              id="message"
-              rows={5}
-              required
-              className="block w-full rounded-lg border-secondary-600 bg-secondary-900/50 px-4 py-3 text-white shadow-sm transition-colors focus:border-primary-400 focus:ring-1 focus:ring-primary-400"
-              placeholder={t("contact_form_message_placeholder")}
-            />
-          </div>
-          <div>
-            <button
-              type="submit"
-              className="w-full flex justify-center items-center gap-3 py-3 px-4 rounded-xl font-bold text-secondary-900 bg-primary-500 hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-secondary-800 transition-all duration-300 transform hover:scale-105"
-            >
-              {t("contact_form_button")}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </section>
-</AnimatedSection>
+          </section>
+          <SuccessModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+          />
+        </AnimatedSection>
       </main>
 
       {/* --- Footer --- */}
       <footer className="bg-secondary-800 border-t border-secondary-700 mt-20 sm:mt-28">
         <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 text-center text-gray-400">
           <p className="font-semibold">
-            &copy; {new Date().getFullYear()} VehTun. Tous droits réservés.
+            {t("footer_copyright", { year: "2025" })}
           </p>
-          <p className="text-sm mt-2 font-light">
-            Conçu avec passion en Tunisie.
-          </p>
+          <p className="text-sm mt-2 font-light">{t("footer_made_in")}</p>
         </div>
       </footer>
     </div>
