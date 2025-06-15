@@ -1,0 +1,92 @@
+{
+  "translation": {
+    "nav_about": "About",
+  "nav_products": "Products",
+  "nav_workshop": "Workshop",
+  "nav_values": "Values",
+  "nav_clients": "Clients",
+  "nav_achievements": "Achievements",
+  "nav_goals": "Goals",
+  "nav_contact": "Contact",
+  "hero_subtitle": "🔧 Smart Mobility for Utility Vehicles in Tunisia",
+  "hero_founder": "Since 2022 | Founded by Amine Trabelsi",
+  "hero_button": "Discover More",
+  "about_title": "About VehTun",
+  "about_heading": "🏭 Who are we?",
+  "about_item1": "Founded in 2022",
+  "about_item2": "Tunisian SME with 10 employees",
+  "about_item3": "Specialized in manufacturing transport equipment for trucks",
+  "about_item4": "Workshop equipped with comprehensive industrial machinery",
+  "about_item5": "Local expertise and a vision focused on innovation",
+  "products_title": "Our Products",
+  "products_subtitle": "Equipment for carrier trucks of various tonnages, designed for performance and durability.",
+  "our_workshop": "Our Workshop",
+  "technical_capabilities": "🔧 Technical capabilities",
+  "soudure": "High precision MIG/MAG welding",
+  "pliage": "Folding, cutting, drilling, and digital machining",
+  "paint_cabin":"Industrial paint booth for perfect finishes",
+  "quality_control":"Rigorous on-site quality control",
+  "mesure_prod": "Custom production according to specifications",
+  "system_integration":"Integration of hydraulic and electrical systems",
+  "added_values":"Our Added Values",
+  "added_values_desc": "🚀 Beyond manufacturing, we bring solutions concrete to optimize your activity.",
+    "innovation_continue": {
+    "title": "Continuous innovation",
+    "desc": "We integrate the latest technologies for state-of-the-art equipment."
+  },
+  "allegement_structures": {
+    "title": "Structure lightening",
+    "desc": "Our optimized materials increase your payload and reduce consumption."
+  },
+  "performance_cout": {
+    "title": "Optimized performance and cost",
+    "desc": "We design cost-effective and high-performing solutions for transporters."
+  },
+  "flexibilite_sur_mesure": {
+    "title": "Flexibility and customization",
+    "desc": "Your need is unique, our production adapts to your specifications."
+  },
+  "possible_clients":"Our Target Customers",
+  "possible_clients_desc":"🎯 We collaborate with key players in the economyTunisian.",
+  "sector_trans": "Transport & Logistics",
+  "sector_const": "Construction and Public Works (BTP)",
+  "sector_agr": "Agriculture & Agri-food",
+  "sector_loc": "Local Authorities & Public Services",
+  "sector_indus": "Industrial & Distributors",
+  "sector_env": "Environment & Recycling",
+  "achiev":"Testimony of Achievements",
+  "benne_gravats": {
+    "title": "Debris skips",
+    "desc": "10T carrier trucks",
+    "imgText": "10T Debris Skip"
+  },
+  "plateau_bache": {
+    "title": "Covered flatbeds",
+    "desc": "Delivered for distribution company",
+    "imgText": "Covered Flatbed"
+  },
+  "citerne_15000": {
+    "title": "15,000 L Tanker",
+    "desc": "Designed for chemical products",
+    "imgText": "Chemical Tanker"
+  },
+  "key_figures_year": "Year of Creation",
+  "key_figures_staff": "Employees",
+  "key_figures_projects": "Projects Completed",
+  "key_figures_satisfaction": "Customer Satisfaction",
+  "contact_title": "Contact",
+  "contact_heading": "🤝 Let's work together!",
+  "contact_address": "Workshop Address:",
+  "contact_address_value": "[Your Full Address]",
+  "contact_phone": "Phone:",
+  "contact_website": "Website:",
+  "footer_copyright": "© {{year}} VehTun. All rights reserved.",
+  "footer_made_in": "Designed with passion in Tunisia.",
+    "plateaux_simples": "Flatbeds",
+  "ridelles_fixes_ou_amovibles": "Fixed or removable sideboards",
+  "plateaux_baches": "Tarpaulin-covered flatbeds",
+  "bennes_basculantes": "Tipper trucks (construction, waste...)",
+  "citernes_liquides": "Tanks (industrial/food liquids)",
+  "equipements_sur_mesure": "Custom-made equipment"
+  }
+}

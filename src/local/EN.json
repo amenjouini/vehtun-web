@@ -1,0 +1,94 @@
+{
+  "translation": {
+    "nav_about": "À propos",
+      "nav_products": "Produits",
+      "nav_workshop": "Atelier",
+      "nav_values": "Valeurs",
+      "nav_clients": "Clients",
+      "nav_achievements": "Réalisations",
+      "nav_goals": "Objectifs",
+      "nav_contact": "Contact",
+      "hero_subtitle": "🔧 La Mobilité Intelligente pour les Véhicules Utilitaires en Tunisie",
+        "hero_founder": "Depuis 2022 | Fondée par Amine Trabelsi",
+  "hero_button": "Découvrir Plus",
+  "about_title": "À propos de VehTun",
+  "about_heading": "🏭 Qui sommes-nous ?",
+  "about_item1": "Fondée en 2022",
+  "about_item2": "PME tunisienne de 10 personnes",
+  "about_item3": "Spécialisée dans la fabrication d’équipements de transport sur camions",
+  "about_item4": "Atelier équipé de machines industrielles complètes",
+  "about_item5": "Savoir-faire local et vision tournée vers l’innovation",
+  "products_title": "Nos Produits",
+  "products_subtitle": "Équipements pour camions porteurs de différents tonnages, conçus pour la performance et la durabilité.",
+  "our_workshop": "Notre Atelier",
+  "technical_capabilities": "🔧 Capacités techniques :",
+  "soudure": "Soudure MIG/MAG haute précision",
+  "pliage": "Pliage, découpe, perçage, et usinage numérique",
+  "paint_cabin":"Cabine de peinture industrielle pour finitions parfaites",
+  "quality_control":"Contrôle qualité rigoureux sur site",
+  "mesure_prod": "Production sur mesure selon cahier des charges",
+  "system_integration":"Intégration de systèmes hydrauliques et électriques",
+  "added_values":"Nos Valeurs Ajoutées",
+  "added_values_desc": "🚀 Au-delà de la fabrication, nous apportons des solutions concrètes pour optimiser votre activité.",
+    "innovation_continue": {
+    "title": "Innovation continue",
+    "desc": "Nous intégrons les dernières technologies pour des équipements à la pointe."
+  },
+  "allegement_structures": {
+    "title": "Allégement des structures",
+    "desc": "Nos matériaux optimisés augmentent votre charge utile et réduisent la consommation."
+  },
+  "performance_cout": {
+    "title": "Performance et coût optimisés",
+    "desc": "Nous concevons des solutions rentables et performantes pour les transporteurs."
+  },
+  "flexibilite_sur_mesure": {
+    "title": "Flexibilité et sur-mesure",
+    "desc": "Votre besoin est unique, notre production s'adapte à vos spécificités."
+  },
+  "possible_clients":"Nos Clients Cibles",
+  "possible_clients_desc":"🎯 Nous collaborons avec les acteurs clés de l'économietunisienne.",
+  "sector_trans": "Transport & Logistique",
+  "sector_const": "Bâtiment et travaux publics (BTP)",
+  "sector_agr": "Agriculture & Agroalimentaire",
+  "sector_loc": "Collectivités locales & services publics",
+  "sector_indus": "Industriel & Distributeurs",
+  "sector_env": "Environnement & Recyclage",
+  "achiev":"Témoignage de Réalisations",
+  "benne_gravats": {
+    "title": "Debris skips",
+    "desc": "10T transporteur camions",
+    "imgText": "10T Debris Skip"
+  },
+  "plateau_bache": {
+    "title": "Lits plats couverts",
+    "desc": "Livré pour entreprise de distribution",
+    "imgText": "Flatbed couvert"
+  },
+  "citerne_15000": {
+    "title": "15,000 L Tanker",
+    "desc": "Conçu pour les produits chimiques",
+    "imgText": "Chimiquier"
+  },
+  "key_figures_year": "Année de Création",
+  "key_figures_staff": "Collaborateurs",
+  "key_figures_projects": "Projets Réalisés",
+  "key_figures_satisfaction": "Satisfaction Client",
+  "contact_title": "Contact",
+  "contact_heading": "🤝 Travaillons ensemble !",
+  "contact_address": "Adresse atelier :",
+  "contact_address_value": "[Votre Adresse Complète]",
+  "contact_phone": "Téléphone :",
+  "contact_website": "Site web :",
+  "footer_copyright": "© {{year}} VehTun. Tous droits réservés.",
+  "footer_made_in": "Conçu avec passion en Tunisie.",
+  
+    "plateaux_simples": "Plateaux simples",
+    "ridelles_fixes_ou_amovibles": "Ridelles fixes ou amovibles",
+    "plateaux_baches": "Plateaux bâchés",
+    "bennes_basculantes": "Bennes basculantes (BTP, déchets...)",
+    "citernes_liquides": "Citernes (liquides industriels/alimentaires)",
+    "equipements_sur_mesure": "Équipements sur-mesure"
+  
+  }
+}
