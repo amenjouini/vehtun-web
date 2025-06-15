@@ -170,6 +170,7 @@ const App = () => {
     )}&font=Poppins`;
 
   return (
+    
     <div className="bg-secondary-900 text-gray-200 font-poppins leading-relaxed antialiased">
       {/* --- Google Font Import & Global Styles --- */}
       <style jsx global>{`
