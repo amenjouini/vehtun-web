@@ -170,7 +170,6 @@ const App = () => {
     )}&font=Poppins`;
 
   return (
-    
     <div className="bg-secondary-900 text-gray-200 font-poppins leading-relaxed antialiased">
       {/* --- Google Font Import & Global Styles --- */}
       <style jsx global>{`
@@ -235,29 +234,41 @@ const App = () => {
                 ))}
               </div>
             </div>
-         <div className="ml-4 flex items-center space-x-4">
-          <a
-            href="https://www.facebook.com/profile.php?id=100083210768748"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Facebook"
-            className="transition-opacity hover:opacity-80"
-          >
-            {/* Use an img tag with the imported icon */}
-            <img src={require("./assets/fb.png")} alt="Facebook" className="h-6 w-6 rounded-md" />
-          </a>
-          <a
-            href="YOUR_LINKEDIN_URL_HERE"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="LinkedIn"
-            className="transition-opacity hover:opacity-80"
-          >
-             {/* Use an img tag with the imported icon */}
-            <img src={require("./assets/linkedin.png")} alt="LinkedIn" className="h-6 w-6 rounded-md" />
-          </a>
-        </div>
-            <button type="button" onClick={handleChangeLanguage} className="text-white">
+            <div className="ml-4 flex items-center space-x-4">
+              <a
+                href="https://www.facebook.com/profile.php?id=100083210768748"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook"
+                className="transition-opacity hover:opacity-80"
+              >
+                {/* Use an img tag with the imported icon */}
+                <img
+                  src={require("./assets/fb.png")}
+                  alt="Facebook"
+                  className="h-6 w-6 rounded-md"
+                />
+              </a>
+              <a
+                href="YOUR_LINKEDIN_URL_HERE"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn"
+                className="transition-opacity hover:opacity-80"
+              >
+                {/* Use an img tag with the imported icon */}
+                <img
+                  src={require("./assets/linkedin.png")}
+                  alt="LinkedIn"
+                  className="h-6 w-6 rounded-md"
+                />
+              </a>
+            </div>
+            <button
+              type="button"
+              onClick={handleChangeLanguage}
+              className="text-white"
+            >
               {currentLanguage}
             </button>
             <div className="md:hidden">
@@ -328,8 +339,17 @@ const App = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            {t("hero_founder")}
+            {t("hero_founder_prefix")}{" "}
+            <a
+              href="https://amine-trabelsi-portfolio.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary-400 hover:text-primary-300 transition-colors underline"
+            >
+              {t("hero_founder_name")}
+            </a>
           </motion.p>
+
           <motion.a
             href="#about"
             className="bg-primary-500 hover:bg-primary-600 text-black-900 font-bold py-4 px-10 rounded-xl text-lg transition duration-300 ease-in-out transform hover:scale-105 inline-flex items-center shadow-lg hover:shadow-primary-500/40"
