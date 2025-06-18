@@ -8,7 +8,7 @@
     "nav_achievements": "Réalisations",
     "nav_goals": "Objectifs",
     "nav_contact": "Contact",
-    "hero_subtitle": "🔧 La Mobilité Intelligente pour les Véhicules Utilitaires en Tunisie",
+    "hero_subtitle": "🔧 La Mobilité Intelligente pour les Véhicules Utilitaires",
     "hero_founder_prefix": "Depuis 2022 | Fondée par",
     "hero_founder_name": "Amine Trabelsi",
     "hero_button": "Découvrir Plus",
@@ -21,7 +21,7 @@
     "about_item5": "Savoir-faire local et vision tournée vers l’innovation",
     "products_title": "Nos Produits",
     "products_subtitle": "Équipements pour camions porteurs de différents tonnages, conçus pour la performance et la durabilité.",
-    "our_workshop": "Notre Atelier",
+    "our_workshop": "Nos Services",
     "technical_capabilities": "🔧 Capacités techniques :",
     "soudure": "Soudure MIG/MAG haute précision",
     "pliage": "Pliage, découpe, perçage, et usinage numérique",
@@ -56,34 +56,39 @@
     "sector_indus": "Industriel & Distributeurs",
     "sector_env": "Environnement & Recyclage",
     "achiev": "Témoignage de Réalisations",
-      "benne_gravats": {
-        "title": "Camions 10T avec Bennes",
-        "desc": "Véhicules porteurs équipés de bennes robustes pour le transport de gravats et matériaux lourds",
-        "imgText": "10T Debris Skip"
-      },
-      "plateau_bache": {
-        "title": "Plateaux Bâchés pour Distribution",
-        "desc": "Plateaux bâchés sur mesure livrés à une société spécialisée dans la distribution nationale",
-        "imgText": "Flatbed couvert"
-      },
-      "citerne_15000": {
-        "title": "Citerne 15 000 L Produits Chimiques",
-        "desc": "Citerne de grande capacité conçue pour le transport sécurisé de produits chimiques",
-        "imgText": "Chimiquier"
-      },
-      "ridelles": {
-        "title": "Ridelles Renforcées Agricoles",
-        "desc": "Ridelles robustes et renforcées destinées au transport intensif en milieu agricole",
-        "imgText": "Ridelles"
-      },
+    "plateau_bache": {
+      "title": "Plateaux",
+      "desc": "Plateaux simples/ Ridelles/ bâchés",
+      "imgText": "Flatbed couvert"
+    },
+    "benne_gravats": {
+      "title": "Bennes",
+      "desc": "Bennes basculantes (BTP, déchets, agriculture)",
+      "imgText": "10T Debris Skip"
+    },
+
+    "citerne_15000": {
+      "title": "Citernes",
+      "desc": "Citernes pour liquides industriels ou alimentaires",
+      "imgText": "Chimiquier"
+    },
     "key_figures_year": "Année de Création",
     "key_figures_staff": "Collaborateurs",
     "key_figures_projects": "Projets Réalisés",
     "key_figures_satisfaction": "Satisfaction Client",
+    "development_objectives": "Objectifs de Développement",
+    "development_objectives_subtitle": "📈 Notre vision pour l'avenir est claire et ambitieuse.",
+    "development_objectives_items": {
+      "item1": "Étendre notre atelier pour doubler la capacité de production",
+      "item2": "Développer de nouvelles gammes allégées et modulables",
+      "item3": "Nouer des partenariats stratégiques avec les constructeurs",
+      "item4": "Digitaliser le SAV pour une réactivité maximale",
+      "item5": "Explorer les marchés d'exportation en Afrique du Nord"
+    },
     "contact_title": "Contact",
     "contact_heading": "🤝 Travaillons ensemble !",
     "contact_address": "Adresse atelier :",
-    "contact_address_value": "[Votre Adresse Complète]",
+    "contact_address_value": "Route de Raoud KM3 Ariana",
     "contact_phone": "Téléphone :",
     "contact_website": "Site web :",
     "footer_copyright": "© {{year}} VehTun. Tous droits réservés.",
@@ -98,7 +103,7 @@
     "bennes_basculantes": "Bennes basculantes (BTP, déchets...)",
     "citernes_liquides": "Citernes (liquides industriels/alimentaires)",
     "equipements_sur_mesure": "Équipements sur-mesure",
-  "modal_success_title": "Succès !",
-  "modal_success_message": "Votre message a été envoyé avec succès. Nous vous contacterons sous peu."
+    "modal_success_title": "Succès !",
+    "modal_success_message": "Votre message a été envoyé avec succès. Nous vous contacterons sous peu."
   }
 }

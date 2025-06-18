@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useInView } from "react-intersection-observer";
-import { motion, useAnimation, animate } from "framer-motion";
+import { motion, useAnimation, animate, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import SuccessModal from "./SuccessModal";
 
@@ -23,6 +23,7 @@ import {
   CheckCircle,
   Dot,
   Globe,
+  Maximize2
 } from "lucide-react";
 
 // Component to handle scroll-triggered animations for sections
@@ -168,6 +169,48 @@ const App = () => {
     `https://placehold.co/${width}x${height}/${bgColor}/${textColor}?text=${encodeURIComponent(
       text
     )}&font=Poppins`;
+
+    const [expandedIndex, setExpandedIndex] = useState(null);
+
+    const achievements = [
+        {
+            title: t("plateau_bache.title"),
+            desc: t("plateau_bache.desc"),
+            imgText: t("plateau_bache.imgText"),
+            gallery: [
+                placeholderImg(400, 300, 'Flatbed Side View'),
+                placeholderImg(400, 300, 'Loading Cargo'),
+                placeholderImg(400, 300, 'Covered Transport'),
+                placeholderImg(400, 300, 'On The Road'),
+            ]
+        },
+        {
+            title: t("benne_gravats.title"),
+            desc: t("benne_gravats.desc"),
+            imgText: t("benne_gravats.imgText"),
+            gallery: [
+                placeholderImg(400, 300, 'Skip Full'),
+                placeholderImg(400, 300, 'Tipping Action'),
+                placeholderImg(400, 300, 'Construction Site'),
+                placeholderImg(400, 300, 'Empty Skip'),
+            ]
+        },
+        {
+            title: t("citerne_15000.title"),
+            desc: t("citerne_15000.desc"),
+            imgText: t("citerne_15000.imgText"),
+            gallery: [
+                placeholderImg(400, 300, 'Tanker Rear'),
+                placeholderImg(400, 300, 'Filling Valve'),
+                placeholderImg(400, 300, 'Polished Steel'),
+                placeholderImg(400, 300, 'Liquid Transport'),
+            ]
+        },
+    ];
+
+    const handleCardClick = (index) => {
+        setExpandedIndex(expandedIndex === index ? null : index);
+    };
 
   return (
     <div className="bg-secondary-900 text-gray-200 font-poppins leading-relaxed antialiased">
@@ -315,119 +358,122 @@ const App = () => {
       </nav>
 
       {/* --- Hero Section --- */}
-      <header className="min-h-screen bg-gradient-to-b from-secondary-900 via-secondary-800 to-secondary-900 flex flex-col justify-center items-center text-center p-6 pt-24 overflow-hidden">
-        <div className="max-w-4xl">
-          <motion.h1
-            className="text-5xl sm:text-7xl md:text-8xl font-extrabold text-white mb-4"
-            initial={{ opacity: 0, y: -30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            Veh<span className="text-primary-400">Tun</span>
-          </motion.h1>
-          <motion.p
-            className="text-xl sm:text-2xl text-gray-300 mb-8 font-light"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-          >
-            {t("hero_subtitle")}
-          </motion.p>
-          <motion.p
-            className="text-md text-gray-400 mb-12 font-medium"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-          >
-            {t("hero_founder_prefix")}{" "}
-            <a
-              href="https://amine-trabelsi-portfolio.vercel.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary-400 hover:text-primary-300 transition-colors underline"
-            >
-              {t("hero_founder_name")}
-            </a>
-          </motion.p>
+      <header className="flex flex-col justify-center items-center text-center">
+        <AnimatedSection>
+          <div className="max-w-7xl mx-auto">
+            <section id="about" className="scroll-mt-20 py-16">
+              <div className="mt-10">
+                <SectionTitle title={t("about_title")} />
+              </div>
+              {/* Main two-column grid layout */}
+              <div className="grid md:grid-cols-2 gap-10 lg:gap-16 items-center">
+                {/* ===== Left Column ===== */}
+                <div className="flex flex-col text-left">
+                  {/* --- VehTun Title and Slogan --- */}
+                  <div className="mb-10">
+                    <motion.h1
+                      className="text-5xl sm:text-7xl md:text-8xl font-extrabold text-white mb-4"
+                      initial={{ opacity: 0, y: -30 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.8, delay: 0.2 }}
+                    >
+                      Veh<span className="text-primary-400">Tun</span>
+                    </motion.h1>
+                    <motion.p
+                      className="text-xl sm:text-2xl text-gray-300 font-light"
+                      initial={{ opacity: 0, y: -20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.8, delay: 0.4 }}
+                    >
+                      {" "}
+                      Together, We Move What Matters.
+                    </motion.p>
+                  </div>
 
-          <motion.a
-            href="#about"
-            className="bg-primary-500 hover:bg-primary-600 text-black-900 font-bold py-4 px-10 rounded-xl text-lg transition duration-300 ease-in-out transform hover:scale-105 inline-flex items-center shadow-lg hover:shadow-primary-500/40"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.8 }}
-          >
-            {t("hero_button")} <ChevronDown className="ml-2 h-5 w-5" />
-          </motion.a>
-        </div>
+                  {/* --- "Who are we" Card --- */}
+                  <motion.div
+                    className="bg-secondary-800 p-8 rounded-2xl shadow-2xl border border-secondary-700"
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.6 }}
+                    whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                  >
+                    <h3 className="text-2xl font-bold text-primary-400 mb-5">
+                      {t("about_heading")}
+                    </h3>
+                    <ul className="space-y-4 text-gray-300">
+                      <li className="flex items-start">
+                        <CheckCircle className="w-6 h-6 text-primary-500 mr-3 mt-1 flex-shrink-0" />
+                        {t("about_item1")}
+                      </li>
+                      <li className="flex items-start">
+                        <CheckCircle className="w-6 h-6 text-primary-500 mr-3 mt-1 flex-shrink-0" />
+                        {t("about_item2")}
+                      </li>
+                      <li className="flex items-start">
+                        <CheckCircle className="w-6 h-6 text-primary-500 mr-3 mt-1 flex-shrink-0" />
+                        {t("about_item3")}
+                      </li>
+                      <li className="flex items-start">
+                        <CheckCircle className="w-6 h-6 text-primary-500 mr-3 mt-1 flex-shrink-0" />
+                        {t("about_item4")}
+                      </li>
+                      <li className="flex items-start">
+                        <CheckCircle className="w-6 h-6 text-primary-500 mr-3 mt-1 flex-shrink-0" />
+                        {t("about_item5")}
+                      </li>
+                    </ul>
+                  </motion.div>
+                </div>
+
+                {/* ===== Right Column (FIXED) ===== */}
+                <div className="flex flex-col text-left">
+                  <div className="relative flex flex-col text-center items-center">
+                    <div className="mb-10">
+                      <motion.p
+                        className="text-xl sm:text-2xl text-gray-300 font-light"
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.4 }}
+                      >
+                        {t("hero_subtitle")}
+                      </motion.p>
+                    </div>
+                    <div className="relative w-full max-w-xs rounded-2xl overflow-hidden shadow-2xl">
+                      <motion.div
+                        className="w-full h-full"
+                        whileHover={{
+                          scale: 1.05,
+                          transition: { duration: 0.4 },
+                        }}
+                      >
+                        <video
+                          className="w-full h-full object-cover block"
+                          src={require("./assets/vid.mp4")}
+                          loop
+                          autoPlay
+                          muted
+                          playsInline
+                          controls={false}
+                        >
+                          {t("about_video_not_supported")}
+                        </video>
+                      </motion.div>
+                    </div>
+                    <div className="absolute inset-0 from-secondary-900/60 to-transparent pointer-events-none"></div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </AnimatedSection>
       </header>
 
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 space-y-24 sm:space-y-32">
-        {/* --- About Section --- */}
-        <AnimatedSection>
-          <section id="about" className="scroll-mt-20">
-            <SectionTitle title={t("about_title")} icon={Building} />
-            <div className="grid md:grid-cols-2 gap-10 sm:gap-4 items-center">
-              <motion.div
-                className="bg-secondary-800 p-8 rounded-2xl shadow-2xl border border-secondary-700"
-                whileHover={{ y: -5, transition: { duration: 0.2 } }}
-              >
-                <h3 className="text-2xl font-bold text-primary-400 mb-5">
-                  {t("about_heading")}
-                </h3>
-                <ul className="space-y-4 text-gray-300">
-                  <li className="flex items-start">
-                    <CheckCircle className="w-6 h-6 text-primary-500 mr-3 mt-1 flex-shrink-0" />{" "}
-                    {t("about_item1")}
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="w-6 h-6 text-primary-500 mr-3 mt-1 flex-shrink-0" />{" "}
-                    {t("about_item2")}
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="w-6 h-6 text-primary-500 mr-3 mt-1 flex-shrink-0" />{" "}
-                    {t("about_item3")}
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="w-6 h-6 text-primary-500 mr-3 mt-1 flex-shrink-0" />{" "}
-                    {t("about_item4")}
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="w-6 h-6 text-primary-500 mr-3 mt-1 flex-shrink-0" />{" "}
-                    {t("about_item5")}
-                  </li>
-                </ul>
-              </motion.div>
-              <div className="flex justify-center items-center h-full">
-                <div className="relative w-full max-w-sm rounded-2xl overflow-hidden shadow-2xl">
-                  <motion.div
-                    className="w-full h-full"
-                    whileHover={{ scale: 1.05, transition: { duration: 0.4 } }}
-                  >
-                    <video
-                      className="w-full h-full object-cover block"
-                      src={require("./assets/vid.mp4")}
-                      loop
-                      autoPlay
-                      muted
-                      playsInline
-                      controls={false}
-                    >
-                      {t("about_video_not_supported")}
-                    </video>
-                  </motion.div>
-
-                  <div className="absolute inset-0 from-secondary-900/60 to-transparent pointer-events-none"></div>
-                </div>
-              </div>
-            </div>
-          </section>
-        </AnimatedSection>
-
         {/* --- Products Section --- */}
         <AnimatedSection>
           <section id="products" className="scroll-mt-20">
-            <SectionTitle title={t("products_title")} icon={Truck} />
+            <SectionTitle title={t("products_title")} />
             <p className="text-center text-lg text-black-400 mb-12 max-w-2xl mx-auto">
               {t("products_subtitle")}
             </p>
@@ -504,7 +550,7 @@ const App = () => {
         {/* --- Workshop Section --- */}
         <AnimatedSection>
           <section id="workshop" className="scroll-mt-20">
-            <SectionTitle title={t("our_workshop")} icon={Wrench} />
+            <SectionTitle title={t("our_workshop")} />
             <div className="bg-secondary-800 p-8 sm:p-10 rounded-2xl shadow-2xl border border-secondary-700">
               <h3 className="text-2xl font-bold text-primary-400 mb-8 text-center sm:text-left">
                 {t("technical_capabilities")}
@@ -546,7 +592,7 @@ const App = () => {
         {/* --- Values Section --- */}
         <AnimatedSection>
           <section id="values" className="scroll-mt-20">
-            <SectionTitle title={t("added_values")} icon={Lightbulb} />
+            <SectionTitle title={t("added_values")} />
             <p className="text-center text-lg text-black-400 mb-12 max-w-2xl mx-auto">
               {t("added_values_desc")}
             </p>
@@ -586,7 +632,7 @@ const App = () => {
         {/* --- Target Clients Section --- */}
         <AnimatedSection>
           <section id="clients" className="scroll-mt-20">
-            <SectionTitle title={t("possible_clients")} icon={Target} />
+            <SectionTitle title={t("possible_clients")} />
             <p className="text-center text-lg text-black-400 mb-12 max-w-2xl mx-auto">
               {t("possible_clients_desc")}
             </p>
@@ -612,87 +658,81 @@ const App = () => {
 
         {/* --- Achievements Section --- */}
         <AnimatedSection>
-          <section id="achievements" className="scroll-mt-20">
-            <SectionTitle title={t("achiev")} icon={Award} />
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {[
-                {
-                  title: t("benne_gravats.title"),
-                  desc: t("benne_gravats.desc"),
-                  imgText: t("benne_gravats.imgText"),
-                },
-                {
-                  title: t("plateau_bache.title"),
-                  desc: t("plateau_bache.desc"),
-                  imgText: t("plateau_bache.imgText"),
-                },
-                {
-                  title: t("citerne_15000.title"),
-                  desc: t("citerne_15000.desc"),
-                  imgText: t("citerne_15000.imgText"),
-                },
-                {
-                  title: t("ridelles.title"),
-                  desc: t("ridelles.desc"),
-                  imgText: t("ridelles.imgText"),
-                },
-              ].map((item) => (
-                <div
-                  key={item.title}
-                  className="bg-secondary-800 rounded-2xl shadow-xl overflow-hidden flex flex-col group border border-secondary-700"
-                >
-                  <div className="relative h-56 sm:h-64 overflow-hidden">
-                    <img
-                      src={placeholderImg(
-                        400,
-                        300,
-                        item.imgText,
-                        "0b2b36",
-                        "FBBF24"
-                      )}
-                      alt={item.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-in-out"
-                      onError={(e) =>
-                        (e.target.src = placeholderImg(
-                          400,
-                          300,
-                          "Image Indisponible"
-                        ))
-                      }
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-secondary-900/70 via-transparent"></div>
-                  </div>
-                  <div className="p-6 flex-grow">
-                    <h4 className="text-xl font-bold text-primary-400 mb-2">
-                      {item.title}
-                    </h4>
-                    <p className="text-gray-400">{item.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <p className="text-center text-gray-500 mt-10 text-sm"></p>
-          </section>
-        </AnimatedSection>
+                <section id="achievements" className="scroll-mt-20 max-w-7xl mx-auto">
+                    <SectionTitle title={t("achiev")} />
+                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {achievements.map((item, index) => (
+                            <div key={item.title}>
+                                <div
+                                    className="bg-secondary-800 rounded-t-2xl shadow-xl overflow-hidden flex flex-col group border border-secondary-700 cursor-pointer"
+                                    onClick={() => handleCardClick(index)}
+                                >
+                                    <div className="relative h-56 sm:h-64 overflow-hidden">
+                                        <img
+                                            src={placeholderImg(400,300,item.imgText,"0b2b36","FBBF24")}
+                                            alt={item.title}
+                                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-in-out"
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-secondary-900/70 via-transparent"></div>
+                                        <div className="absolute top-3 right-3 bg-black/40 p-2 rounded-full text-white/80">
+                                            {expandedIndex === index ? <X size={20} /> : <Maximize2 size={20} />}
+                                        </div>
+                                    </div>
+                                    <div className="p-6 flex-grow">
+                                        <h4 className="text-xl font-bold text-primary-400 mb-2">
+                                            {item.title}
+                                        </h4>
+                                        <p className="text-gray-400">{item.desc}</p>
+                                    </div>
+                                </div>
+                                <AnimatePresence>
+                                    {expandedIndex === index && (
+                                        <motion.div
+                                            initial={{ height: 0, opacity: 0 }}
+                                            animate={{ height: 'auto', opacity: 1 }}
+                                            exit={{ height: 0, opacity: 0 }}
+                                            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                                            className="bg-secondary-800 rounded-b-2xl overflow-hidden border-x border-b border-secondary-700"
+                                        >
+                                            <div className="p-4">
+                                                <div className="grid grid-cols-2 gap-4">
+                                                    {item.gallery.map((imgSrc, i) => (
+                                                        <motion.div 
+                                                          key={i}
+                                                          initial={{ opacity: 0, scale: 0.8 }}
+                                                          animate={{ opacity: 1, scale: 1 }}
+                                                          transition={{ delay: 0.1 * i, duration: 0.4 }}
+                                                          className="rounded-lg overflow-hidden"
+                                                        >
+                                                            <img src={imgSrc} alt={`${item.title} gallery image ${i + 1}`} className="w-full h-full object-cover"/>
+                                                        </motion.div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            </AnimatedSection>
 
         {/* --- Goals Section --- */}
         <AnimatedSection>
           <section id="goals" className="scroll-mt-20">
-            <SectionTitle
-              title="Objectifs de Développement"
-              icon={TrendingUp}
-            />
+            <SectionTitle title={t("development_objectives")} />
             <p className="text-center text-lg text-black-400 mb-12 max-w-2xl mx-auto">
-              📈 Notre vision pour l'avenir est claire et ambitieuse.
+              {t("development_objectives_subtitle")}
             </p>
             <div className="max-w-3xl mx-auto bg-secondary-800 p-8 sm:p-10 rounded-2xl shadow-2xl border border-secondary-700">
               <ul className="space-y-5">
                 {[
-                  "Étendre notre atelier pour doubler la capacité de production",
-                  "Développer de nouvelles gammes allégées et modulables",
-                  "Nouer des partenariats stratégiques avec les constructeurs",
-                  "Digitaliser le SAV pour une réactivité maximale",
-                  "Explorer les marchés d'exportation en Afrique du Nord",
+                  t("development_objectives_items.item1"),
+                  t("development_objectives_items.item2"),
+                  t("development_objectives_items.item3"),
+                  t("development_objectives_items.item4"),
+                  t("development_objectives_items.item5"),
                 ].map((goal) => (
                   <li key={goal} className="flex items-start text-lg">
                     <CheckCircle className="w-6 h-6 text-primary-500 mr-4 mt-1 flex-shrink-0" />
@@ -707,7 +747,7 @@ const App = () => {
         {/* --- Contact Section --- */}
         <AnimatedSection>
           <section id="contact" className="scroll-mt-20">
-            <SectionTitle title={t("contact_title")} icon={Users} />
+            <SectionTitle title={t("contact_title")} />
             <div className="max-w-4xl mx-auto bg-gradient-to-br from-secondary-800 to-secondary-700/80 p-8 sm:p-12 rounded-2xl shadow-2xl border border-secondary-700">
               <h3 className="text-3xl font-bold text-primary-400 mb-8 text-center">
                 {t("contact_heading")}
@@ -721,7 +761,7 @@ const App = () => {
                     <p className="font-bold text-lg text-white">
                       {t("contact_address")}
                     </p>
-                    <p className="text-gray-400">
+                    <p className="text-white-400">
                       {t("contact_address_value")}
                     </p>
                   </div>
@@ -737,7 +777,7 @@ const App = () => {
                       href={`tel:${t("contact_phone_value")}`}
                       className="text-primary-400 hover:text-primary-300 transition-colors"
                     >
-                      {t("contact_phone_value")}
+                      +216 94 888 342
                     </a>
                   </div>
                 </div>
