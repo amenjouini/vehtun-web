@@ -93,7 +93,7 @@ const LanguageSwitcher = ({ i18n }) => {
   );
 };
 
-// --- Image Carousel Component ---
+// --- New Image Carousel Component ---
 const ImageCarousel = ({ images }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -108,59 +108,50 @@ const ImageCarousel = ({ images }) => {
     return (
         <div className="relative w-full h-80 flex items-center justify-center overflow-hidden">
             {/* Navigation Buttons */}
-            <button onClick={handlePrev} className="absolute left-0 md:left-4 z-30 bg-black/30 text-white p-2 rounded-full hover:bg-black/50 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400">
+            <button onClick={handlePrev} className="absolute left-0 md:left-4 z-20 bg-black/30 text-white p-2 rounded-full hover:bg-black/50 transition-colors">
                 <ChevronLeft size={24} />
             </button>
-            <button onClick={handleNext} className="absolute right-0 md:right-4 z-30 bg-black/30 text-white p-2 rounded-full hover:bg-black/50 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400">
+            <button onClick={handleNext} className="absolute right-0 md:right-4 z-20 bg-black/30 text-white p-2 rounded-full hover:bg-black/50 transition-colors">
                 <ChevronRight size={24} />
             </button>
 
             {/* Image Slider */}
             <div className="relative w-full h-full">
-                <AnimatePresence custom={currentIndex}>
+                <AnimatePresence>
                     {images.map((imgSrc, index) => {
                         const offset = index - currentIndex;
-                        let x, scale, opacity, zIndex;
+                        let x = `${offset * 50}%`;
+                        let scale = 1;
+                        let opacity = 0;
+                        let zIndex = 0;
 
                         if (offset === 0) { // Active slide
-                            scale = 1; opacity = 1; zIndex = 3; x = '0%';
-                        } else if (offset === 1) { // Right neighbour
-                            scale = 0.7; opacity = 0.6; zIndex = 2; x = '40%';
-                        } else if (offset === -1) { // Left neighbour
-                            scale = 0.7; opacity = 0.6; zIndex = 2; x = '-40%';
-                        } else if (offset === 2) { // Right outer neighbour
-                            scale = 0.5; opacity = 0.3; zIndex = 1; x = '70%';
-                        } else if (offset === -2) { // Left outer neighbour
-                            scale = 0.5; opacity = 0.3; zIndex = 1; x = '-70%';
+                            scale = 1;
+                            opacity = 1;
+                            zIndex = 3;
+                            x = '0%';
+                        } else if (offset === 1 || offset === -1) { // Immediate neighbours
+                            scale = 0.7;
+                            opacity = 0.6;
+                            zIndex = 2;
+                            x = `${offset * 40}%`;
+                        } else if (offset === 2 || offset === -2) { // Outer neighbours
+                            scale = 0.5;
+                            opacity = 0.3;
+                            zIndex = 1;
+                            x = `${offset * 35}%`;
                         } else { // Hidden slides
-                            scale = 0.3; opacity = 0; zIndex = 0; x = `${offset * 30}%`;
-                        }
-
-                        // Handle wrapping for a seamless loop
-                        const total = images.length;
-                        if (currentIndex === 0 && index === total - 1) { // prev from first
-                             scale = 0.7; opacity = 0.6; zIndex = 2; x = '-40%';
-                        } else if (currentIndex === total - 1 && index === 0) { // next from last
-                             scale = 0.7; opacity = 0.6; zIndex = 2; x = '40%';
-                        }
-                         if (currentIndex <= 1 && index >= total - 2 + currentIndex) {
-                            const effectiveIndex = index - total;
-                            const newOffset = effectiveIndex - currentIndex;
-                             if(newOffset === -1) {scale = 0.7; opacity = 0.6; zIndex = 2; x = '-40%';}
-                             if(newOffset === -2) {scale = 0.5; opacity = 0.3; zIndex = 1; x = '-70%';}
-                        }
-                         if (currentIndex >= total - 2 && index <= 1 + (currentIndex - (total-1)) ) {
-                            const effectiveIndex = index + total;
-                            const newOffset = effectiveIndex - currentIndex;
-                             if(newOffset === 1) {scale = 0.7; opacity = 0.6; zIndex = 2; x = '40%';}
-                             if(newOffset === 2) {scale = 0.5; opacity = 0.3; zIndex = 1; x = '70%';}
+                            scale = 0.3;
+                            opacity = 0;
+                            zIndex = 0;
+                            x = `${offset * 30}%`;
                         }
 
                         return (
                             <motion.div
-                                key={index}
+                                key={imgSrc + index}
                                 className="absolute top-0 left-0 w-full h-full flex justify-center items-center"
-                                initial={false}
+                                initial={{ x, scale, opacity, zIndex }}
                                 animate={{ x, scale, opacity, zIndex }}
                                 transition={{ type: 'spring', stiffness: 260, damping: 30 }}
                                 style={{ transformOrigin: 'center center' }}
