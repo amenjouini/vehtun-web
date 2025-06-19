@@ -23,7 +23,8 @@ import {
   CheckCircle,
   Dot,
   Globe,
-  Maximize2
+  Maximize2,
+  ChevronLeft, ChevronRight
 } from "lucide-react";
 
 // Component to handle scroll-triggered animations for sections
@@ -91,6 +92,93 @@ const LanguageSwitcher = ({ i18n }) => {
     </div>
   );
 };
+
+// --- Image Carousel Component ---
+const ImageCarousel = ({ images }) => {
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    const handleNext = () => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    };
+
+    const handlePrev = () => {
+        setCurrentIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
+    };
+
+    return (
+        <div className="relative w-full h-80 flex items-center justify-center overflow-hidden">
+            {/* Navigation Buttons */}
+            <button onClick={handlePrev} className="absolute left-0 md:left-4 z-30 bg-black/30 text-white p-2 rounded-full hover:bg-black/50 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400">
+                <ChevronLeft size={24} />
+            </button>
+            <button onClick={handleNext} className="absolute right-0 md:right-4 z-30 bg-black/30 text-white p-2 rounded-full hover:bg-black/50 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400">
+                <ChevronRight size={24} />
+            </button>
+
+            {/* Image Slider */}
+            <div className="relative w-full h-full">
+                <AnimatePresence custom={currentIndex}>
+                    {images.map((imgSrc, index) => {
+                        const offset = index - currentIndex;
+                        let x, scale, opacity, zIndex;
+
+                        if (offset === 0) { // Active slide
+                            scale = 1; opacity = 1; zIndex = 3; x = '0%';
+                        } else if (offset === 1) { // Right neighbour
+                            scale = 0.7; opacity = 0.6; zIndex = 2; x = '40%';
+                        } else if (offset === -1) { // Left neighbour
+                            scale = 0.7; opacity = 0.6; zIndex = 2; x = '-40%';
+                        } else if (offset === 2) { // Right outer neighbour
+                            scale = 0.5; opacity = 0.3; zIndex = 1; x = '70%';
+                        } else if (offset === -2) { // Left outer neighbour
+                            scale = 0.5; opacity = 0.3; zIndex = 1; x = '-70%';
+                        } else { // Hidden slides
+                            scale = 0.3; opacity = 0; zIndex = 0; x = `${offset * 30}%`;
+                        }
+
+                        // Handle wrapping for a seamless loop
+                        const total = images.length;
+                        if (currentIndex === 0 && index === total - 1) { // prev from first
+                             scale = 0.7; opacity = 0.6; zIndex = 2; x = '-40%';
+                        } else if (currentIndex === total - 1 && index === 0) { // next from last
+                             scale = 0.7; opacity = 0.6; zIndex = 2; x = '40%';
+                        }
+                         if (currentIndex <= 1 && index >= total - 2 + currentIndex) {
+                            const effectiveIndex = index - total;
+                            const newOffset = effectiveIndex - currentIndex;
+                             if(newOffset === -1) {scale = 0.7; opacity = 0.6; zIndex = 2; x = '-40%';}
+                             if(newOffset === -2) {scale = 0.5; opacity = 0.3; zIndex = 1; x = '-70%';}
+                        }
+                         if (currentIndex >= total - 2 && index <= 1 + (currentIndex - (total-1)) ) {
+                            const effectiveIndex = index + total;
+                            const newOffset = effectiveIndex - currentIndex;
+                             if(newOffset === 1) {scale = 0.7; opacity = 0.6; zIndex = 2; x = '40%';}
+                             if(newOffset === 2) {scale = 0.5; opacity = 0.3; zIndex = 1; x = '70%';}
+                        }
+
+                        return (
+                            <motion.div
+                                key={index}
+                                className="absolute top-0 left-0 w-full h-full flex justify-center items-center"
+                                initial={false}
+                                animate={{ x, scale, opacity, zIndex }}
+                                transition={{ type: 'spring', stiffness: 260, damping: 30 }}
+                                style={{ transformOrigin: 'center center' }}
+                            >
+                                <img
+                                    src={imgSrc}
+                                    alt={`Gallery image ${index + 1}`}
+                                    className="h-full object-contain rounded-lg shadow-2xl"
+                                />
+                            </motion.div>
+                        );
+                    })}
+                </AnimatePresence>
+            </div>
+        </div>
+    );
+};
+
 // --- Main App Component ---
 
 const App = () => {
@@ -170,8 +258,8 @@ const App = () => {
       text
     )}&font=Poppins`;
 
-    const [expandedIndex, setExpandedIndex] = useState(null);
-        const [connectorStyle, setConnectorStyle] = useState({});
+  const [expandedIndex, setExpandedIndex] = useState(null);
+    const [connectorStyle, setConnectorStyle] = useState({});
     const gridRef = useRef(null);
     const cardRefs = useRef([]);
 
@@ -211,9 +299,25 @@ const App = () => {
         },
     ];
 
+    cardRefs.current = achievements.map((_, i) => cardRefs.current[i] ?? React.createRef());
+
     const handleCardClick = (index) => {
-        setExpandedIndex(expandedIndex === index ? null : index);
-    };
+        const newIndex = expandedIndex === index ? null : index;
+        setExpandedIndex(newIndex);
+
+        if (newIndex !== null && cardRefs.current[newIndex]?.current && gridRef.current) {
+            const cardEl = cardRefs.current[newIndex].current;
+            const gridEl = gridRef.current;
+            
+            const cardRect = cardEl.getBoundingClientRect();
+            const gridRect = gridEl.getBoundingClientRect();
+            
+            setConnectorStyle({
+                left: `${cardRect.left - gridRect.left}px`,
+                width: `${cardRect.width}px`,
+            });
+        }
+      };
 
   return (
     <div className="bg-secondary-900 text-gray-200 font-poppins leading-relaxed antialiased">
@@ -660,97 +764,75 @@ const App = () => {
         </AnimatedSection>
 
         {/* --- Achievements Section --- */}
-<AnimatedSection>
-  <section id="achievements" className="scroll-mt-20 max-w-7xl mx-auto">
-    <SectionTitle title={t("achiev")} />
-    <div ref={gridRef} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-      {achievements.map((item, index) => {
-        const isExpanded = index === expandedIndex;
-        return (
-          <motion.div
-            key={item.title}
-            ref={cardRefs.current[index]}
-            className={`bg-secondary-800 shadow-xl flex flex-col group border border-secondary-700 cursor-pointer rounded-2xl
-              ${isExpanded ? 'ring-2 ring-primary-400 ring-offset-2 ring-offset-secondary-900' : ''}`}
-            onClick={() => handleCardClick(index)}
-            transition={{ duration: 0.3 }}
-          >
-            <div className="relative h-56 sm:h-64 overflow-hidden rounded-t-2xl">
-              <img
-                src={placeholderImg(400, 300, item.imgText, "0b2b36", "FBBF24")}
-                alt={item.title}
-                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-in-out"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-secondary-900/70 via-transparent"></div>
-              <div className="absolute top-3 right-3 bg-black/40 p-2 rounded-full text-white/80 transition-transform group-hover:scale-110">
-                {isExpanded ? <X size={20} /> : <Maximize2 size={20} />}
-              </div>
-            </div>
-            <div className="p-6 flex-grow">
-              <h4 className="text-xl font-bold text-primary-400 mb-2">
-                {item.title}
-              </h4>
-              <p className="text-gray-400">{item.desc}</p>
-            </div>
-          </motion.div>
-        );
-      })}
-    </div>
+           <AnimatedSection>
+                <section id="achievements" className="scroll-mt-20 max-w-7xl mx-auto">
+                    <SectionTitle title={t("achiev")} />
+                    <div ref={gridRef} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {achievements.map((item, index) => {
+                            const isExpanded = index === expandedIndex;
+                            return (
+                                <motion.div
+                                    key={item.title}
+                                    ref={cardRefs.current[index]}
+                                    className={`bg-secondary-800 shadow-xl flex flex-col group border border-secondary-700 cursor-pointer rounded-2xl
+                                        ${isExpanded ? 'ring-2 ring-primary-400 ring-offset-4 ring-offset-secondary-900' : ''}`}
+                                    onClick={() => handleCardClick(index)}
+                                    transition={{ duration: 0.3 }}
+                                >
+                                    <div className="relative h-56 sm:h-64 overflow-hidden rounded-t-2xl">
+                                        <img
+                                            src={placeholderImg(400, 300, item.imgText, "0b2b36", "FBBF24")}
+                                            alt={item.title}
+                                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-in-out"
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-secondary-900/70 via-transparent"></div>
+                                        <div className="absolute top-3 right-3 bg-black/40 p-2 rounded-full text-white/80 transition-transform group-hover:scale-110">
+                                            {isExpanded ? <X size={20} /> : <Maximize2 size={20} />}
+                                        </div>
+                                    </div>
+                                    <div className="p-6 flex-grow">
+                                        <h4 className="text-xl font-bold text-primary-400 mb-2">
+                                            {item.title}
+                                        </h4>
+                                        <p className="text-gray-400">{item.desc}</p>
+                                    </div>
+                                </motion.div>
+                            );
+                        })}
+                    </div>
+                    
+                    <div className="relative">
+                        <AnimatePresence>
+                            {expandedIndex !== null && (
+                                <motion.div
+                                    key="expanded-content-wrapper"
+                                    initial={{ opacity: 0, y: -20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -20, transition: {duration: 0.3} }}
+                                    transition={{ duration: 0.4, ease: 'easeInOut' }}
+                                    className="relative mt-5"
+                                >
+                                
 
-    <div className="relative">
-      <AnimatePresence>
-        {expandedIndex !== null && (
-          <motion.div
-            key="expanded-content-wrapper"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.4, ease: 'easeInOut' }}
-            className="relative mt-5"
-          >
-            {/* Connector */}
-            <div
-              className="absolute -top-5 w-full z-10"
-              style={{ pointerEvents: 'none' }}
-            >
-              <div style={connectorStyle}></div>
-            </div>
+                                    <motion.div
+                                        key="expanded-content"
+                                        className="bg-secondary-800 rounded-2xl overflow-hidden border border-secondary-700 shadow-2xl"
+                                        initial={{ height: 0 }}
+                                        animate={{ height: 'auto' }}
+                                        exit={{ height: 0 }}
+                                        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                                    >
+                                        <div className="p-6">
+                                            <ImageCarousel images={achievements[expandedIndex].gallery} />
+                                        </div>
+                                    </motion.div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </div>
 
-            {/* Expanded Card */}
-            <motion.div
-              key="expanded-content"
-              className="mt-[-1px] bg-secondary-800 rounded-2xl overflow-hidden border border-secondary-700 shadow-2xl"
-              initial={{ height: 0 }}
-              animate={{ height: 'auto' }}
-              exit={{ height: 0 }}
-              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <div className="p-6 pt-10">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  {achievements[expandedIndex].gallery.map((imgSrc, i) => (
-                    <motion.div
-                      key={i}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 0.1 * i + 0.1, duration: 0.4 }}
-                      className="rounded-lg overflow-hidden aspect-w-16 aspect-h-9"
-                    >
-                      <img
-                        src={imgSrc}
-                        alt={`${achievements[expandedIndex].title} gallery image ${i + 1}`}
-                        className="w-full h-full object-cover"
-                      />
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  </section>
-</AnimatedSection>
+                </section>
+            </AnimatedSection>
 
 
         {/* --- Goals Section --- */}
