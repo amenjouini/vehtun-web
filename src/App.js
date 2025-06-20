@@ -93,7 +93,7 @@ const LanguageSwitcher = ({ i18n }) => {
   );
 };
 
-// --- New Image Carousel Component ---
+// --- Image Carousel Component ---
 const ImageCarousel = ({ images }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -108,50 +108,59 @@ const ImageCarousel = ({ images }) => {
     return (
         <div className="relative w-full h-80 flex items-center justify-center overflow-hidden">
             {/* Navigation Buttons */}
-            <button onClick={handlePrev} className="absolute left-0 md:left-4 z-20 bg-black/30 text-white p-2 rounded-full hover:bg-black/50 transition-colors">
+            <button onClick={handlePrev} className="absolute left-0 md:left-4 z-30 bg-black/30 text-white p-2 rounded-full hover:bg-black/50 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400">
                 <ChevronLeft size={24} />
             </button>
-            <button onClick={handleNext} className="absolute right-0 md:right-4 z-20 bg-black/30 text-white p-2 rounded-full hover:bg-black/50 transition-colors">
+            <button onClick={handleNext} className="absolute right-0 md:right-4 z-30 bg-black/30 text-white p-2 rounded-full hover:bg-black/50 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400">
                 <ChevronRight size={24} />
             </button>
 
             {/* Image Slider */}
             <div className="relative w-full h-full">
-                <AnimatePresence>
+                <AnimatePresence custom={currentIndex}>
                     {images.map((imgSrc, index) => {
                         const offset = index - currentIndex;
-                        let x = `${offset * 50}%`;
-                        let scale = 1;
-                        let opacity = 0;
-                        let zIndex = 0;
+                        let x, scale, opacity, zIndex;
 
                         if (offset === 0) { // Active slide
-                            scale = 1;
-                            opacity = 1;
-                            zIndex = 3;
-                            x = '0%';
-                        } else if (offset === 1 || offset === -1) { // Immediate neighbours
-                            scale = 0.7;
-                            opacity = 0.6;
-                            zIndex = 2;
-                            x = `${offset * 40}%`;
-                        } else if (offset === 2 || offset === -2) { // Outer neighbours
-                            scale = 0.5;
-                            opacity = 0.3;
-                            zIndex = 1;
-                            x = `${offset * 35}%`;
+                            scale = 1; opacity = 1; zIndex = 3; x = '0%';
+                        } else if (offset === 1) { // Right neighbour
+                            scale = 0.7; opacity = 0.6; zIndex = 2; x = '40%';
+                        } else if (offset === -1) { // Left neighbour
+                            scale = 0.7; opacity = 0.6; zIndex = 2; x = '-40%';
+                        } else if (offset === 2) { // Right outer neighbour
+                            scale = 0.5; opacity = 0.3; zIndex = 1; x = '70%';
+                        } else if (offset === -2) { // Left outer neighbour
+                            scale = 0.5; opacity = 0.3; zIndex = 1; x = '-70%';
                         } else { // Hidden slides
-                            scale = 0.3;
-                            opacity = 0;
-                            zIndex = 0;
-                            x = `${offset * 30}%`;
+                            scale = 0.3; opacity = 0; zIndex = 0; x = `${offset * 30}%`;
+                        }
+
+                        // Handle wrapping for a seamless loop
+                        const total = images.length;
+                        if (currentIndex === 0 && index === total - 1) { // prev from first
+                             scale = 0.7; opacity = 0.6; zIndex = 2; x = '-40%';
+                        } else if (currentIndex === total - 1 && index === 0) { // next from last
+                             scale = 0.7; opacity = 0.6; zIndex = 2; x = '40%';
+                        }
+                         if (currentIndex <= 1 && index >= total - 2 + currentIndex) {
+                            const effectiveIndex = index - total;
+                            const newOffset = effectiveIndex - currentIndex;
+                             if(newOffset === -1) {scale = 0.7; opacity = 0.6; zIndex = 2; x = '-40%';}
+                             if(newOffset === -2) {scale = 0.5; opacity = 0.3; zIndex = 1; x = '-70%';}
+                        }
+                         if (currentIndex >= total - 2 && index <= 1 + (currentIndex - (total-1)) ) {
+                            const effectiveIndex = index + total;
+                            const newOffset = effectiveIndex - currentIndex;
+                             if(newOffset === 1) {scale = 0.7; opacity = 0.6; zIndex = 2; x = '40%';}
+                             if(newOffset === 2) {scale = 0.5; opacity = 0.3; zIndex = 1; x = '70%';}
                         }
 
                         return (
                             <motion.div
-                                key={imgSrc + index}
+                                key={index}
                                 className="absolute top-0 left-0 w-full h-full flex justify-center items-center"
-                                initial={{ x, scale, opacity, zIndex }}
+                                initial={false}
                                 animate={{ x, scale, opacity, zIndex }}
                                 transition={{ type: 'spring', stiffness: 260, damping: 30 }}
                                 style={{ transformOrigin: 'center center' }}
@@ -282,10 +291,10 @@ const App = () => {
             desc: t("citerne_15000.desc"),
             imgText: t("citerne_15000.imgText"),
             gallery: [
-                placeholderImg(400, 300, 'Tanker Rear'),
-                placeholderImg(400, 300, 'Filling Valve'),
-                placeholderImg(400, 300, 'Polished Steel'),
-                placeholderImg(400, 300, 'Liquid Transport'),
+                placeholderImg(600, 300, 'Tanker Rear'),
+                placeholderImg(600, 300, 'Filling Valve'),
+                placeholderImg(600, 300, 'Polished Steel'),
+                placeholderImg(600, 300, 'Liquid Transport'),
             ]
         },
     ];
@@ -466,63 +475,88 @@ const App = () => {
               {/* Main two-column grid layout */}
               <div className="grid md:grid-cols-2 gap-10 lg:gap-16 items-center">
                 {/* ===== Left Column ===== */}
-                <div className="flex flex-col text-left">
-                  {/* --- VehTun Title and Slogan --- */}
-                  <div className="mb-10">
-                    <motion.h1
-                      className="text-5xl sm:text-7xl md:text-8xl font-extrabold text-white mb-4"
-                      initial={{ opacity: 0, y: -30 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.8, delay: 0.2 }}
-                    >
-                      Veh<span className="text-primary-400">Tun</span>
-                    </motion.h1>
-                    <motion.p
-                      className="text-xl sm:text-2xl text-gray-300 font-light"
-                      initial={{ opacity: 0, y: -20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.8, delay: 0.4 }}
-                    >
-                      {" "}
-                      Together, We Move What Matters.
-                    </motion.p>
-                  </div>
+       <div className="bg-secondary-900 min-h-screen p-4 sm:p-6 lg:p-8">
+            <header className="flex flex-col justify-center items-center w-full">
+                <AnimatedSection>
+                    {/* The parent div is now centered on mobile and left-aligned on medium screens and up */}
+                    <div className="flex flex-col text-center md:text-left">
+                        {/* --- VehTun Title and Slogan --- */}
+                        <div className="mb-10">
+                            <motion.h1
+                                // Font size is now smaller on mobile and scales up
+                                className="text-5xl sm:text-7xl md:text-8xl font-extrabold text-white mb-4"
+                                initial={{ opacity: 0, y: -30 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.8, delay: 0.2 }}
+                            >
+                                Veh<span className="text-primary-400">Tun</span>
+                            </motion.h1>
+                            <motion.p
+                                // Font size is also adjusted for mobile
+                                className="text-lg sm:text-xl md:text-2xl text-gray-300 font-light"
+                                initial={{ opacity: 0, y: -20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.8, delay: 0.4 }}
+                            >
+                                Together, We Move What Matters.
+                            </motion.p>
+                        </div>
 
-                  {/* --- "Who are we" Card --- */}
-                  <motion.div
-                    className="bg-secondary-800 p-8 rounded-2xl shadow-2xl border border-secondary-700"
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.6 }}
-                    whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                  >
-                    <h3 className="text-2xl font-bold text-primary-400 mb-5">
-                      {t("about_heading")}
-                    </h3>
-                    <ul className="space-y-4 text-gray-300">
-                      <li className="flex items-start">
-                        <CheckCircle className="w-6 h-6 text-primary-500 mr-3 mt-1 flex-shrink-0" />
-                        {t("about_item1")}
-                      </li>
-                      <li className="flex items-start">
-                        <CheckCircle className="w-6 h-6 text-primary-500 mr-3 mt-1 flex-shrink-0" />
-                        {t("about_item2")}
-                      </li>
-                      <li className="flex items-start">
-                        <CheckCircle className="w-6 h-6 text-primary-500 mr-3 mt-1 flex-shrink-0" />
-                        {t("about_item3")}
-                      </li>
-                      <li className="flex items-start">
-                        <CheckCircle className="w-6 h-6 text-primary-500 mr-3 mt-1 flex-shrink-0" />
-                        {t("about_item4")}
-                      </li>
-                      <li className="flex items-start">
-                        <CheckCircle className="w-6 h-6 text-primary-500 mr-3 mt-1 flex-shrink-0" />
-                        {t("about_item5")}
-                      </li>
-                    </ul>
-                  </motion.div>
-                </div>
+                        {/* --- "Who are we" Card --- */}
+                        <motion.div
+                            // Card padding is adjusted for smaller screens
+                            className="bg-secondary-800 p-6 md:p-8 rounded-2xl shadow-2xl border border-secondary-700"
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.6 }}
+                            whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                        >
+                            <h3 className="text-2xl font-bold text-primary-400 mb-5">
+                                {t("about_heading")}
+                            </h3>
+                            <ul className="space-y-4 text-gray-300 text-left">
+                                <li className="flex items-start">
+                                    <CheckCircle className="w-6 h-6 text-primary-500 mr-3 mt-1 flex-shrink-0" />
+                                    <span>{t("about_item1")}</span>
+                                </li>
+                                <li className="flex items-start">
+                                    <CheckCircle className="w-6 h-6 text-primary-500 mr-3 mt-1 flex-shrink-0" />
+                                     <span>{t("about_item2")}</span>
+                                </li>
+                                <li className="flex items-start">
+                                    <CheckCircle className="w-6 h-6 text-primary-500 mr-3 mt-1 flex-shrink-0" />
+                                     <span>{t("about_item3")}</span>
+                                </li>
+                                <li className="flex items-start">
+                                    <CheckCircle className="w-6 h-6 text-primary-500 mr-3 mt-1 flex-shrink-0" />
+                                     <span>{t("about_item4")}</span>
+                                </li>
+                                <li className="flex items-start">
+                                    <CheckCircle className="w-6 h-6 text-primary-500 mr-3 mt-1 flex-shrink-0" />
+                                     <span>{t("about_item5")}</span>
+                                </li>
+                            </ul>
+                        </motion.div>
+                    </div>
+                </AnimatedSection>
+            </header>
+
+            {/* Mock CSS variables for colors
+            <style jsx global>{`
+              :root {
+                --color-primary-400: #FBBF24;
+                --color-primary-500: #F59E0B;
+                --color-secondary-900: #111827;
+                --color-secondary-800: #1F2937;
+                --color-secondary-700: #374151;
+              }
+              .text-primary-400 { color: var(--color-primary-400); }
+              .text-primary-500 { color: var(--color-primary-500); }
+              .bg-secondary-900 { background-color: var(--color-secondary-900); }
+              .bg-secondary-800 { background-color: var(--color-secondary-800); }
+              .border-secondary-700 { border-color: var(--color-secondary-700); }
+            `}</style> */}
+        </div>
 
                 {/* ===== Right Column (FIXED) ===== */}
                 <div className="flex flex-col text-left">
@@ -755,44 +789,65 @@ const App = () => {
         </AnimatedSection>
 
         {/* --- Achievements Section --- */}
-           <AnimatedSection>
+                 <AnimatedSection>
                 <section id="achievements" className="scroll-mt-20 max-w-7xl mx-auto">
                     <SectionTitle title={t("achiev")} />
-                    <div ref={gridRef} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                         {achievements.map((item, index) => {
                             const isExpanded = index === expandedIndex;
                             return (
-                                <motion.div
-                                    key={item.title}
-                                    ref={cardRefs.current[index]}
-                                    className={`bg-secondary-800 shadow-xl flex flex-col group border border-secondary-700 cursor-pointer rounded-2xl
-                                        ${isExpanded ? 'ring-2 ring-primary-400 ring-offset-4 ring-offset-secondary-900' : ''}`}
-                                    onClick={() => handleCardClick(index)}
-                                    transition={{ duration: 0.3 }}
-                                >
-                                    <div className="relative h-56 sm:h-64 overflow-hidden rounded-t-2xl">
-                                        <img
-                                            src={placeholderImg(400, 300, item.imgText, "0b2b36", "FBBF24")}
-                                            alt={item.title}
-                                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-in-out"
-                                        />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-secondary-900/70 via-transparent"></div>
-                                        <div className="absolute top-3 right-3 bg-black/40 p-2 rounded-full text-white/80 transition-transform group-hover:scale-110">
-                                            {isExpanded ? <X size={20} /> : <Maximize2 size={20} />}
+                                <React.Fragment key={item.title}>
+                                    {/* Card */}
+                                    <div
+                                        ref={cardRefs.current[index]}
+                                        className={`bg-secondary-800 shadow-xl flex flex-col group border border-secondary-700 cursor-pointer rounded-2xl
+                                            ${isExpanded ? 'ring-2 ring-primary-400 ring-offset-4 ring-offset-secondary-900' : ''}`}
+                                        onClick={() => handleCardClick(index)}
+                                    >
+                                        <div className="relative h-56 sm:h-64 overflow-hidden rounded-t-2xl">
+                                            <img
+                                                src={placeholderImg(400, 300, item.imgText, "0b2b36", "FBBF24")}
+                                                alt={item.title}
+                                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-in-out"
+                                            />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-secondary-900/70 via-transparent"></div>
+                                            <div className="absolute top-3 right-3 bg-black/40 p-2 rounded-full text-white/80 transition-transform group-hover:scale-110">
+                                                {isExpanded ? <X size={20} /> : <Maximize2 size={20} />}
+                                            </div>
+                                        </div>
+                                        <div className="p-6 flex-grow">
+                                            <h4 className="text-xl font-bold text-primary-400 mb-2">
+                                                {item.title}
+                                            </h4>
+                                            <p className="text-gray-400">{item.desc}</p>
                                         </div>
                                     </div>
-                                    <div className="p-6 flex-grow">
-                                        <h4 className="text-xl font-bold text-primary-400 mb-2">
-                                            {item.title}
-                                        </h4>
-                                        <p className="text-gray-400">{item.desc}</p>
+                                    
+                                    {/* Expanded Gallery (Mobile View) */}
+                                    <div className="sm:hidden">
+                                       <AnimatePresence>
+                                            {isExpanded && (
+                                                <motion.div
+                                                    className="bg-secondary-800 rounded-b-2xl overflow-hidden border-x border-b border-secondary-700 -mt-2"
+                                                    initial={{ height: 0, opacity: 0 }}
+                                                    animate={{ height: 'auto', opacity: 1 }}
+                                                    exit={{ height: 0, opacity: 0 }}
+                                                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                                                >
+                                                     <div className="p-6">
+                                                        <ImageCarousel images={item.gallery} />
+                                                    </div>
+                                                </motion.div>
+                                            )}
+                                        </AnimatePresence>
                                     </div>
-                                </motion.div>
+                                </React.Fragment>
                             );
                         })}
                     </div>
                     
-                    <div className="relative">
+                    {/* Expanded Gallery (Desktop View) */}
+                    <div className="hidden sm:block relative">
                         <AnimatePresence>
                             {expandedIndex !== null && (
                                 <motion.div
@@ -803,7 +858,7 @@ const App = () => {
                                     transition={{ duration: 0.4, ease: 'easeInOut' }}
                                     className="relative mt-5"
                                 >
-                                
+                                    
 
                                     <motion.div
                                         key="expanded-content"
