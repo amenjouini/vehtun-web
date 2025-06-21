@@ -2,8 +2,8 @@
   "translation": {
     "nav_about": "About",
     "nav_products": "Products",
-    "nav_workshop": "Workshop",
-    "nav_values": "Values",
+    "nav_workshop": "Services",
+    "nav_values": "Our Values",
     "nav_clients": "Clients",
     "nav_achievements": "Achievements",
     "nav_goals": "Goals",
@@ -30,22 +30,27 @@
     "mesure_prod": "Custom production according to specifications",
     "system_integration": "Integration of hydraulic and electrical systems",
     "added_values": "Our Added Values",
-    "added_values_desc": "🚀 Beyond manufacturing, we bring solutions concrete to optimize your activity.",
+    "added_values_desc": "At VehTun, we place quality, innovation and proximity at the heart of our approach. Our values guide each of our decisions and guide our vision of the industry.",
+    "fiability": {
+      "title": "Reliability & quality",
+      "desc": "Each product taken from our workshop is subject to strict controls. We guarantee constant quality thanks to our mastered know-how and rigorous manufacturing processes."
+    },
+    "efficacity": {
+      "title": "Efficiency and optimization",
+      "desc": "We make it a point of honor to optimize our designs: weight reduction, better payload, easier maintenance. Our clients benefit from high value-added solutions."
+    },
+
     "innovation_continue": {
       "title": "Continuous innovation",
-      "desc": "We integrate the latest technologies for state-of-the-art equipment."
+      "desc": "We design robust and ingenious transport equipment, combining performance and modernity. Innovation is a key lever for offering lightweight, sustainable solutions adapted to each use."
     },
-    "allegement_structures": {
-      "title": "Structure lightening",
-      "desc": "Our optimized materials increase your payload and reduce consumption."
+    "customer_engagement": {
+      "title": "Customer engagement",
+      "desc": "Proximity, responsiveness, listening: we accompany our clients at every step, from the expression of need to delivery. Each project is treated with attention and commitment."
     },
-    "performance_cout": {
-      "title": "Optimized performance and cost",
-      "desc": "We design cost-effective and high-performing solutions for transporters."
-    },
-    "flexibilite_sur_mesure": {
-      "title": "Flexibility and customization",
-      "desc": "Your need is unique, our production adapts to your specifications."
+    "responsability": {
+      "title": "Responsibility & sustainability",
+      "desc": "We adopt a responsible approach, with attention paid to materials, energy consumption and sustainability of our equipment."
     },
     "possible_clients": "Our Target Customers",
     "possible_clients_desc": "🎯 We collaborate with key players in the economyTunisian.",

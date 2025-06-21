@@ -2,8 +2,8 @@
   "translation": {
     "nav_about": "À propos",
     "nav_products": "Produits",
-    "nav_workshop": "Atelier",
-    "nav_values": "Valeurs",
+    "nav_workshop": "Services",
+    "nav_values": "Nos Valeurs",
     "nav_clients": "Clients",
     "nav_achievements": "Réalisations",
     "nav_goals": "Objectifs",
@@ -30,23 +30,29 @@
     "mesure_prod": "Production sur mesure selon cahier des charges",
     "system_integration": "Intégration de systèmes hydrauliques et électriques",
     "added_values": "Nos Valeurs Ajoutées",
-    "added_values_desc": "🚀 Au-delà de la fabrication, nous apportons des solutions concrètes pour optimiser votre activité.",
+    "added_values_desc": "Chez VehTun, nous plaçons la qualité, l’innovation et la proximité au cœur de notre démarche. Nos valeurs guident chacune de nos décisions et orientent notre vision de l’industrie.",
+    "fiability": {
+      "title": "Fiabilité & qualité",
+      "desc": "Chaque produit sorti de notre atelier est soumis à des contrôles stricts. Nous garantissons une qualité constante grâce à un savoir-faire maîtrisé et des processus de fabrication rigoureux."
+    },
+    "efficacity": {
+      "title": "Efficacité et optimisation",
+      "desc": "Nous mettons un point d’honneur à optimiser nos conceptions : réduction du poids, meilleure charge utile, maintenance facilitée. Nos clients bénéficient de solutions à haute valeur ajoutée."
+    },
+
     "innovation_continue": {
       "title": "Innovation continue",
-      "desc": "Nous intégrons les dernières technologies pour des équipements à la pointe."
+      "desc": "Nous concevons des équipements de transport robustes et ingénieux, alliant performance et modernité. L’innovation est un levier clé pour proposer des solutions légères, durables et adaptées à chaque usage."
     },
-    "allegement_structures": {
-      "title": "Allégement des structures",
-      "desc": "Nos matériaux optimisés augmentent votre charge utile et réduisent la consommation."
+    "customer_engagement": {
+      "title": "Engagement client",
+      "desc": "Proximité, réactivité, écoute : nous accompagnons nos clients à chaque étape, de l’expression du besoin à la livraison. Chaque projet est traité avec attention et engagement."
     },
-    "performance_cout": {
-      "title": "Performance et coût optimisés",
-      "desc": "Nous concevons des solutions rentables et performantes pour les transporteurs."
+    "responsability": {
+      "title": "Responsabilité & durabilité",
+      "desc": "Nous adoptons une démarche responsable, avec une attention portée aux matériaux, à la consommation énergétique et à la durabilité de nos équipements."
     },
-    "flexibilite_sur_mesure": {
-      "title": "Flexibilité et sur-mesure",
-      "desc": "Votre besoin est unique, notre production s'adapte à vos spécificités."
-    },
+
     "possible_clients": "Nos Clients Cibles",
     "possible_clients_desc": "🎯 Nous collaborons avec les acteurs clés de l'économietunisienne.",
     "sector_trans": "Transport & Logistique",
