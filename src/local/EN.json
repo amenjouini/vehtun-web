@@ -4,7 +4,7 @@
     "nav_products": "Produits",
     "nav_workshop": "Services",
     "nav_values": "Nos Valeurs",
-    "nav_clients": "Clients",
+    "nav_clients&achievements": "Nos Clients & Réalisations",
     "nav_achievements": "Réalisations",
     "nav_goals": "Objectifs",
     "nav_contact": "Contact",
@@ -53,29 +53,28 @@
       "desc": "Nous adoptons une démarche responsable, avec une attention portée aux matériaux, à la consommation énergétique et à la durabilité de nos équipements."
     },
 
-    "possible_clients": "Nos Clients Cibles",
-    "possible_clients_desc": "🎯 Nous collaborons avec les acteurs clés de l'économietunisienne.",
+    "possible_clients": "Nos Clients & Réalisations",
+    "possible_clients_desc": "The target sectors served are:",
     "sector_trans": "Transport & Logistique",
+    "agriculture":"Agriculture",
+    "collect":"Collectivités locales & services publics",
     "sector_const": "Bâtiment et travaux publics (BTP)",
     "sector_agr": "Agriculture & Agroalimentaire",
-    "sector_loc": "Collectivités locales & services publics",
+    "sector_loc": "Collectivités Locales & Services Publics",
     "sector_indus": "Industriel & Distributeurs",
     "sector_env": "Environnement & Recyclage",
     "achiev": "Témoignage de Réalisations",
     "plateau_bache": {
-      "title": "Plateaux",
-      "desc": "Plateaux simples/ Ridelles/ bâchés",
+      "title": "Plateaux simples/ Ridelles/ bâchés",
       "imgText": "Flatbed couvert"
     },
     "benne_gravats": {
-      "title": "Bennes",
-      "desc": "Bennes basculantes (BTP, déchets, agriculture)",
+      "title": "Bennes basculantes (BTP, déchets, agriculture)",
       "imgText": "10T Debris Skip"
     },
 
     "citerne_15000": {
-      "title": "Citernes",
-      "desc": "Citernes pour liquides industriels ou alimentaires",
+      "title": "Citernes pour liquides industriels ou alimentaires",
       "imgText": "Chimiquier"
     },
     "key_figures_year": "Année de Création",

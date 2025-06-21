@@ -4,7 +4,7 @@
     "nav_products": "Products",
     "nav_workshop": "Services",
     "nav_values": "Our Values",
-    "nav_clients": "Clients",
+    "nav_clients&achievements": "Our Customers & Achievements",
     "nav_achievements": "Achievements",
     "nav_goals": "Goals",
     "nav_contact": "Contact",
@@ -52,9 +52,11 @@
       "title": "Responsibility & sustainability",
       "desc": "We adopt a responsible approach, with attention paid to materials, energy consumption and sustainability of our equipment."
     },
-    "possible_clients": "Our Target Customers",
-    "possible_clients_desc": "🎯 We collaborate with key players in the economyTunisian.",
+    "possible_clients": "Our Customers & Achievements",
+    "possible_clients_desc": "The target sectors served are:",
     "sector_trans": "Transport & Logistics",
+    "agriculture":"Agriculture",
+    "collect":"Local authorities & public services",
     "sector_const": "Construction and Public Works (BTP)",
     "sector_agr": "Agriculture & Agri-food",
     "sector_loc": "Local Authorities & Public Services",
@@ -62,19 +64,16 @@
     "sector_env": "Environment & Recycling",
     "achiev": "Testimony of Achievements",
     "plateau_bache": {
-      "title": "Trays",
-      "desc": "Simple trays / Sides / covered",
+      "title": "Simple trays / Sides / covered",
       "imgText": "Flatbed covered"
     },
     "benne_gravats": {
-      "title": "Bins",
-      "desc": "Tippers (construction, waste, agriculture)",
+      "title": "Tippers (construction, waste, agriculture)",
       "imgText": "10T Debris Skip"
     },
 
     "citerne_15000": {
-      "title": "Tanks",
-      "desc": "Tanks for industrial or food liquids",
+      "title": "Tanks for industrial or food liquids",
       "imgText": "Chemical carrier"
     },
     "key_figures_year": "Year of Creation",

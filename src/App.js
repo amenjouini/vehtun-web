@@ -40,7 +40,6 @@ import values3 from "./assets/values3_rdc.jpg";
 import values4 from "./assets/values4_rdc.jpg";
 import values5 from "./assets/values5_rdc.jpg";
 
-
 // Component to handle scroll-triggered animations for sections
 const AnimatedSection = ({ children, threshold = 0.2 }) => {
   const controls = useAnimation();
@@ -278,8 +277,7 @@ const App = () => {
     { href: "#products", text: t("nav_products") },
     { href: "#services", text: t("nav_workshop") },
     { href: "#values", text: t("nav_values") },
-    { href: "#clients", text: t("nav_clients") },
-    { href: "#achievements", text: t("nav_achievements") },
+    { href: "#clients-achievements", text: t("nav_clients&achievements") },
     { href: "#goals", text: t("nav_goals") },
     { href: "#contact", text: t("nav_contact") },
   ];
@@ -337,6 +335,7 @@ const App = () => {
 
   const [expandedIndex, setExpandedIndex] = useState(null);
   const [expandedValuesIndex, setExpandedValuesIndex] = useState(null);
+  const [expandedProductIndex, setExpandedProductIndex] = useState(null);
 
   const [connectorStyle, setConnectorStyle] = useState({});
   const gridRef = useRef(null);
@@ -347,40 +346,39 @@ const App = () => {
       title: t("fiability.title"),
       desc: t("fiability.desc"),
       icon: ShieldCheck,
-      img: values1
+      img: values1,
     },
     {
       title: t("efficacity.title"),
       desc: t("efficacity.desc"),
       icon: Lightbulb,
-      img: values2
+      img: values2,
     },
     {
       title: t("innovation_continue.title"),
       desc: t("innovation_continue.desc"),
       icon: Scaling,
-      img: values3
+      img: values3,
     },
     {
       title: t("customer_engagement.title"),
       desc: t("customer_engagement.desc"),
       icon: Handshake,
-      img: values4
+      img: values4,
     },
     {
       title: t("responsability.title"),
       desc: t("responsability.desc"),
       icon: Gem,
-      img: values5
+      img: values5,
     },
-    
   ];
 
-  const achievements = [
+  const products = [
     {
       title: t("plateau_bache.title"),
-      desc: t("plateau_bache.desc"),
-      imgText: t("plateau_bache.imgText"),
+      imgText: placeholderImg(600, 400, t("plateau_bache.title"), "374151"),
+      
       gallery: [
         placeholderImg(400, 300, "Flatbed Side View"),
         placeholderImg(400, 300, "Loading Cargo"),
@@ -390,8 +388,7 @@ const App = () => {
     },
     {
       title: t("benne_gravats.title"),
-      desc: t("benne_gravats.desc"),
-      imgText: t("benne_gravats.imgText"),
+      imgText: placeholderImg(600, 400, t("benne_gravats.title"), "374151"),
       gallery: [
         placeholderImg(400, 300, "Skip Full"),
         placeholderImg(400, 300, "Tipping Action"),
@@ -401,9 +398,55 @@ const App = () => {
     },
     {
       title: t("citerne_15000.title"),
-      desc: t("citerne_15000.desc"),
-      imgText: t("citerne_15000.imgText"),
+      imgText: placeholderImg(600, 400, t("citerne_15000.title"), "374151"),
       gallery: [
+        placeholderImg(600, 300, "Tanker Rear"),
+        placeholderImg(600, 300, "Filling Valve"),
+        placeholderImg(600, 300, "Polished Steel"),
+        placeholderImg(600, 300, "Liquid Transport"),
+      ],
+    },
+  ];
+
+  const achievements = [
+    {
+      title: t("sector_trans"),
+      imgText: placeholderImg(600, 400, t("sector_trans"), "374151"),
+      img: values2,
+       gallery: [
+        placeholderImg(600, 300, "Tanker Rear"),
+        placeholderImg(600, 300, "Filling Valve"),
+        placeholderImg(600, 300, "Polished Steel"),
+        placeholderImg(600, 300, "Liquid Transport"),
+      ],
+    },
+    {
+      title: t("sector_agr"),
+      imgText: placeholderImg(600, 400, t("sector_agr"), "374151"),
+      img: values3,
+       gallery: [
+        placeholderImg(600, 300, "Tanker Rear"),
+        placeholderImg(600, 300, "Filling Valve"),
+        placeholderImg(600, 300, "Polished Steel"),
+        placeholderImg(600, 300, "Liquid Transport"),
+      ],
+    },
+    {
+      title: t("sector_loc"),
+      imgText: placeholderImg(600, 400, t("sector_loc"), "374151"),
+      img: values4,
+       gallery: [
+        placeholderImg(600, 300, "Tanker Rear"),
+        placeholderImg(600, 300, "Filling Valve"),
+        placeholderImg(600, 300, "Polished Steel"),
+        placeholderImg(600, 300, "Liquid Transport"),
+      ],
+    },
+    {
+      title: t("sector_indus"),
+      imgText: placeholderImg(600, 400, t("sector_indus"), "374151"),
+      img: values5,
+       gallery: [
         placeholderImg(600, 300, "Tanker Rear"),
         placeholderImg(600, 300, "Filling Valve"),
         placeholderImg(600, 300, "Polished Steel"),
@@ -441,6 +484,28 @@ const App = () => {
   const handleValuesCardClick = (index) => {
     const newIndex = expandedValuesIndex === index ? null : index;
     setExpandedValuesIndex(newIndex);
+
+    if (
+      newIndex !== null &&
+      cardRefs.current[newIndex]?.current &&
+      gridRef.current
+    ) {
+      const cardEl = cardRefs.current[newIndex].current;
+      const gridEl = gridRef.current;
+
+      const cardRect = cardEl.getBoundingClientRect();
+      const gridRect = gridEl.getBoundingClientRect();
+
+      setConnectorStyle({
+        left: `${cardRect.left - gridRect.left}px`,
+        width: `${cardRect.width}px`,
+      });
+    }
+  };
+
+  const handleProductCardClick = (index) => {
+    const newIndex = expandedProductIndex === index ? null : index;
+    setExpandedProductIndex(newIndex);
 
     if (
       newIndex !== null &&
@@ -744,47 +809,66 @@ const App = () => {
 
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 space-y-24 sm:space-y-32">
         {/* --- Products Section --- */}
-        <AnimatedSection>
-          <section id="products" className="scroll-mt-20">
-            <SectionTitle title={t("products_title")} />
-            <p className="text-center text-lg text-black-400 mb-12 max-w-2xl mx-auto">
-              {t("products_subtitle")}
-            </p>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {[
-                { name: t("plateaux_simples"), icon: "PS" },
-                { name: t("ridelles_fixes_ou_amovibles"), icon: "RF" },
-                { name: t("plateaux_baches"), icon: "PB" },
-                { name: t("bennes_basculantes"), icon: "BB" },
-                {
-                  name: t("citernes_liquides"),
-                  icon: "CI",
-                },
-                { name: t("equipements_sur_mesure"), icon: "EM" },
-              ].map((product, index) => (
-                <motion.div
-                  key={product.name}
-                  className="bg-secondary-800 p-6 rounded-2xl shadow-lg border border-secondary-700/80 hover:border-primary-500/50 transition-colors duration-300 transform hover:-translate-y-2"
-                  initial={{ opacity: 0, y: 50 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.5 }}
-                  transition={{
-                    delay: index * 0.1,
-                    duration: 0.5,
-                    ease: "easeOut",
-                  }}
-                >
-                  <div className="flex items-center justify-center w-20 h-20 rounded-full bg-secondary-700 text-primary-400 text-3xl font-bold mb-5 mx-auto ring-4 ring-secondary-900">
-                    {product.icon}
-                  </div>
-                  <h4 className="text-xl font-semibold text-white text-center">
-                    {product.name}
-                  </h4>
-                </motion.div>
-              ))}
-            </div>
-          </section>
-        </AnimatedSection>
+           <AnimatedSection>
+                <section id="products" className="scroll-mt-20 max-w-7xl mx-auto">
+                    <SectionTitle title={t("products_title")} />
+                    <p className="text-center text-lg text-white-400 mb-12 max-w-3xl mx-auto">
+                        {t("products_subtitle")}
+                    </p>
+                    <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
+                        {products.map((item, index) => {
+                            const isExpanded = index === expandedProductIndex;
+                            return (
+                                <div
+                                    key={item.title}
+                                    ref={cardRefs.current[index]}
+                                    className={`bg-secondary-800 shadow-xl flex flex-col group border border-secondary-700 cursor-pointer rounded-2xl
+                                        ${isExpanded ? 'ring-2 ring-primary-400 ring-offset-4 ring-offset-secondary-900' : ''}`}
+                                    onClick={() => handleProductCardClick(index)}
+                                >
+                                    <div className="relative aspect-video overflow-hidden rounded-2xl">
+                                        {/* <img src={item.imgText} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" /> */}
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-center justify-center p-4">
+     <h4 className="text-2xl md:text-3xl font-bold text-primary-500 text-center shadow-lg">{item.title}</h4>
+</div>
+                                        <div className="absolute top-3 right-3 bg-black/40 p-2 rounded-full text-white/80 transition-transform group-hover:scale-110">
+                                            {isExpanded ? <X size={20} /> : <Maximize2 size={20} />}
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                    
+                    <div className="relative">
+                        <AnimatePresence>
+                            {expandedProductIndex !== null && (
+                                <motion.div
+                                    key="expanded-content-wrapper"
+                                    initial={{ opacity: 0, y: -20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -20, transition: {duration: 0.3} }}
+                                    transition={{ duration: 0.4, ease: 'easeInOut' }}
+                                    className="relative mt-5"
+                                >
+                                  
+                                    <motion.div
+                                        className="bg-secondary-800 rounded-2xl overflow-hidden border border-secondary-700 shadow-2xl"
+                                        initial={{ height: 0 }}
+                                        animate={{ height: 'auto' }}
+                                        exit={{ height: 0 }}
+                                        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                                    >
+                                        <div className="p-6">
+                                            <ImageCarousel images={products[expandedProductIndex].gallery} />
+                                        </div>
+                                    </motion.div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </div>
+                </section>
+            </AnimatedSection>
 
         {/* --- Key Figures Section --- */}
         {/* <AnimatedSection>
@@ -914,15 +998,19 @@ const App = () => {
                             ease: [0.16, 1, 0.3, 1],
                           }}
                         >
-                             <div className="border-t border-secondary-700/50">
-                                                    {/* Image container now uses aspect-video for responsive shape */}
-                                                    <div className="aspect-video">
-                                                        <img src={value.img} alt={value.title} className="w-full h-full object-cover" />
-                                                    </div>
-                                                    <div className="p-6 text-gray-300">
-                                                        <p>{value.desc}</p>
-                                                    </div>
-                                                </div>
+                          <div className="border-t border-secondary-700/50">
+                            {/* Image container now uses aspect-video for responsive shape */}
+                            <div className="aspect-video">
+                              <img
+                                src={value.img}
+                                alt={value.title}
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                            <div className="p-6 text-gray-300">
+                              <p>{value.desc}</p>
+                            </div>
+                          </div>
                         </motion.div>
                       )}
                     </AnimatePresence>
@@ -933,143 +1021,65 @@ const App = () => {
           </section>
         </AnimatedSection>
 
-        {/* --- Target Clients Section --- */}
-        <AnimatedSection>
-          <section id="clients" className="scroll-mt-20">
-            <SectionTitle title={t("possible_clients")} />
-            <p className="text-center text-lg text-black-400 mb-12 max-w-2xl mx-auto">
-              {t("possible_clients_desc")}
-            </p>
-            <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
-              {[
-                t("sector_trans"),
-                t("sector_const"),
-                t("sector_agr"),
-                t("sector_loc"),
-                t("sector_indus"),
-                t("sector_env"),
-              ].map((client) => (
-                <span
-                  key={client}
-                  className="bg-secondary-700 text-primary-400 px-5 py-3 rounded-full text-base font-semibold shadow-md border border-secondary-600"
-                >
-                  {client}
-                </span>
-              ))}
-            </div>
-          </section>
-        </AnimatedSection>
-
         {/* --- Achievements Section --- */}
-        <AnimatedSection>
-          <section id="achievements" className="scroll-mt-20 max-w-7xl mx-auto">
-            <SectionTitle title={t("achiev")} />
-            <div
-              ref={gridRef}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
-            >
-              {achievements.map((item, index) => {
-                const isExpanded = index === expandedIndex;
-                return (
-                  <React.Fragment key={item.title}>
-                    {/* Card */}
-                    <div
-                      ref={cardRefs.current[index]}
-                      className={`bg-secondary-800 shadow-xl flex flex-col group border border-secondary-700 cursor-pointer rounded-2xl
-                                            ${
-                                              isExpanded
-                                                ? "ring-2 ring-primary-400 ring-offset-4 ring-offset-secondary-900"
-                                                : ""
-                                            }`}
-                      onClick={() => handleCardClick(index)}
-                    >
-                      <div className="relative h-56 sm:h-64 overflow-hidden rounded-t-2xl">
-                        <img
-                          src={placeholderImg(
-                            400,
-                            300,
-                            item.imgText,
-                            "0b2b36",
-                            "FBBF24"
-                          )}
-                          alt={item.title}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-in-out"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-secondary-900/70 via-transparent"></div>
-                        <div className="absolute top-3 right-3 bg-black/40 p-2 rounded-full text-white/80 transition-transform group-hover:scale-110">
-                          {isExpanded ? (
-                            <X size={20} />
-                          ) : (
-                            <Maximize2 size={20} />
-                          )}
-                        </div>
-                      </div>
-                      <div className="p-6 flex-grow">
-                        <h4 className="text-xl font-bold text-primary-400 mb-2">
-                          {item.title}
-                        </h4>
-                        <p className="text-gray-400">{item.desc}</p>
-                      </div>
+              <AnimatedSection>
+                <section id="clients-achievements" className="scroll-mt-20 max-w-7xl mx-auto">
+                    <SectionTitle title={t("possible_clients")} />
+                    <p className="text-center text-lg text-gray-400 mb-12 max-w-3xl mx-auto">
+                        {t("possible_clients_desc")}
+                    </p>
+                    <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-start">
+                        {achievements.map((item, index) => {
+                            const isExpanded = index === expandedIndex;
+                            return (
+                                <div
+                                    key={item.title}
+                                    ref={cardRefs.current[index]}
+                                    className={`bg-secondary-800 shadow-xl flex flex-col group border border-secondary-700 cursor-pointer rounded-2xl
+                                        ${isExpanded ? 'ring-2 ring-primary-400 ring-offset-4 ring-offset-secondary-900' : ''}`}
+                                    onClick={() => handleCardClick(index)}
+                                >
+                                    <div className="relative aspect-video overflow-hidden rounded-2xl">
+                                        <img src={item.imgText} alt={item.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                                        <div className="absolute top-3 right-3 bg-black/40 p-2 rounded-full text-white/80 transition-transform group-hover:scale-110">
+                                            {isExpanded ? <X size={20} /> : <Maximize2 size={20} />}
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        })}
                     </div>
-
-                    {/* Expanded Gallery (Mobile View) */}
-                    <div className="sm:hidden">
-                      <AnimatePresence>
-                        {isExpanded && (
-                          <motion.div
-                            className="bg-secondary-800 rounded-b-2xl overflow-hidden border-x border-b border-secondary-700 -mt-2"
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: "auto", opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{
-                              duration: 0.5,
-                              ease: [0.16, 1, 0.3, 1],
-                            }}
-                          >
-                            <div className="p-6">
-                              <ImageCarousel images={item.gallery} />
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
+                    
+                    <div className="relative">
+                        <AnimatePresence>
+                            {expandedIndex !== null && (
+                                <motion.div
+                                    key="expanded-content-wrapper"
+                                    initial={{ opacity: 0, y: -20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -20, transition: {duration: 0.3} }}
+                                    transition={{ duration: 0.4, ease: 'easeInOut' }}
+                                    className="relative mt-5"
+                                >
+                                  
+                                    <motion.div
+                                        className="bg-secondary-800 rounded-2xl overflow-hidden border border-secondary-700 shadow-2xl"
+                                        initial={{ height: 0 }}
+                                        animate={{ height: 'auto' }}
+                                        exit={{ height: 0 }}
+                                        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                                    >
+                                        <div className="p-6">
+                                            <ImageCarousel images={achievements[expandedIndex].gallery} />
+                                        </div>
+                                    </motion.div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
                     </div>
-                  </React.Fragment>
-                );
-              })}
-            </div>
-
-            {/* Expanded Gallery (Desktop View) */}
-            <div className="hidden sm:block relative">
-              <AnimatePresence>
-                {expandedIndex !== null && (
-                  <motion.div
-                    key="expanded-content-wrapper"
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20, transition: { duration: 0.3 } }}
-                    transition={{ duration: 0.4, ease: "easeInOut" }}
-                    className="relative mt-5"
-                  >
-                    <motion.div
-                      key="expanded-content"
-                      className="bg-secondary-800 rounded-2xl overflow-hidden border border-secondary-700 shadow-2xl"
-                      initial={{ height: 0 }}
-                      animate={{ height: "auto" }}
-                      exit={{ height: 0 }}
-                      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                    >
-                      <div className="p-6">
-                        <ImageCarousel
-                          images={achievements[expandedIndex].gallery}
-                        />
-                      </div>
-                    </motion.div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </section>
-        </AnimatedSection>
+                </section>
+            </AnimatedSection>
 
         {/* --- Goals Section --- */}
         <AnimatedSection>
