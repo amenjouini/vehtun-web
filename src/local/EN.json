@@ -1,5 +1,5 @@
 {
-  "translation": {
+  "translation": { 
     "nav_about": "À propos",
     "nav_products": "Produits",
     "nav_workshop": "Services",
@@ -22,6 +22,9 @@
     "products_title": "Nos Produits",
     "products_subtitle": "Équipements pour camions porteurs de différents tonnages, conçus pour la performance et la durabilité.",
     "our_workshop": "Nos Services",
+    "service1":"Sous-traitance: Découpage laser/ pliage/ soudage",
+    "service2":"Projets de construction métallique",
+    "service3":"Réparation d’équipements de transport",
     "technical_capabilities": "🔧 Capacités techniques :",
     "soudure": "Soudure MIG/MAG haute précision",
     "pliage": "Pliage, découpe, perçage, et usinage numérique",
@@ -54,7 +57,7 @@
     },
 
     "possible_clients": "Nos Clients & Réalisations",
-    "possible_clients_desc": "The target sectors served are:",
+    "possible_clients_desc": "Les secteurs cibles desservis sont:",
     "sector_trans": "Transport & Logistique",
     "agriculture":"Agriculture",
     "collect":"Collectivités locales & services publics",

@@ -40,6 +40,26 @@ import values3 from "./assets/values3_rdc.jpg";
 import values4 from "./assets/values4_rdc.jpg";
 import values5 from "./assets/values5_rdc.jpg";
 
+import produit1 from "./assets/plateaux/plateaux.jpg";
+import produit2 from "./assets/plateaux/plateau2.jpg";
+import produit3 from "./assets/plateaux/plateau3.jpg";
+
+import benne1 from "./assets/benne/benne.jpg";
+import benne2 from "./assets/benne/benne2.jpg";
+
+import citerne1 from "./assets/citerne/citerne.jpg";
+import citerne2 from "./assets/citerne/citerne2.jpg";
+
+import laser from "./assets/services/laser.jpg";
+import pliage from "./assets/services/pliage.jpg";
+import welding from "./assets/services/welding.jpg";
+import ccc from "./assets/services/ccc.jpg";
+import reparation from "./assets/services/reparation.jpg";
+import reparation2 from "./assets/services/reparation2.jpg";
+import laser2 from "./assets/services/laser2.jpg";
+import pliage2 from "./assets/services/pliage2.jpg";
+
+
 // Component to handle scroll-triggered animations for sections
 const AnimatedSection = ({ children, threshold = 0.2 }) => {
   const controls = useAnimation();
@@ -108,151 +128,82 @@ const LanguageSwitcher = ({ i18n }) => {
 
 // --- Image Carousel Component ---
 const ImageCarousel = ({ images }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+    const [currentIndex, setCurrentIndex] = useState(0);
 
-  const handleNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-  };
+    const handleNext = () => setCurrentIndex((p) => (p + 1) % images.length);
+    const handlePrev = () => setCurrentIndex((p) => (p - 1 + images.length) % images.length);
 
-  const handlePrev = () => {
-    setCurrentIndex(
-      (prevIndex) => (prevIndex - 1 + images.length) % images.length
+    return (
+        <div className="relative w-full h-80 flex items-center justify-center overflow-hidden">
+            <button onClick={handlePrev} className="absolute left-0 md:left-4 z-30 bg-black/30 text-white p-2 rounded-full hover:bg-black/50 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400">
+                <ChevronLeft size={24} />
+            </button>
+            <button onClick={handleNext} className="absolute right-0 md:right-4 z-30 bg-black/30 text-white p-2 rounded-full hover:bg-black/50 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400">
+                <ChevronRight size={24} />
+            </button>
+            <div className="relative w-full h-full">
+                <AnimatePresence>
+                    {images.map((imgSrc, index) => {
+                        const total = images.length;
+                        let offset = index - currentIndex;
+                        if (offset > total / 2) offset -= total;
+                        if (offset < -total / 2) offset += total;
+
+                        if (Math.abs(offset) > 2) {
+                           return null;
+                        }
+
+                        let x, scale, opacity, zIndex;
+                        
+                        if (offset === 0) {
+                            scale = 1; opacity = 1; zIndex = 3; x = '0%';
+                        } else if (offset === 1) {
+                            scale = 0.85; opacity = 0.7; zIndex = 2; x = '25%';
+                        } else if (offset === -1) {
+                            scale = 0.85; opacity = 0.7; zIndex = 2; x = '-25%';
+                        } else if (offset === 2) {
+                            scale = 0.7; opacity = 0.4; zIndex = 1; x = '50%';
+                        } else if (offset === -2) {
+                            scale = 0.7; opacity = 0.4; zIndex = 1; x = '-50%';
+                        } else {
+                            scale = 0.4; opacity = 0; zIndex = 0; x = `${offset * 30}%`;
+                        }
+
+                        return (
+                            <motion.div
+                                key={index}
+                                className="absolute top-0 left-0 w-full h-full flex justify-center items-center"
+                                initial={false}
+                                animate={{ x, scale, opacity, zIndex }}
+                                transition={{ type: "spring", stiffness: 260, damping: 30 }}
+                            >
+                                <img
+                                    src={imgSrc}
+                                    alt={`Gallery image ${index + 1}`}
+                                    className="h-full object-contain rounded-lg shadow-2xl"
+                                />
+                            </motion.div>
+                        );
+                    })}
+                </AnimatePresence>
+            </div>
+        </div>
     );
-  };
+};
 
-  return (
-    <div className="relative w-full h-80 flex items-center justify-center overflow-hidden">
-      {/* Navigation Buttons */}
-      <button
-        onClick={handlePrev}
-        className="absolute left-0 md:left-4 z-30 bg-black/30 text-white p-2 rounded-full hover:bg-black/50 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400"
-      >
-        <ChevronLeft size={24} />
-      </button>
-      <button
-        onClick={handleNext}
-        className="absolute right-0 md:right-4 z-30 bg-black/30 text-white p-2 rounded-full hover:bg-black/50 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400"
-      >
-        <ChevronRight size={24} />
-      </button>
-
-      {/* Image Slider */}
-      <div className="relative w-full h-full">
-        <AnimatePresence custom={currentIndex}>
-          {images.map((imgSrc, index) => {
-            const offset = index - currentIndex;
-            let x, scale, opacity, zIndex;
-
-            if (offset === 0) {
-              // Active slide
-              scale = 1;
-              opacity = 1;
-              zIndex = 3;
-              x = "0%";
-            } else if (offset === 1) {
-              // Right neighbour
-              scale = 0.7;
-              opacity = 0.6;
-              zIndex = 2;
-              x = "40%";
-            } else if (offset === -1) {
-              // Left neighbour
-              scale = 0.7;
-              opacity = 0.6;
-              zIndex = 2;
-              x = "-40%";
-            } else if (offset === 2) {
-              // Right outer neighbour
-              scale = 0.5;
-              opacity = 0.3;
-              zIndex = 1;
-              x = "70%";
-            } else if (offset === -2) {
-              // Left outer neighbour
-              scale = 0.5;
-              opacity = 0.3;
-              zIndex = 1;
-              x = "-70%";
-            } else {
-              // Hidden slides
-              scale = 0.3;
-              opacity = 0;
-              zIndex = 0;
-              x = `${offset * 30}%`;
-            }
-
-            // Handle wrapping for a seamless loop
-            const total = images.length;
-            if (currentIndex === 0 && index === total - 1) {
-              // prev from first
-              scale = 0.7;
-              opacity = 0.6;
-              zIndex = 2;
-              x = "-40%";
-            } else if (currentIndex === total - 1 && index === 0) {
-              // next from last
-              scale = 0.7;
-              opacity = 0.6;
-              zIndex = 2;
-              x = "40%";
-            }
-            if (currentIndex <= 1 && index >= total - 2 + currentIndex) {
-              const effectiveIndex = index - total;
-              const newOffset = effectiveIndex - currentIndex;
-              if (newOffset === -1) {
-                scale = 0.7;
-                opacity = 0.6;
-                zIndex = 2;
-                x = "-40%";
-              }
-              if (newOffset === -2) {
-                scale = 0.5;
-                opacity = 0.3;
-                zIndex = 1;
-                x = "-70%";
-              }
-            }
-            if (
-              currentIndex >= total - 2 &&
-              index <= 1 + (currentIndex - (total - 1))
-            ) {
-              const effectiveIndex = index + total;
-              const newOffset = effectiveIndex - currentIndex;
-              if (newOffset === 1) {
-                scale = 0.7;
-                opacity = 0.6;
-                zIndex = 2;
-                x = "40%";
-              }
-              if (newOffset === 2) {
-                scale = 0.5;
-                opacity = 0.3;
-                zIndex = 1;
-                x = "70%";
-              }
-            }
-
-            return (
-              <motion.div
-                key={index}
-                className="absolute top-0 left-0 w-full h-full flex justify-center items-center"
-                initial={false}
-                animate={{ x, scale, opacity, zIndex }}
-                transition={{ type: "spring", stiffness: 260, damping: 30 }}
-                style={{ transformOrigin: "center center" }}
-              >
-                <img
-                  src={imgSrc}
-                  alt={`Gallery image ${index + 1}`}
-                  className="h-full object-contain rounded-lg shadow-2xl"
-                />
-              </motion.div>
-            );
-          })}
-        </AnimatePresence>
-      </div>
-    </div>
-  );
+const useMediaQuery = (query) => {
+    const [matches, setMatches] = useState(false);
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        const media = window.matchMedia(query);
+        if (media.matches !== matches) {
+            setMatches(media.matches);
+        }
+        const listener = () => setMatches(media.matches);
+        media.addEventListener("change", listener);
+        return () => media.removeEventListener("change", listener);
+    }, [matches, query]);
+    return matches;
 };
 
 // --- Main App Component ---
@@ -336,7 +287,9 @@ const App = () => {
   const [expandedIndex, setExpandedIndex] = useState(null);
   const [expandedValuesIndex, setExpandedValuesIndex] = useState(null);
   const [expandedProductIndex, setExpandedProductIndex] = useState(null);
+  const [expandedServicesIndex, setExpandedServicesIndex] = useState(null);
 
+  const isDesktop = useMediaQuery('(min-width: 640px)');
   const [connectorStyle, setConnectorStyle] = useState({});
   const gridRef = useRef(null);
   const cardRefs = useRef([]);
@@ -377,43 +330,69 @@ const App = () => {
   const products = [
     {
       title: t("plateau_bache.title"),
-      imgText: placeholderImg(600, 400, t("plateau_bache.title"), "374151"),
-      
-      gallery: [
-        placeholderImg(400, 300, "Flatbed Side View"),
-        placeholderImg(400, 300, "Loading Cargo"),
-        placeholderImg(400, 300, "Covered Transport"),
-        placeholderImg(400, 300, "On The Road"),
-      ],
+    imgText: placeholderImg(600, 400, t("plateau_bache.title"), "374151"),
+    gallery: [
+      produit1,
+      produit2,
+      produit3,
+    ],
     },
     {
       title: t("benne_gravats.title"),
       imgText: placeholderImg(600, 400, t("benne_gravats.title"), "374151"),
       gallery: [
-        placeholderImg(400, 300, "Skip Full"),
-        placeholderImg(400, 300, "Tipping Action"),
-        placeholderImg(400, 300, "Construction Site"),
-        placeholderImg(400, 300, "Empty Skip"),
+        benne1,
+        benne2
       ],
     },
     {
       title: t("citerne_15000.title"),
       imgText: placeholderImg(600, 400, t("citerne_15000.title"), "374151"),
       gallery: [
-        placeholderImg(600, 300, "Tanker Rear"),
-        placeholderImg(600, 300, "Filling Valve"),
-        placeholderImg(600, 300, "Polished Steel"),
-        placeholderImg(600, 300, "Liquid Transport"),
+        citerne1,
+        citerne2
       ],
     },
   ];
+
+  const services = [
+    {
+      title: t("service1"),
+      imgText: placeholderImg(600, 400, t("sector_trans"), "374151"),
+      img: values2,
+      gallery: [
+        laser,
+        pliage,
+        welding,
+        laser2,
+        pliage2
+      ],
+    },
+    {
+      title: t("service2"),
+      imgText: placeholderImg(600, 400, t("sector_agr"), "374151"),
+      img: values3,
+      gallery: [
+        ccc
+      ],
+    },
+    {
+      title: t("service3"),
+      imgText: placeholderImg(600, 400, t("sector_loc"), "374151"),
+      img: values4,
+      gallery: [
+        reparation,
+        reparation2
+      ],
+    }
+  ]
 
   const achievements = [
     {
       title: t("sector_trans"),
       imgText: placeholderImg(600, 400, t("sector_trans"), "374151"),
       img: values2,
-       gallery: [
+      gallery: [
         placeholderImg(600, 300, "Tanker Rear"),
         placeholderImg(600, 300, "Filling Valve"),
         placeholderImg(600, 300, "Polished Steel"),
@@ -424,7 +403,7 @@ const App = () => {
       title: t("sector_agr"),
       imgText: placeholderImg(600, 400, t("sector_agr"), "374151"),
       img: values3,
-       gallery: [
+      gallery: [
         placeholderImg(600, 300, "Tanker Rear"),
         placeholderImg(600, 300, "Filling Valve"),
         placeholderImg(600, 300, "Polished Steel"),
@@ -435,7 +414,7 @@ const App = () => {
       title: t("sector_loc"),
       imgText: placeholderImg(600, 400, t("sector_loc"), "374151"),
       img: values4,
-       gallery: [
+      gallery: [
         placeholderImg(600, 300, "Tanker Rear"),
         placeholderImg(600, 300, "Filling Valve"),
         placeholderImg(600, 300, "Polished Steel"),
@@ -446,7 +425,7 @@ const App = () => {
       title: t("sector_indus"),
       imgText: placeholderImg(600, 400, t("sector_indus"), "374151"),
       img: values5,
-       gallery: [
+      gallery: [
         placeholderImg(600, 300, "Tanker Rear"),
         placeholderImg(600, 300, "Filling Valve"),
         placeholderImg(600, 300, "Polished Steel"),
@@ -506,6 +485,28 @@ const App = () => {
   const handleProductCardClick = (index) => {
     const newIndex = expandedProductIndex === index ? null : index;
     setExpandedProductIndex(newIndex);
+
+    if (
+      newIndex !== null &&
+      cardRefs.current[newIndex]?.current &&
+      gridRef.current
+    ) {
+      const cardEl = cardRefs.current[newIndex].current;
+      const gridEl = gridRef.current;
+
+      const cardRect = cardEl.getBoundingClientRect();
+      const gridRect = gridEl.getBoundingClientRect();
+
+      setConnectorStyle({
+        left: `${cardRect.left - gridRect.left}px`,
+        width: `${cardRect.width}px`,
+      });
+    }
+  };
+
+  const handleServicesCardClick = (index) => {
+    const newIndex = expandedServicesIndex === index ? null : index;
+    setExpandedServicesIndex(newIndex);
 
     if (
       newIndex !== null &&
@@ -809,7 +810,7 @@ const App = () => {
 
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 space-y-24 sm:space-y-32">
         {/* --- Products Section --- */}
-           <AnimatedSection>
+       <AnimatedSection>
                 <section id="products" className="scroll-mt-20 max-w-7xl mx-auto">
                     <SectionTitle title={t("products_title")} />
                     <p className="text-center text-lg text-white-400 mb-12 max-w-3xl mx-auto">
@@ -819,54 +820,73 @@ const App = () => {
                         {products.map((item, index) => {
                             const isExpanded = index === expandedProductIndex;
                             return (
-                                <div
-                                    key={item.title}
-                                    ref={cardRefs.current[index]}
-                                    className={`bg-secondary-800 shadow-xl flex flex-col group border border-secondary-700 cursor-pointer rounded-2xl
-                                        ${isExpanded ? 'ring-2 ring-primary-400 ring-offset-4 ring-offset-secondary-900' : ''}`}
-                                    onClick={() => handleProductCardClick(index)}
-                                >
-                                    <div className="relative aspect-video overflow-hidden rounded-2xl">
-                                        {/* <img src={item.imgText} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" /> */}
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-center justify-center p-4">
-     <h4 className="text-2xl md:text-3xl font-bold text-primary-500 text-center shadow-lg">{item.title}</h4>
-</div>
-                                        <div className="absolute top-3 right-3 bg-black/40 p-2 rounded-full text-white/80 transition-transform group-hover:scale-110">
-                                            {isExpanded ? <X size={20} /> : <Maximize2 size={20} />}
+                                <React.Fragment key={item.title}>
+                                    <div
+                                        ref={cardRefs.current[index]}
+                                        className={`bg-secondary-800 shadow-xl flex flex-col group border border-secondary-700 cursor-pointer rounded-2xl
+                                            ${isExpanded ? 'ring-2 ring-primary-400 ring-offset-4 ring-offset-secondary-900' : ''}`}
+                                        onClick={() => handleProductCardClick(index)}
+                                    >
+                                        <div className="relative aspect-video overflow-hidden rounded-2xl">
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-center justify-center p-4">
+                                                <h4 className="text-2xl md:text-3xl font-bold text-white text-center shadow-lg">{item.title}</h4>
+                                            </div>
+                                            <div className="absolute top-3 right-3 bg-black/40 p-2 rounded-full text-white/80 transition-transform group-hover:scale-110">
+                                                {isExpanded ? <X size={20} /> : <Maximize2 size={20} />}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                    
+                                    {!isDesktop && (
+                                       <AnimatePresence>
+                                            {isExpanded && (
+                                                <motion.div
+                                                    className="bg-secondary-800 rounded-b-2xl overflow-hidden border-x border-b border-secondary-700 -mt-2"
+                                                    initial={{ height: 0, opacity: 0 }}
+                                                    animate={{ height: 'auto', opacity: 1 }}
+                                                    exit={{ height: 0, opacity: 0 }}
+                                                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                                                >
+                                                     <div className="p-6">
+                                                <ImageCarousel images={products[expandedProductIndex].gallery} />
+                                            </div>
+                                                </motion.div>
+                                            )}
+                                        </AnimatePresence>
+                                    )}
+                                </React.Fragment>
                             );
                         })}
                     </div>
                     
-                    <div className="relative">
-                        <AnimatePresence>
-                            {expandedProductIndex !== null && (
-                                <motion.div
-                                    key="expanded-content-wrapper"
-                                    initial={{ opacity: 0, y: -20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0, y: -20, transition: {duration: 0.3} }}
-                                    transition={{ duration: 0.4, ease: 'easeInOut' }}
-                                    className="relative mt-5"
-                                >
-                                  
+                    {isDesktop && (
+                        <div className="relative">
+                            <AnimatePresence>
+                                {expandedProductIndex !== null && (
                                     <motion.div
-                                        className="bg-secondary-800 rounded-2xl overflow-hidden border border-secondary-700 shadow-2xl"
-                                        initial={{ height: 0 }}
-                                        animate={{ height: 'auto' }}
-                                        exit={{ height: 0 }}
-                                        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                                        key="expanded-content-wrapper"
+                                        initial={{ opacity: 0, y: -20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -20, transition: {duration: 0.3} }}
+                                        transition={{ duration: 0.4, ease: 'easeInOut' }}
+                                        className="relative mt-5"
                                     >
-                                        <div className="p-6">
-                                            <ImageCarousel images={products[expandedProductIndex].gallery} />
-                                        </div>
+                                        <motion.div
+                                            className="bg-secondary-800 rounded-2xl overflow-hidden border border-secondary-700 shadow-2xl"
+                                            initial={{ height: 0 }}
+                                            animate={{ height: 'auto' }}
+                                            exit={{ height: 0 }}
+                                            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                                        >
+                                            <div className="p-6">
+                                                <ImageCarousel images={products[expandedProductIndex].gallery} />
+                                            </div>
+                                        </motion.div>
                                     </motion.div>
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-                    </div>
+                                )}
+                            </AnimatePresence>
+                        </div>
+                    )}
                 </section>
             </AnimatedSection>
 
@@ -905,46 +925,85 @@ const App = () => {
                 </AnimatedSection> */}
 
         {/* --- Workshop Section --- */}
-        <AnimatedSection>
-          <section id="services" className="scroll-mt-20">
-            <SectionTitle title={t("our_workshop")} />
-            <div className="bg-secondary-800 p-8 sm:p-10 rounded-2xl shadow-2xl border border-secondary-700">
-              <h3 className="text-2xl font-bold text-primary-400 mb-8 text-center sm:text-left">
-                {t("technical_capabilities")}
-              </h3>
-              <div className="grid md:grid-cols-2 gap-x-10 gap-y-5">
-                {[
-                  t("soudure"),
-                  t("pliage"),
-                  t("paint_cabin"),
-                  t("quality_control"),
-                  t("mesure_prod"),
-                  t("system_integration"),
-                ].map((cap) => (
-                  <div key={cap} className="flex items-center">
-                    <Dot className="w-8 h-8 text-primary-500 mr-2 flex-shrink-0" />
-                    <p className="text-gray-300">{cap}</p>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-10 relative h-72 md:h-96 rounded-2xl overflow-hidden">
-                <img
-                  src={require("./assets/img.jpg")}
-                  alt="Machines Atelier VehTun"
-                  className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
-                  onError={(e) =>
-                    (e.target.src = placeholderImg(
-                      800,
-                      400,
-                      "Image Indisponible"
-                    ))
-                  }
-                />
-                <div className="absolute inset-0"></div>
-              </div>
-            </div>
-          </section>
-        </AnimatedSection>
+          <AnimatedSection>
+                <section id="services" className="scroll-mt-20 max-w-7xl mx-auto">
+                    <SectionTitle title={t("our_workshop")} />
+                    <p className="text-center text-lg text-white-400 mb-12 max-w-3xl mx-auto">
+                        {t("products_subtitle")}
+                    </p>
+                    <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
+                        {services.map((item, index) => {
+                            const isExpanded = index === expandedServicesIndex;
+                            return (
+                                <React.Fragment key={item.title}>
+                                    <div
+                                        ref={cardRefs.current[index]}
+                                        className={`bg-secondary-800 shadow-xl flex flex-col group border border-secondary-700 cursor-pointer rounded-2xl
+                                            ${isExpanded ? 'ring-2 ring-primary-400 ring-offset-4 ring-offset-secondary-900' : ''}`}
+                                        onClick={() => handleServicesCardClick(index)}
+                                    >
+                                        <div className="relative aspect-video overflow-hidden rounded-2xl">
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-center justify-center p-4">
+                                                <h4 className="text-2xl md:text-3xl font-bold text-white text-center shadow-lg">{item.title}</h4>
+                                            </div>
+                                            <div className="absolute top-3 right-3 bg-black/40 p-2 rounded-full text-white/80 transition-transform group-hover:scale-110">
+                                                {isExpanded ? <X size={20} /> : <Maximize2 size={20} />}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    {!isDesktop && (
+                                       <AnimatePresence>
+                                            {isExpanded && (
+                                                <motion.div
+                                                    className="bg-secondary-800 rounded-b-2xl overflow-hidden border-x border-b border-secondary-700 -mt-2"
+                                                    initial={{ height: 0, opacity: 0 }}
+                                                    animate={{ height: 'auto', opacity: 1 }}
+                                                    exit={{ height: 0, opacity: 0 }}
+                                                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                                                >
+                                                     <div className="p-6">
+                                                        <ImageCarousel images={item.gallery} />
+                                                     </div>
+                                                </motion.div>
+                                            )}
+                                        </AnimatePresence>
+                                    )}
+                                </React.Fragment>
+                            );
+                        })}
+                    </div>
+                    
+                    {isDesktop && (
+                        <div className="relative">
+                            <AnimatePresence>
+                                {expandedServicesIndex !== null && (
+                                    <motion.div
+                                        key="expanded-content-wrapper"
+                                        initial={{ opacity: 0, y: -20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -20, transition: {duration: 0.3} }}
+                                        transition={{ duration: 0.4, ease: 'easeInOut' }}
+                                        className="relative mt-5"
+                                    >
+                                        <motion.div
+                                            className="bg-secondary-800 rounded-2xl overflow-hidden border border-secondary-700 shadow-2xl"
+                                            initial={{ height: 0 }}
+                                            animate={{ height: 'auto' }}
+                                            exit={{ height: 0 }}
+                                            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                                        >
+                                            <div className="p-6">
+                                                <ImageCarousel images={services[expandedServicesIndex].gallery} />
+                                            </div>
+                                        </motion.div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </div>
+                    )}
+                </section>
+            </AnimatedSection>
 
         {/* --- Values Section --- */}
 
@@ -971,9 +1030,11 @@ const App = () => {
                     onClick={() => handleValuesCardClick(index)}
                   >
                     <div className="p-6 w-full flex flex-col items-center">
-                      <div className="mb-4 text-primary-400 group-hover:scale-110 transition-transform">
-                        <Icon size={40} strokeWidth={1.5} />
-                      </div>
+                      
+                      {/* Icon */}
+    <div className="mb-4 text-primary-500 group-hover:scale-110 transition-transform">
+      <Icon size={36} strokeWidth={1.5} />
+    </div>
                       <h4 className="text-lg font-bold text-white mb-3 min-h-[56px] flex items-center justify-center">
                         {value.title}
                       </h4>
@@ -1022,62 +1083,83 @@ const App = () => {
         </AnimatedSection>
 
         {/* --- Achievements Section --- */}
-              <AnimatedSection>
+        <AnimatedSection>
                 <section id="clients-achievements" className="scroll-mt-20 max-w-7xl mx-auto">
                     <SectionTitle title={t("possible_clients")} />
-                    <p className="text-center text-lg text-gray-400 mb-12 max-w-3xl mx-auto">
+                    <p className="text-center text-lg text-white-400 mb-12 max-w-3xl mx-auto">
                         {t("possible_clients_desc")}
                     </p>
                     <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-start">
                         {achievements.map((item, index) => {
                             const isExpanded = index === expandedIndex;
                             return (
-                                <div
-                                    key={item.title}
-                                    ref={cardRefs.current[index]}
-                                    className={`bg-secondary-800 shadow-xl flex flex-col group border border-secondary-700 cursor-pointer rounded-2xl
-                                        ${isExpanded ? 'ring-2 ring-primary-400 ring-offset-4 ring-offset-secondary-900' : ''}`}
-                                    onClick={() => handleCardClick(index)}
-                                >
-                                    <div className="relative aspect-video overflow-hidden rounded-2xl">
-                                        <img src={item.imgText} alt={item.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                                        <div className="absolute top-3 right-3 bg-black/40 p-2 rounded-full text-white/80 transition-transform group-hover:scale-110">
-                                            {isExpanded ? <X size={20} /> : <Maximize2 size={20} />}
+                                <React.Fragment key={item.title}>
+                                    <div
+                                        ref={cardRefs.current[index]}
+                                        className={`bg-secondary-800 shadow-xl flex flex-col group border border-secondary-700 cursor-pointer rounded-2xl
+                                            ${isExpanded ? 'ring-2 ring-primary-400 ring-offset-4 ring-offset-secondary-900' : ''}`}
+                                        onClick={() => handleCardClick(index)}
+                                    >
+                                        <div className="relative aspect-video overflow-hidden rounded-2xl">
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-center justify-center p-4">
+                                                 <h4 className="text-2xl md:text-3xl font-bold text-white text-center shadow-lg">{item.title}</h4>
+                                            </div>
+                                            <div className="absolute top-3 right-3 bg-black/40 p-2 rounded-full text-white/80 transition-transform group-hover:scale-110">
+                                                {isExpanded ? <X size={20} /> : <Maximize2 size={20} />}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                    
+                                    {!isDesktop && (
+                                       <AnimatePresence>
+                                            {isExpanded && (
+                                                <motion.div
+                                                    className="bg-secondary-800 rounded-b-2xl overflow-hidden border-x border-b border-secondary-700 -mt-2"
+                                                    initial={{ height: 0, opacity: 0 }}
+                                                    animate={{ height: 'auto', opacity: 1 }}
+                                                    exit={{ height: 0, opacity: 0 }}
+                                                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                                                >
+                                                     <div className="p-6">
+                                                        <ImageCarousel images={item.gallery} />
+                                                     </div>
+                                                </motion.div>
+                                            )}
+                                        </AnimatePresence>
+                                    )}
+                                </React.Fragment>
                             );
                         })}
                     </div>
                     
-                    <div className="relative">
-                        <AnimatePresence>
-                            {expandedIndex !== null && (
-                                <motion.div
-                                    key="expanded-content-wrapper"
-                                    initial={{ opacity: 0, y: -20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0, y: -20, transition: {duration: 0.3} }}
-                                    transition={{ duration: 0.4, ease: 'easeInOut' }}
-                                    className="relative mt-5"
-                                >
-                                  
+                    {isDesktop && (
+                        <div className="relative">
+                            <AnimatePresence>
+                                {expandedIndex !== null && (
                                     <motion.div
-                                        className="bg-secondary-800 rounded-2xl overflow-hidden border border-secondary-700 shadow-2xl"
-                                        initial={{ height: 0 }}
-                                        animate={{ height: 'auto' }}
-                                        exit={{ height: 0 }}
-                                        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                                        key="expanded-content-wrapper"
+                                        initial={{ opacity: 0, y: -20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -20, transition: {duration: 0.3} }}
+                                        transition={{ duration: 0.4, ease: 'easeInOut' }}
+                                        className="relative mt-5"
                                     >
-                                        <div className="p-6">
-                                            <ImageCarousel images={achievements[expandedIndex].gallery} />
-                                        </div>
+                                        <motion.div
+                                            className="bg-secondary-800 rounded-2xl overflow-hidden border border-secondary-700 shadow-2xl"
+                                            initial={{ height: 0 }}
+                                            animate={{ height: 'auto' }}
+                                            exit={{ height: 0 }}
+                                            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                                        >
+                                            <div className="p-6">
+                                                <ImageCarousel images={achievements[expandedIndex].gallery} />
+                                            </div>
+                                        </motion.div>
                                     </motion.div>
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-                    </div>
+                                )}
+                            </AnimatePresence>
+                        </div>
+                    )}
                 </section>
             </AnimatedSection>
 
