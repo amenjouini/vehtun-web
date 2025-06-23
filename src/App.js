@@ -59,6 +59,11 @@ import reparation2 from "./assets/services/reparation2.jpg";
 import laser2 from "./assets/services/laser2.jpg";
 import pliage2 from "./assets/services/pliage2.jpg";
 
+import cr from "./assets/services/c&r.jpg";
+import cr2 from "./assets/services/c&r2.jpg";
+import cr3 from "./assets/services/c&r3.jpg";
+
+
 
 // Component to handle scroll-triggered animations for sections
 const AnimatedSection = ({ children, threshold = 0.2 }) => {
@@ -393,10 +398,9 @@ const App = () => {
       imgText: placeholderImg(600, 400, t("sector_trans"), "374151"),
       img: values2,
       gallery: [
-        placeholderImg(600, 300, "Tanker Rear"),
-        placeholderImg(600, 300, "Filling Valve"),
-        placeholderImg(600, 300, "Polished Steel"),
-        placeholderImg(600, 300, "Liquid Transport"),
+        cr,
+        cr2,
+        cr3
       ],
     },
     {
@@ -404,10 +408,9 @@ const App = () => {
       imgText: placeholderImg(600, 400, t("sector_agr"), "374151"),
       img: values3,
       gallery: [
-        placeholderImg(600, 300, "Tanker Rear"),
-        placeholderImg(600, 300, "Filling Valve"),
-        placeholderImg(600, 300, "Polished Steel"),
-        placeholderImg(600, 300, "Liquid Transport"),
+        cr,
+        cr2,
+        cr3
       ],
     },
     {
@@ -415,10 +418,9 @@ const App = () => {
       imgText: placeholderImg(600, 400, t("sector_loc"), "374151"),
       img: values4,
       gallery: [
-        placeholderImg(600, 300, "Tanker Rear"),
-        placeholderImg(600, 300, "Filling Valve"),
-        placeholderImg(600, 300, "Polished Steel"),
-        placeholderImg(600, 300, "Liquid Transport"),
+        cr,
+        cr2,
+        cr3
       ],
     },
     {
@@ -426,10 +428,9 @@ const App = () => {
       imgText: placeholderImg(600, 400, t("sector_indus"), "374151"),
       img: values5,
       gallery: [
-        placeholderImg(600, 300, "Tanker Rear"),
-        placeholderImg(600, 300, "Filling Valve"),
-        placeholderImg(600, 300, "Polished Steel"),
-        placeholderImg(600, 300, "Liquid Transport"),
+        cr,
+        cr2,
+        cr3
       ],
     },
   ];
