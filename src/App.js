@@ -63,8 +63,6 @@ import cr from "./assets/services/c&r.jpg";
 import cr2 from "./assets/services/c&r2.jpg";
 import cr3 from "./assets/services/c&r3.jpg";
 
-
-
 // Component to handle scroll-triggered animations for sections
 const AnimatedSection = ({ children, threshold = 0.2 }) => {
   const controls = useAnimation();
@@ -133,82 +131,170 @@ const LanguageSwitcher = ({ i18n }) => {
 
 // --- Image Carousel Component ---
 const ImageCarousel = ({ images }) => {
-    const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-    const handleNext = () => setCurrentIndex((p) => (p + 1) % images.length);
-    const handlePrev = () => setCurrentIndex((p) => (p - 1 + images.length) % images.length);
+  const handleNext = () => setCurrentIndex((p) => (p + 1) % images.length);
+  const handlePrev = () =>
+    setCurrentIndex((p) => (p - 1 + images.length) % images.length);
 
-    return (
-        <div className="relative w-full h-80 flex items-center justify-center overflow-hidden">
-            <button onClick={handlePrev} className="absolute left-0 md:left-4 z-30 bg-black/30 text-white p-2 rounded-full hover:bg-black/50 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400">
-                <ChevronLeft size={24} />
-            </button>
-            <button onClick={handleNext} className="absolute right-0 md:right-4 z-30 bg-black/30 text-white p-2 rounded-full hover:bg-black/50 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400">
-                <ChevronRight size={24} />
-            </button>
-            <div className="relative w-full h-full">
-                <AnimatePresence>
-                    {images.map((imgSrc, index) => {
-                        const total = images.length;
-                        let offset = index - currentIndex;
-                        if (offset > total / 2) offset -= total;
-                        if (offset < -total / 2) offset += total;
+  return (
+    <div className="relative w-full h-80 flex items-center justify-center overflow-hidden">
+      <button
+        onClick={handlePrev}
+        className="absolute left-0 md:left-4 z-30 bg-black/30 text-white p-2 rounded-full hover:bg-black/50 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400"
+      >
+        <ChevronLeft size={24} />
+      </button>
+      <button
+        onClick={handleNext}
+        className="absolute right-0 md:right-4 z-30 bg-black/30 text-white p-2 rounded-full hover:bg-black/50 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400"
+      >
+        <ChevronRight size={24} />
+      </button>
+      <div className="relative w-full h-full">
+        <AnimatePresence>
+          {images.map((imgSrc, index) => {
+            const total = images.length;
+            let offset = index - currentIndex;
+            if (offset > total / 2) offset -= total;
+            if (offset < -total / 2) offset += total;
 
-                        if (Math.abs(offset) > 2) {
-                           return null;
-                        }
+            if (Math.abs(offset) > 2) {
+              return null;
+            }
 
-                        let x, scale, opacity, zIndex;
-                        
-                        if (offset === 0) {
-                            scale = 1; opacity = 1; zIndex = 3; x = '0%';
-                        } else if (offset === 1) {
-                            scale = 0.85; opacity = 0.7; zIndex = 2; x = '25%';
-                        } else if (offset === -1) {
-                            scale = 0.85; opacity = 0.7; zIndex = 2; x = '-25%';
-                        } else if (offset === 2) {
-                            scale = 0.7; opacity = 0.4; zIndex = 1; x = '50%';
-                        } else if (offset === -2) {
-                            scale = 0.7; opacity = 0.4; zIndex = 1; x = '-50%';
-                        } else {
-                            scale = 0.4; opacity = 0; zIndex = 0; x = `${offset * 30}%`;
-                        }
+            let x, scale, opacity, zIndex;
 
-                        return (
-                            <motion.div
-                                key={index}
-                                className="absolute top-0 left-0 w-full h-full flex justify-center items-center"
-                                initial={false}
-                                animate={{ x, scale, opacity, zIndex }}
-                                transition={{ type: "spring", stiffness: 260, damping: 30 }}
-                            >
-                                <img
-                                    src={imgSrc}
-                                    alt={`Gallery image ${index + 1}`}
-                                    className="h-full object-contain rounded-lg shadow-2xl"
-                                />
-                            </motion.div>
-                        );
-                    })}
-                </AnimatePresence>
-            </div>
-        </div>
-    );
+            if (offset === 0) {
+              scale = 1;
+              opacity = 1;
+              zIndex = 3;
+              x = "0%";
+            } else if (offset === 1) {
+              scale = 0.85;
+              opacity = 0.7;
+              zIndex = 2;
+              x = "25%";
+            } else if (offset === -1) {
+              scale = 0.85;
+              opacity = 0.7;
+              zIndex = 2;
+              x = "-25%";
+            } else if (offset === 2) {
+              scale = 0.7;
+              opacity = 0.4;
+              zIndex = 1;
+              x = "50%";
+            } else if (offset === -2) {
+              scale = 0.7;
+              opacity = 0.4;
+              zIndex = 1;
+              x = "-50%";
+            } else {
+              scale = 0.4;
+              opacity = 0;
+              zIndex = 0;
+              x = `${offset * 30}%`;
+            }
+
+            return (
+              <motion.div
+                key={index}
+                className="absolute top-0 left-0 w-full h-full flex justify-center items-center"
+                initial={false}
+                animate={{ x, scale, opacity, zIndex }}
+                transition={{ type: "spring", stiffness: 260, damping: 30 }}
+              >
+                <img
+                  src={imgSrc}
+                  alt={`Gallery image ${index + 1}`}
+                  className="h-full object-contain rounded-lg shadow-2xl"
+                />
+              </motion.div>
+            );
+          })}
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+};
+
+const placeholderImg = (
+  width,
+  height,
+  text,
+  bgColor = "0b2b36",
+  textColor = "FFFFFF"
+) =>
+  `https://placehold.co/${width}x${height}/${bgColor}/${textColor}?text=${text.replace(
+    /\s/g,
+    "+"
+  )}&font=lato`;
+
+const ImageCarouselCard = ({ item }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    // Guard against items with no images or only one image
+    if (!item.images || item.images.length <= 1) {
+      return;
+    }
+
+    // Set up an interval to switch images every 3 seconds
+    const intervalId = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % item.images.length);
+    }, 3000);
+
+    // Clean up the interval when the component unmounts or data changes
+    return () => clearInterval(intervalId);
+  }, [item.images]);
+
+  return (
+    <div className="bg-secondary-800 rounded-2xl shadow-xl overflow-hidden flex flex-col border border-slate-700 h-full">
+      {/* Image container with carousel effect */}
+      <div className="relative h-56 sm:h-64 overflow-hidden">
+        {item.images.map((imgSrc, index) => (
+          <img
+            key={index}
+            src={imgSrc}
+            alt={`${item.title} - image ${index + 1}`}
+            className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
+              index === currentIndex ? "opacity-100" : "opacity-0"
+            }`}
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = placeholderImg(400, 300, "Image Indisponible");
+            }}
+          />
+        ))}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent"></div>
+      </div>
+
+      {/* Thin separator line */}
+      <hr className="border-t border-slate-700" />
+
+      {/* Content section */}
+      <div className="p-6 flex-grow">
+        <h4 className="text-xl font-bold text-amber-400 mb-2">{item.title}</h4>
+        <p className="text-slate-400">{item.desc}</p>
+      </div>
+    </div>
+  );
 };
 
 const useMediaQuery = (query) => {
-    const [matches, setMatches] = useState(false);
-    useEffect(() => {
-        if (typeof window === 'undefined') return;
-        const media = window.matchMedia(query);
-        if (media.matches !== matches) {
-            setMatches(media.matches);
-        }
-        const listener = () => setMatches(media.matches);
-        media.addEventListener("change", listener);
-        return () => media.removeEventListener("change", listener);
-    }, [matches, query]);
-    return matches;
+  const [matches, setMatches] = useState(false);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const media = window.matchMedia(query);
+    if (media.matches !== matches) {
+      setMatches(media.matches);
+    }
+    const listener = () => setMatches(media.matches);
+    media.addEventListener("change", listener);
+    return () => media.removeEventListener("change", listener);
+  }, [matches, query]);
+  return matches;
 };
 
 // --- Main App Component ---
@@ -294,7 +380,7 @@ const App = () => {
   const [expandedProductIndex, setExpandedProductIndex] = useState(null);
   const [expandedServicesIndex, setExpandedServicesIndex] = useState(null);
 
-  const isDesktop = useMediaQuery('(min-width: 640px)');
+  const isDesktop = useMediaQuery("(min-width: 640px)");
   const [connectorStyle, setConnectorStyle] = useState({});
   const gridRef = useRef(null);
   const cardRefs = useRef([]);
@@ -335,28 +421,18 @@ const App = () => {
   const products = [
     {
       title: t("plateau_bache.title"),
-    imgText: placeholderImg(600, 400, t("plateau_bache.title"), "374151"),
-    gallery: [
-      produit1,
-      produit2,
-      produit3,
-    ],
+      imgText: placeholderImg(600, 400, t("plateau_bache.title"), "374151"),
+      gallery: [produit1, produit2, produit3],
     },
     {
       title: t("benne_gravats.title"),
       imgText: placeholderImg(600, 400, t("benne_gravats.title"), "374151"),
-      gallery: [
-        benne1,
-        benne2
-      ],
+      gallery: [benne1, benne2],
     },
     {
       title: t("citerne_15000.title"),
       imgText: placeholderImg(600, 400, t("citerne_15000.title"), "374151"),
-      gallery: [
-        citerne1,
-        citerne2
-      ],
+      gallery: [citerne1, citerne2],
     },
   ];
 
@@ -365,73 +441,46 @@ const App = () => {
       title: t("service1"),
       imgText: placeholderImg(600, 400, t("sector_trans"), "374151"),
       img: values2,
-      gallery: [
-        laser,
-        pliage,
-        welding,
-        laser2,
-        pliage2
-      ],
+      gallery: [laser, pliage, welding, laser2, pliage2],
     },
     {
       title: t("service2"),
       imgText: placeholderImg(600, 400, t("sector_agr"), "374151"),
       img: values3,
-      gallery: [
-        ccc
-      ],
+      gallery: [ccc],
     },
     {
       title: t("service3"),
       imgText: placeholderImg(600, 400, t("sector_loc"), "374151"),
       img: values4,
-      gallery: [
-        reparation,
-        reparation2
-      ],
-    }
-  ]
+      gallery: [reparation, reparation2],
+    },
+  ];
 
-  const achievements = [
+   const achievements = [
     {
       title: t("sector_trans"),
+      desc: "Convoi exceptionnel pour pièces hors gabarit.",
       imgText: placeholderImg(600, 400, t("sector_trans"), "374151"),
-      img: values2,
-      gallery: [
-        cr,
-        cr2,
-        cr3
-      ],
+      images: [cr, cr2, cr3],
     },
     {
       title: t("sector_agr"),
       imgText: placeholderImg(600, 400, t("sector_agr"), "374151"),
-      img: values3,
-      gallery: [
-        cr,
-        cr2,
-        cr3
-      ],
+      desc: "Convoi exceptionnel pour pièces hors gabarit.",
+      images: [cr, cr2, cr3],
     },
     {
       title: t("sector_loc"),
       imgText: placeholderImg(600, 400, t("sector_loc"), "374151"),
-      img: values4,
-      gallery: [
-        cr,
-        cr2,
-        cr3
-      ],
+      desc: "Convoi exceptionnel pour pièces hors gabarit.",
+      images: [cr, cr2, cr3],
     },
     {
       title: t("sector_indus"),
       imgText: placeholderImg(600, 400, t("sector_indus"), "374151"),
-      img: values5,
-      gallery: [
-        cr,
-        cr2,
-        cr3
-      ],
+      desc: "Convoi exceptionnel pour pièces hors gabarit.",
+      images: [cr, cr2, cr3],
     },
   ];
 
@@ -811,85 +860,109 @@ const App = () => {
 
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 space-y-24 sm:space-y-32">
         {/* --- Products Section --- */}
-       <AnimatedSection>
-                <section id="products" className="scroll-mt-20 max-w-7xl mx-auto">
-                    <SectionTitle title={t("products_title")} />
-                    <p className="text-center text-lg text-white-400 mb-12 max-w-3xl mx-auto">
-                        {t("products_subtitle")}
-                    </p>
-                    <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
-                        {products.map((item, index) => {
-                            const isExpanded = index === expandedProductIndex;
-                            return (
-                                <React.Fragment key={item.title}>
-                                    <div
-                                        ref={cardRefs.current[index]}
-                                        className={`bg-secondary-800 shadow-xl flex flex-col group border border-secondary-700 cursor-pointer rounded-2xl
-                                            ${isExpanded ? 'ring-2 ring-primary-400 ring-offset-4 ring-offset-secondary-900' : ''}`}
-                                        onClick={() => handleProductCardClick(index)}
-                                    >
-                                        <div className="relative aspect-video overflow-hidden rounded-2xl">
-                                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-center justify-center p-4">
-                                                <h4 className="text-2xl md:text-3xl font-bold text-white text-center shadow-lg">{item.title}</h4>
-                                            </div>
-                                            <div className="absolute top-3 right-3 bg-black/40 p-2 rounded-full text-white/80 transition-transform group-hover:scale-110">
-                                                {isExpanded ? <X size={20} /> : <Maximize2 size={20} />}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    {!isDesktop && (
-                                       <AnimatePresence>
-                                            {isExpanded && (
-                                                <motion.div
-                                                    className="bg-secondary-800 rounded-b-2xl overflow-hidden border-x border-b border-secondary-700 -mt-2"
-                                                    initial={{ height: 0, opacity: 0 }}
-                                                    animate={{ height: 'auto', opacity: 1 }}
-                                                    exit={{ height: 0, opacity: 0 }}
-                                                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                                                >
-                                                     <div className="p-6">
-                                                <ImageCarousel images={products[expandedProductIndex].gallery} />
-                                            </div>
-                                                </motion.div>
-                                            )}
-                                        </AnimatePresence>
-                                    )}
-                                </React.Fragment>
-                            );
-                        })}
-                    </div>
-                    
-                    {isDesktop && (
-                        <div className="relative">
-                            <AnimatePresence>
-                                {expandedProductIndex !== null && (
-                                    <motion.div
-                                        key="expanded-content-wrapper"
-                                        initial={{ opacity: 0, y: -20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        exit={{ opacity: 0, y: -20, transition: {duration: 0.3} }}
-                                        transition={{ duration: 0.4, ease: 'easeInOut' }}
-                                        className="relative mt-5"
-                                    >
-                                        <motion.div
-                                            className="bg-secondary-800 rounded-2xl overflow-hidden border border-secondary-700 shadow-2xl"
-                                            initial={{ height: 0 }}
-                                            animate={{ height: 'auto' }}
-                                            exit={{ height: 0 }}
-                                            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                                        >
-                                            <div className="p-6">
-                                                <ImageCarousel images={products[expandedProductIndex].gallery} />
-                                            </div>
-                                        </motion.div>
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
+        <AnimatedSection>
+          <section id="products" className="scroll-mt-20 max-w-7xl mx-auto">
+            <SectionTitle title={t("products_title")} />
+            <p className="text-center text-lg text-white-400 mb-12 max-w-3xl mx-auto">
+              {t("products_subtitle")}
+            </p>
+            <div
+              ref={gridRef}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-start"
+            >
+              {products.map((item, index) => {
+                const isExpanded = index === expandedProductIndex;
+                return (
+                  <React.Fragment key={item.title}>
+                    <div
+                      ref={cardRefs.current[index]}
+                      className={`bg-secondary-800 shadow-xl flex flex-col group border border-secondary-700 cursor-pointer rounded-2xl
+                                            ${
+                                              isExpanded
+                                                ? "ring-2 ring-primary-400 ring-offset-4 ring-offset-secondary-900"
+                                                : ""
+                                            }`}
+                      onClick={() => handleProductCardClick(index)}
+                    >
+                      <div className="relative aspect-video overflow-hidden rounded-2xl">
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-center justify-center p-4">
+                          <h4 className="text-2xl md:text-3xl font-bold text-white text-center shadow-lg">
+                            {item.title}
+                          </h4>
                         </div>
+                        <div className="absolute top-3 right-3 bg-black/40 p-2 rounded-full text-white/80 transition-transform group-hover:scale-110">
+                          {isExpanded ? (
+                            <X size={20} />
+                          ) : (
+                            <Maximize2 size={20} />
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    {!isDesktop && (
+                      <AnimatePresence>
+                        {isExpanded && (
+                          <motion.div
+                            className="bg-secondary-800 rounded-b-2xl overflow-hidden border-x border-b border-secondary-700 -mt-2"
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{
+                              duration: 0.5,
+                              ease: [0.16, 1, 0.3, 1],
+                            }}
+                          >
+                            <div className="p-6">
+                              <ImageCarousel
+                                images={products[expandedProductIndex].gallery}
+                              />
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     )}
-                </section>
-            </AnimatedSection>
+                  </React.Fragment>
+                );
+              })}
+            </div>
+
+            {isDesktop && (
+              <div className="relative">
+                <AnimatePresence>
+                  {expandedProductIndex !== null && (
+                    <motion.div
+                      key="expanded-content-wrapper"
+                      initial={{ opacity: 0, y: -20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{
+                        opacity: 0,
+                        y: -20,
+                        transition: { duration: 0.3 },
+                      }}
+                      transition={{ duration: 0.4, ease: "easeInOut" }}
+                      className="relative mt-5"
+                    >
+                      <motion.div
+                        className="bg-secondary-800 rounded-2xl overflow-hidden border border-secondary-700 shadow-2xl"
+                        initial={{ height: 0 }}
+                        animate={{ height: "auto" }}
+                        exit={{ height: 0 }}
+                        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                      >
+                        <div className="p-6">
+                          <ImageCarousel
+                            images={products[expandedProductIndex].gallery}
+                          />
+                        </div>
+                      </motion.div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            )}
+          </section>
+        </AnimatedSection>
 
         {/* --- Key Figures Section --- */}
         {/* <AnimatedSection>
@@ -926,85 +999,107 @@ const App = () => {
                 </AnimatedSection> */}
 
         {/* --- Workshop Section --- */}
-          <AnimatedSection>
-                <section id="services" className="scroll-mt-20 max-w-7xl mx-auto">
-                    <SectionTitle title={t("our_workshop")} />
-                    <p className="text-center text-lg text-white-400 mb-12 max-w-3xl mx-auto">
-                        {t("products_subtitle")}
-                    </p>
-                    <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
-                        {services.map((item, index) => {
-                            const isExpanded = index === expandedServicesIndex;
-                            return (
-                                <React.Fragment key={item.title}>
-                                    <div
-                                        ref={cardRefs.current[index]}
-                                        className={`bg-secondary-800 shadow-xl flex flex-col group border border-secondary-700 cursor-pointer rounded-2xl
-                                            ${isExpanded ? 'ring-2 ring-primary-400 ring-offset-4 ring-offset-secondary-900' : ''}`}
-                                        onClick={() => handleServicesCardClick(index)}
-                                    >
-                                        <div className="relative aspect-video overflow-hidden rounded-2xl">
-                                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-center justify-center p-4">
-                                                <h4 className="text-2xl md:text-3xl font-bold text-white text-center shadow-lg">{item.title}</h4>
-                                            </div>
-                                            <div className="absolute top-3 right-3 bg-black/40 p-2 rounded-full text-white/80 transition-transform group-hover:scale-110">
-                                                {isExpanded ? <X size={20} /> : <Maximize2 size={20} />}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    {!isDesktop && (
-                                       <AnimatePresence>
-                                            {isExpanded && (
-                                                <motion.div
-                                                    className="bg-secondary-800 rounded-b-2xl overflow-hidden border-x border-b border-secondary-700 -mt-2"
-                                                    initial={{ height: 0, opacity: 0 }}
-                                                    animate={{ height: 'auto', opacity: 1 }}
-                                                    exit={{ height: 0, opacity: 0 }}
-                                                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                                                >
-                                                     <div className="p-6">
-                                                        <ImageCarousel images={item.gallery} />
-                                                     </div>
-                                                </motion.div>
-                                            )}
-                                        </AnimatePresence>
-                                    )}
-                                </React.Fragment>
-                            );
-                        })}
-                    </div>
-                    
-                    {isDesktop && (
-                        <div className="relative">
-                            <AnimatePresence>
-                                {expandedServicesIndex !== null && (
-                                    <motion.div
-                                        key="expanded-content-wrapper"
-                                        initial={{ opacity: 0, y: -20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        exit={{ opacity: 0, y: -20, transition: {duration: 0.3} }}
-                                        transition={{ duration: 0.4, ease: 'easeInOut' }}
-                                        className="relative mt-5"
-                                    >
-                                        <motion.div
-                                            className="bg-secondary-800 rounded-2xl overflow-hidden border border-secondary-700 shadow-2xl"
-                                            initial={{ height: 0 }}
-                                            animate={{ height: 'auto' }}
-                                            exit={{ height: 0 }}
-                                            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                                        >
-                                            <div className="p-6">
-                                                <ImageCarousel images={services[expandedServicesIndex].gallery} />
-                                            </div>
-                                        </motion.div>
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
+        <AnimatedSection>
+          <section id="services" className="scroll-mt-20 max-w-7xl mx-auto">
+            <SectionTitle title={t("our_workshop")} />
+            <p className="text-center text-lg text-white-400 mb-12 max-w-3xl mx-auto">
+              {t("products_subtitle")}
+            </p>
+            <div
+              ref={gridRef}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-start"
+            >
+              {services.map((item, index) => {
+                const isExpanded = index === expandedServicesIndex;
+                return (
+                  <React.Fragment key={item.title}>
+                    <div
+                      ref={cardRefs.current[index]}
+                      className={`bg-secondary-800 shadow-xl flex flex-col group border border-secondary-700 cursor-pointer rounded-2xl
+                                            ${
+                                              isExpanded
+                                                ? "ring-2 ring-primary-400 ring-offset-4 ring-offset-secondary-900"
+                                                : ""
+                                            }`}
+                      onClick={() => handleServicesCardClick(index)}
+                    >
+                      <div className="relative aspect-video overflow-hidden rounded-2xl">
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-center justify-center p-4">
+                          <h4 className="text-2xl md:text-3xl font-bold text-white text-center shadow-lg">
+                            {item.title}
+                          </h4>
                         </div>
+                        <div className="absolute top-3 right-3 bg-black/40 p-2 rounded-full text-white/80 transition-transform group-hover:scale-110">
+                          {isExpanded ? (
+                            <X size={20} />
+                          ) : (
+                            <Maximize2 size={20} />
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    {!isDesktop && (
+                      <AnimatePresence>
+                        {isExpanded && (
+                          <motion.div
+                            className="bg-secondary-800 rounded-b-2xl overflow-hidden border-x border-b border-secondary-700 -mt-2"
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{
+                              duration: 0.5,
+                              ease: [0.16, 1, 0.3, 1],
+                            }}
+                          >
+                            <div className="p-6">
+                              <ImageCarousel images={item.gallery} />
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     )}
-                </section>
-            </AnimatedSection>
+                  </React.Fragment>
+                );
+              })}
+            </div>
+
+            {isDesktop && (
+              <div className="relative">
+                <AnimatePresence>
+                  {expandedServicesIndex !== null && (
+                    <motion.div
+                      key="expanded-content-wrapper"
+                      initial={{ opacity: 0, y: -20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{
+                        opacity: 0,
+                        y: -20,
+                        transition: { duration: 0.3 },
+                      }}
+                      transition={{ duration: 0.4, ease: "easeInOut" }}
+                      className="relative mt-5"
+                    >
+                      <motion.div
+                        className="bg-secondary-800 rounded-2xl overflow-hidden border border-secondary-700 shadow-2xl"
+                        initial={{ height: 0 }}
+                        animate={{ height: "auto" }}
+                        exit={{ height: 0 }}
+                        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                      >
+                        <div className="p-6">
+                          <ImageCarousel
+                            images={services[expandedServicesIndex].gallery}
+                          />
+                        </div>
+                      </motion.div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            )}
+          </section>
+        </AnimatedSection>
 
         {/* --- Values Section --- */}
 
@@ -1031,11 +1126,10 @@ const App = () => {
                     onClick={() => handleValuesCardClick(index)}
                   >
                     <div className="p-6 w-full flex flex-col items-center">
-                      
                       {/* Icon */}
-    <div className="mb-4 text-primary-500 group-hover:scale-110 transition-transform">
-      <Icon size={36} strokeWidth={1.5} />
-    </div>
+                      <div className="mb-4 text-primary-500 group-hover:scale-110 transition-transform">
+                        <Icon size={36} strokeWidth={1.5} />
+                      </div>
                       <h4 className="text-lg font-bold text-white mb-3 min-h-[56px] flex items-center justify-center">
                         {value.title}
                       </h4>
@@ -1085,84 +1179,15 @@ const App = () => {
 
         {/* --- Achievements Section --- */}
         <AnimatedSection>
-                <section id="clients-achievements" className="scroll-mt-20 max-w-7xl mx-auto">
-                    <SectionTitle title={t("possible_clients")} />
-                    <p className="text-center text-lg text-white-400 mb-12 max-w-3xl mx-auto">
-                        {t("possible_clients_desc")}
-                    </p>
-                    <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-start">
-                        {achievements.map((item, index) => {
-                            const isExpanded = index === expandedIndex;
-                            return (
-                                <React.Fragment key={item.title}>
-                                    <div
-                                        ref={cardRefs.current[index]}
-                                        className={`bg-secondary-800 shadow-xl flex flex-col group border border-secondary-700 cursor-pointer rounded-2xl
-                                            ${isExpanded ? 'ring-2 ring-primary-400 ring-offset-4 ring-offset-secondary-900' : ''}`}
-                                        onClick={() => handleCardClick(index)}
-                                    >
-                                        <div className="relative aspect-video overflow-hidden rounded-2xl">
-                                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-center justify-center p-4">
-                                                 <h4 className="text-2xl md:text-3xl font-bold text-white text-center shadow-lg">{item.title}</h4>
-                                            </div>
-                                            <div className="absolute top-3 right-3 bg-black/40 p-2 rounded-full text-white/80 transition-transform group-hover:scale-110">
-                                                {isExpanded ? <X size={20} /> : <Maximize2 size={20} />}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    {!isDesktop && (
-                                       <AnimatePresence>
-                                            {isExpanded && (
-                                                <motion.div
-                                                    className="bg-secondary-800 rounded-b-2xl overflow-hidden border-x border-b border-secondary-700 -mt-2"
-                                                    initial={{ height: 0, opacity: 0 }}
-                                                    animate={{ height: 'auto', opacity: 1 }}
-                                                    exit={{ height: 0, opacity: 0 }}
-                                                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                                                >
-                                                     <div className="p-6">
-                                                        <ImageCarousel images={item.gallery} />
-                                                     </div>
-                                                </motion.div>
-                                            )}
-                                        </AnimatePresence>
-                                    )}
-                                </React.Fragment>
-                            );
-                        })}
-                    </div>
-                    
-                    {isDesktop && (
-                        <div className="relative">
-                            <AnimatePresence>
-                                {expandedIndex !== null && (
-                                    <motion.div
-                                        key="expanded-content-wrapper"
-                                        initial={{ opacity: 0, y: -20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        exit={{ opacity: 0, y: -20, transition: {duration: 0.3} }}
-                                        transition={{ duration: 0.4, ease: 'easeInOut' }}
-                                        className="relative mt-5"
-                                    >
-                                        <motion.div
-                                            className="bg-secondary-800 rounded-2xl overflow-hidden border border-secondary-700 shadow-2xl"
-                                            initial={{ height: 0 }}
-                                            animate={{ height: 'auto' }}
-                                            exit={{ height: 0 }}
-                                            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                                        >
-                                            <div className="p-6">
-                                                <ImageCarousel images={achievements[expandedIndex].gallery} />
-                                            </div>
-                                        </motion.div>
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
-                        </div>
-                    )}
-                </section>
-            </AnimatedSection>
+          <section id="achievements" className="scroll-mt-20">
+            <SectionTitle title={t("achiev")} icon={Award} />
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {achievements.map((item) => (
+                <ImageCarouselCard key={item.title} item={item} />
+              ))}
+            </div>
+          </section>
+        </AnimatedSection>
 
         {/* --- Goals Section --- */}
         <AnimatedSection>
