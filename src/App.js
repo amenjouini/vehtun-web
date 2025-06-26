@@ -103,6 +103,13 @@ const SectionTitle = ({ title, icon: Icon }) => (
   </h2>
 );
 
+const SectionSubTitle = ({ title, icon: Icon }) => (
+  <h2 className="text-3xl sm:text-xl font-bold text-center text-primary-400 mb-12 flex items-center justify-center gap-3">
+    {Icon && <Icon className="w-8 h-8 sm:w-10 sm:h-10" />}
+    <span>{title}</span>
+  </h2>
+);
+
 // --- Language Switcher Component ---
 const LanguageSwitcher = ({ i18n }) => {
   const languages = [
@@ -275,7 +282,7 @@ const ImageCarouselCard = ({ item }) => {
 
       {/* Content section */}
       <div className="p-6 flex-grow">
-        <h4 className="text-xl font-bold text-amber-400 mb-2">{item.title}</h4>
+        <h4 className="text-xl font-bold text-primary-500 mb-2">{item.title}</h4>
         <p className="text-slate-400">{item.desc}</p>
       </div>
     </div>
@@ -422,17 +429,17 @@ const App = () => {
     {
       title: t("plateau_bache.title"),
       imgText: placeholderImg(600, 400, t("plateau_bache.title"), "374151"),
-      gallery: [produit1, produit2, produit3],
+      images: [produit1, produit2, produit3],
     },
     {
       title: t("benne_gravats.title"),
       imgText: placeholderImg(600, 400, t("benne_gravats.title"), "374151"),
-      gallery: [benne1, benne2],
+      images: [benne1, benne2],
     },
     {
       title: t("citerne_15000.title"),
       imgText: placeholderImg(600, 400, t("citerne_15000.title"), "374151"),
-      gallery: [citerne1, citerne2],
+      images: [citerne1, citerne2],
     },
   ];
 
@@ -441,19 +448,19 @@ const App = () => {
       title: t("service1"),
       imgText: placeholderImg(600, 400, t("sector_trans"), "374151"),
       img: values2,
-      gallery: [laser, pliage, welding, laser2, pliage2],
+      images: [laser, pliage, welding, laser2, pliage2],
     },
     {
       title: t("service2"),
       imgText: placeholderImg(600, 400, t("sector_agr"), "374151"),
       img: values3,
-      gallery: [ccc],
+      images: [ccc],
     },
     {
       title: t("service3"),
       imgText: placeholderImg(600, 400, t("sector_loc"), "374151"),
       img: values4,
-      gallery: [reparation, reparation2],
+      images: [reparation, reparation2],      
     },
   ];
 
@@ -860,107 +867,15 @@ const App = () => {
 
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 space-y-24 sm:space-y-32">
         {/* --- Products Section --- */}
-        <AnimatedSection>
-          <section id="products" className="scroll-mt-20 max-w-7xl mx-auto">
+         <AnimatedSection>
+          <section id="products" className="scroll-mt-20">
             <SectionTitle title={t("products_title")} />
-            <p className="text-center text-lg text-white-400 mb-12 max-w-3xl mx-auto">
-              {t("products_subtitle")}
-            </p>
-            <div
-              ref={gridRef}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-start"
-            >
-              {products.map((item, index) => {
-                const isExpanded = index === expandedProductIndex;
-                return (
-                  <React.Fragment key={item.title}>
-                    <div
-                      ref={cardRefs.current[index]}
-                      className={`bg-secondary-800 shadow-xl flex flex-col group border border-secondary-700 cursor-pointer rounded-2xl
-                                            ${
-                                              isExpanded
-                                                ? "ring-2 ring-primary-400 ring-offset-4 ring-offset-secondary-900"
-                                                : ""
-                                            }`}
-                      onClick={() => handleProductCardClick(index)}
-                    >
-                      <div className="relative aspect-video overflow-hidden rounded-2xl">
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-center justify-center p-4">
-                          <h4 className="text-2xl md:text-3xl font-bold text-white text-center shadow-lg">
-                            {item.title}
-                          </h4>
-                        </div>
-                        <div className="absolute top-3 right-3 bg-black/40 p-2 rounded-full text-white/80 transition-transform group-hover:scale-110">
-                          {isExpanded ? (
-                            <X size={20} />
-                          ) : (
-                            <Maximize2 size={20} />
-                          )}
-                        </div>
-                      </div>
-                    </div>
-
-                    {!isDesktop && (
-                      <AnimatePresence>
-                        {isExpanded && (
-                          <motion.div
-                            className="bg-secondary-800 rounded-b-2xl overflow-hidden border-x border-b border-secondary-700 -mt-2"
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: "auto", opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{
-                              duration: 0.5,
-                              ease: [0.16, 1, 0.3, 1],
-                            }}
-                          >
-                            <div className="p-6">
-                              <ImageCarousel
-                                images={products[expandedProductIndex].gallery}
-                              />
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    )}
-                  </React.Fragment>
-                );
-              })}
+            <SectionSubTitle title={t("products_subtitle")}/>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {products.map((item) => (
+                <ImageCarouselCard key={item.title} item={item} />
+              ))}
             </div>
-
-            {isDesktop && (
-              <div className="relative">
-                <AnimatePresence>
-                  {expandedProductIndex !== null && (
-                    <motion.div
-                      key="expanded-content-wrapper"
-                      initial={{ opacity: 0, y: -20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{
-                        opacity: 0,
-                        y: -20,
-                        transition: { duration: 0.3 },
-                      }}
-                      transition={{ duration: 0.4, ease: "easeInOut" }}
-                      className="relative mt-5"
-                    >
-                      <motion.div
-                        className="bg-secondary-800 rounded-2xl overflow-hidden border border-secondary-700 shadow-2xl"
-                        initial={{ height: 0 }}
-                        animate={{ height: "auto" }}
-                        exit={{ height: 0 }}
-                        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                      >
-                        <div className="p-6">
-                          <ImageCarousel
-                            images={products[expandedProductIndex].gallery}
-                          />
-                        </div>
-                      </motion.div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            )}
           </section>
         </AnimatedSection>
 
@@ -999,105 +914,15 @@ const App = () => {
                 </AnimatedSection> */}
 
         {/* --- Workshop Section --- */}
-        <AnimatedSection>
-          <section id="services" className="scroll-mt-20 max-w-7xl mx-auto">
+                <AnimatedSection>
+          <section id="services" className="scroll-mt-20">
             <SectionTitle title={t("our_workshop")} />
-            <p className="text-center text-lg text-white-400 mb-12 max-w-3xl mx-auto">
-              {t("products_subtitle")}
-            </p>
-            <div
-              ref={gridRef}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-start"
-            >
-              {services.map((item, index) => {
-                const isExpanded = index === expandedServicesIndex;
-                return (
-                  <React.Fragment key={item.title}>
-                    <div
-                      ref={cardRefs.current[index]}
-                      className={`bg-secondary-800 shadow-xl flex flex-col group border border-secondary-700 cursor-pointer rounded-2xl
-                                            ${
-                                              isExpanded
-                                                ? "ring-2 ring-primary-400 ring-offset-4 ring-offset-secondary-900"
-                                                : ""
-                                            }`}
-                      onClick={() => handleServicesCardClick(index)}
-                    >
-                      <div className="relative aspect-video overflow-hidden rounded-2xl">
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-center justify-center p-4">
-                          <h4 className="text-2xl md:text-3xl font-bold text-white text-center shadow-lg">
-                            {item.title}
-                          </h4>
-                        </div>
-                        <div className="absolute top-3 right-3 bg-black/40 p-2 rounded-full text-white/80 transition-transform group-hover:scale-110">
-                          {isExpanded ? (
-                            <X size={20} />
-                          ) : (
-                            <Maximize2 size={20} />
-                          )}
-                        </div>
-                      </div>
-                    </div>
-
-                    {!isDesktop && (
-                      <AnimatePresence>
-                        {isExpanded && (
-                          <motion.div
-                            className="bg-secondary-800 rounded-b-2xl overflow-hidden border-x border-b border-secondary-700 -mt-2"
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: "auto", opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{
-                              duration: 0.5,
-                              ease: [0.16, 1, 0.3, 1],
-                            }}
-                          >
-                            <div className="p-6">
-                              <ImageCarousel images={item.gallery} />
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    )}
-                  </React.Fragment>
-                );
-              })}
+            <SectionSubTitle title={t("products_subtitle")}/>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {services.map((item) => (
+                <ImageCarouselCard key={item.title} item={item} />
+              ))}
             </div>
-
-            {isDesktop && (
-              <div className="relative">
-                <AnimatePresence>
-                  {expandedServicesIndex !== null && (
-                    <motion.div
-                      key="expanded-content-wrapper"
-                      initial={{ opacity: 0, y: -20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{
-                        opacity: 0,
-                        y: -20,
-                        transition: { duration: 0.3 },
-                      }}
-                      transition={{ duration: 0.4, ease: "easeInOut" }}
-                      className="relative mt-5"
-                    >
-                      <motion.div
-                        className="bg-secondary-800 rounded-2xl overflow-hidden border border-secondary-700 shadow-2xl"
-                        initial={{ height: 0 }}
-                        animate={{ height: "auto" }}
-                        exit={{ height: 0 }}
-                        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                      >
-                        <div className="p-6">
-                          <ImageCarousel
-                            images={services[expandedServicesIndex].gallery}
-                          />
-                        </div>
-                      </motion.div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            )}
           </section>
         </AnimatedSection>
 
@@ -1106,9 +931,7 @@ const App = () => {
         <AnimatedSection>
           <section id="values" className="scroll-mt-20 max-w-7xl mx-auto">
             <SectionTitle title={t("added_values")} />
-            <p className="text-center text-lg text-white-400 mb-12 max-w-3xl mx-auto">
-              {t("added_values_desc")}
-            </p>
+            <SectionSubTitle title={t("added_values_desc")}/>
             {/* The `items-start` class is key to preventing vertical movement */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 items-start">
               {values.map((value, index) => {
@@ -1179,8 +1002,9 @@ const App = () => {
 
         {/* --- Achievements Section --- */}
         <AnimatedSection>
-          <section id="achievements" className="scroll-mt-20">
-            <SectionTitle title={t("achiev")} icon={Award} />
+          <section id="clients-achievements" className="scroll-mt-20">
+            <SectionTitle title={t("achiev")}/>
+            <SectionSubTitle title={t("possible_clients_desc")}/>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {achievements.map((item) => (
                 <ImageCarouselCard key={item.title} item={item} />
