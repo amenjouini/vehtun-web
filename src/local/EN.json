@@ -22,9 +22,25 @@
     "products_title": "Nos Produits",
     "products_subtitle": "Équipements pour camions porteurs de différents tonnages, conçus pour la performance et la durabilité.",
     "our_workshop": "Nos Services",
-    "service1":"Sous-traitance: Découpage laser/ pliage/ soudage",
+
+    "service1":"Sous-traitance:",
     "service2":"Projets de construction métallique",
     "service3":"Réparation d’équipements de transport",
+
+    "service1_subtitle":"Découpe Laser",
+    "service2_subtitle":"Pliage de tôles",
+    "service3_subtitle":"Soudure électrique",
+
+    "service1_desc":"description 1",
+    "service2_desc":"description 2",
+    "service3_desc":"description 3",
+
+    "service21_subtitle":"Chantier / structure",
+    "service22_subtitle":"Réparation & maintenance",
+    
+    "service21_desc":"Chaque projet est conçu pour améliorer la performance, la sécurité et la rentabilité de vos activités.",
+    "service22_desc":"Nous intervenons sur vos équipements endommagés ou usés pour les remettre en état, les adapter ou les renforcer, afin de garantir leur durabilité et leur bon fonctionnement au quotidien.",
+
     "technical_capabilities": "🔧 Capacités techniques :",
     "soudure": "Soudure MIG/MAG haute précision",
     "pliage": "Pliage, découpe, perçage, et usinage numérique",

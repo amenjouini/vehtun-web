@@ -32,6 +32,7 @@ import {
   ShieldCheck,
   PlusCircle,
   XCircle,
+  Check
 } from "lucide-react";
 
 import values1 from "./assets/values1_rdc.jpg";
@@ -55,6 +56,7 @@ import pliage from "./assets/services/pliage.jpg";
 import welding from "./assets/services/welding.jpg";
 import ccc from "./assets/services/ccc.jpg";
 import reparation from "./assets/services/reparation.jpg";
+import Image1 from "./assets/services/service2/Image1.jpg";
 import reparation2 from "./assets/services/reparation2.jpg";
 import laser2 from "./assets/services/laser2.jpg";
 import pliage2 from "./assets/services/pliage2.jpg";
@@ -238,56 +240,234 @@ const placeholderImg = (
     "+"
   )}&font=lato`;
 
-const ImageCarouselCard = ({ item }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  // new carousel
+// const ContentImageSlider = ({ slides }) => {
+//     const [currentIndex, setCurrentIndex] = useState(0);
+
+//     useEffect(() => {
+//         if (slides.length <= 1) return; // Don't start timer if only one slide
+//         const timer = setTimeout(() => {
+//             setCurrentIndex((prevIndex) => (prevIndex + 1) % slides.length);
+//         }, 5000); // Change slide every 5 seconds
+
+//         return () => clearTimeout(timer);
+//     }, [currentIndex, slides.length]);
+
+//     const slideVariants = {
+//         enter: (direction) => ({
+//             x: direction > 0 ? 50 : -50,
+//             opacity: 0
+//         }),
+//         center: {
+//             zIndex: 1,
+//             x: 0,
+//             opacity: 1
+//         },
+//         exit: (direction) => ({
+//             zIndex: 0,
+//             x: direction < 0 ? 50 : -50,
+//             opacity: 0
+//         })
+//     };
+
+//     return (
+//         <div className="bg-secondary-800 rounded-2xl shadow-2xl border border-secondary-700 overflow-hidden">
+//            <div className="grid grid-cols-1 md:grid-cols-2">
+//                 {/* Left Column: Text Content */}
+//                 <div className="p-8 md:p-12 flex flex-col justify-center order-2 md:order-1 min-h-[400px] md:min-h-[450px]">
+//                     <AnimatePresence mode="wait">
+//                         <motion.div
+//                             key={currentIndex}
+//                             variants={slideVariants}
+//                             initial="enter"
+//                             animate="center"
+//                             exit="exit"
+//                             transition={{
+//                                 x: { type: "spring", stiffness: 300, damping: 30 },
+//                                 opacity: { duration: 0.3 }
+//                             }}
+//                             custom={1} // enter from right
+//                         >
+//                             <h3 className="text-3xl font-bold text-primary-400 mb-4 flex items-center">
+//                                <Check className="w-8 h-8 mr-3 text-primary-500" />
+//                                {slides[currentIndex].title}
+//                             </h3>
+//                             <p className="text-lg text-gray-300">
+//                                {slides[currentIndex].desc}
+//                             </p>
+//                         </motion.div>
+//                     </AnimatePresence>
+//                 </div>
+
+//                 {/* Right Column: Image */}
+//                 <div className="relative min-h-[300px] md:min-h-0 order-1 md:order-2">
+//                    <AnimatePresence mode="wait">
+//                         <motion.img
+//                             key={currentIndex}
+//                             src={slides[currentIndex].images}
+//                             alt={slides[currentIndex].title}
+//                             className="absolute inset-0 w-full h-full object-cover"
+//                             variants={slideVariants}
+//                             initial="enter"
+//                             animate="center"
+//                             exit="exit"
+//                             transition={{
+//                                 x: { type: "spring", stiffness: 300, damping: 30 },
+//                                 opacity: { duration: 0.3 }
+//                             }}
+//                             custom={-1} // enter from left
+//                         />
+//                     </AnimatePresence>
+//                 </div>
+//            </div>
+//         </div>
+//     );
+// };
+
+// --- NESTED IMAGE CAROUSEL (NO BUTTONS) ---
+const ContentImageSlider = ({ slides }) => {
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const [innerImageIndex, setInnerImageIndex] = useState(0);
 
   useEffect(() => {
-    // Guard against items with no images or only one image
-    if (!item.images || item.images.length <= 1) {
-      return;
+    if (slides.length <= 0) return;
+
+    const currentSlide = slides[currentSlideIndex];
+    const images = currentSlide.images || [];
+
+    const innerImageDuration = 3000;
+
+    // If only one image — set total duration (no inner cycling)
+    if (images.length <= 1) {
+      const slideTimer = setTimeout(() => {
+        setCurrentSlideIndex((prev) => (prev + 1) % slides.length);
+        setInnerImageIndex(0); // reset inner index
+      }, 3500);
+
+      return () => clearTimeout(slideTimer);
     }
 
-    // Set up an interval to switch images every 3 seconds
-    const intervalId = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % item.images.length);
-    }, 3000);
+    // If multiple images — cycle through them, and move to next slide when done
+    const totalImages = images.length;
 
-    // Clean up the interval when the component unmounts or data changes
-    return () => clearInterval(intervalId);
-  }, [item.images]);
+    const timer = setTimeout(() => {
+      if (innerImageIndex < totalImages - 1) {
+        setInnerImageIndex((prev) => prev + 1);
+      } else {
+        setInnerImageIndex(0);
+        setCurrentSlideIndex((prev) => (prev + 1) % slides.length);
+      }
+    }, innerImageDuration);
+
+    return () => clearTimeout(timer);
+  }, [slides, currentSlideIndex, innerImageIndex]);
+
+  const slideVariants = {
+    enter: (direction) => ({
+      x: direction > 0 ? 50 : -50,
+      opacity: 0,
+    }),
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1,
+    },
+    exit: (direction) => ({
+      zIndex: 0,
+      x: direction < 0 ? 50 : -50,
+      opacity: 0,
+    }),
+  };
+
+  const currentSlide = slides[currentSlideIndex];
+  const images = currentSlide.images || [];
 
   return (
-    <div className="bg-secondary-800 rounded-2xl shadow-xl overflow-hidden flex flex-col border border-slate-700 h-full">
-      {/* Image container with carousel effect */}
-      <div className="relative h-56 sm:h-64 overflow-hidden">
-        {item.images.map((imgSrc, index) => (
-          <img
-            key={index}
-            src={imgSrc}
-            alt={`${item.title} - image ${index + 1}`}
-            className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
-              index === currentIndex ? "opacity-100" : "opacity-0"
-            }`}
-            onError={(e) => {
-              e.target.onerror = null;
-              e.target.src = placeholderImg(400, 300, "Image Indisponible");
-            }}
-          />
-        ))}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent"></div>
-      </div>
+    <div className="bg-secondary-800 rounded-2xl shadow-2xl border border-secondary-700 overflow-hidden">
+      <div className="grid grid-cols-1 md:grid-cols-2">
+        {/* Text Content */}
+        <div className="p-8 md:p-12 flex flex-col justify-center order-2 md:order-1 min-h-[400px] md:min-h-[450px]">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentSlideIndex}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{
+                x: { type: "spring", stiffness: 300, damping: 30 },
+                opacity: { duration: 0.4 },
+              }}
+              custom={1}
+            >
+              <h3 className="text-3xl font-bold text-primary-400 mb-4 flex items-center">
+                <Check className="w-8 h-8 mr-3 text-primary-500" />
+                {currentSlide.subtitle}
+              </h3>
+              <p className="text-lg text-gray-300">{currentSlide.description}</p>
+            </motion.div>
+          </AnimatePresence>
+        </div>
 
-      {/* Thin separator line */}
-      <hr className="border-t border-slate-700" />
-
-      {/* Content section */}
-      <div className="p-6 flex-grow">
-        <h4 className="text-xl font-bold text-primary-500 mb-2">{item.title}</h4>
-        <p className="text-slate-400">{item.desc}</p>
+        {/* Image */}
+        <div className="relative min-h-[300px] md:min-h-0 order-1 md:order-2">
+          <AnimatePresence mode="wait">
+            <motion.img
+              key={images[innerImageIndex] || `no-image-${currentSlideIndex}`}
+              src={images[innerImageIndex]}
+              alt={`Service image ${innerImageIndex + 1}`}
+              className="absolute inset-0 w-full h-full object-cover"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.8, ease: "easeInOut" }}
+            />
+          </AnimatePresence>
+        </div>
       </div>
     </div>
   );
 };
+
+// old carousel
+const ImageCarouselCard = ({ item }) => {
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    useEffect(() => {
+        if (!item.images || item.images.length <= 1) return;
+
+        const intervalId = setInterval(() => {
+            setCurrentIndex((prevIndex) => (prevIndex + 1) % item.images.length);
+        }, 3000); // Change image every 3 seconds
+
+        return () => clearInterval(intervalId);
+    }, [item.images]);
+
+    return (
+        <div className="bg-secondary-800 rounded-2xl shadow-xl overflow-hidden flex flex-col border border-secondary-700 h-full">
+            <div className="relative h-56 sm:h-64">
+                <AnimatePresence>
+                    <motion.img
+                        key={currentIndex}
+                        src={item.images[currentIndex]}
+                        alt={`${item.title} - image ${currentIndex + 1}`}
+                        className="absolute top-0 left-0 w-full h-full object-cover"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 1, ease: "easeInOut" }}
+                    />
+                </AnimatePresence>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent"></div>
+            </div>
+            <div className="p-6 flex-grow flex flex-col">
+                <h4 className="text-xl font-bold text-primary-500 mb-2">{item.title}</h4>
+                <p className="text-gray-400 flex-grow">{item.desc}</p>
+            </div>
+        </div>
+    );
+};
+
 
 const useMediaQuery = (query) => {
   const [matches, setMatches] = useState(false);
@@ -443,25 +623,35 @@ const App = () => {
     },
   ];
 
-  const services = [
+  const services1 = [
     {
-      title: t("service1"),
-      imgText: placeholderImg(600, 400, t("sector_trans"), "374151"),
-      img: values2,
+      subtitle: t("service1_subtitle"),
+      description: t("service1_desc"),
       images: [laser, pliage, welding, laser2, pliage2],
     },
     {
-      title: t("service2"),
-      imgText: placeholderImg(600, 400, t("sector_agr"), "374151"),
-      img: values3,
+      subtitle: t("service2_subtitle"),
+      description: t("service2_desc"),
       images: [ccc],
     },
     {
-      title: t("service3"),
-      imgText: placeholderImg(600, 400, t("sector_loc"), "374151"),
-      img: values4,
+      subtitle: t("service3_subtitle"),
+      description: t("service3_desc"),
       images: [reparation, reparation2],      
     },
+  ];
+
+    const services2 = [
+    {
+      subtitle: t("service21_subtitle"),
+      description: t("service21_desc"),
+      images: [ccc],
+    },
+    {
+      subtitle: t("service22_subtitle"),
+      description: t("service22_desc"),
+      images: [Image1, reparation],
+    }
   ];
 
    const achievements = [
@@ -914,17 +1104,24 @@ const App = () => {
                 </AnimatedSection> */}
 
         {/* --- Workshop Section --- */}
-                <AnimatedSection>
-          <section id="services" className="scroll-mt-20">
-            <SectionTitle title={t("our_workshop")} />
-            <SectionSubTitle title={t("products_subtitle")}/>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {services.map((item) => (
-                <ImageCarouselCard key={item.title} item={item} />
-              ))}
-            </div>
-          </section>
-        </AnimatedSection>
+            <AnimatedSection>
+                <section id="workshop" className="scroll-mt-20 max-w-7xl mx-auto">
+                    <SectionTitle title={t("our_workshop")} />
+                     <p className="text-center text-lg text-white-400 mb-12 max-w-3xl mx-auto">
+                        {t("service1")}
+                    </p>
+                    <ContentImageSlider slides={services1} />
+                </section>
+            </AnimatedSection>
+
+            <AnimatedSection>
+                <section id="workshop" className="scroll-mt-20 max-w-7xl mx-auto">
+                     <p className="text-center text-lg text-white-400 mb-12 max-w-3xl mx-auto">
+                        {t("service2")}
+                    </p>
+                    <ContentImageSlider slides={services2} />
+                </section>
+            </AnimatedSection>
 
         {/* --- Values Section --- */}
 
