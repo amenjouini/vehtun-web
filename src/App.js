@@ -74,31 +74,14 @@ import cr from "./assets/services/c&r.jpg";
 import cr2 from "./assets/services/c&r2.jpg";
 import cr3 from "./assets/services/c&r3.jpg";
 
+
 // Component to handle scroll-triggered animations for sections
 const AnimatedSection = ({ children, threshold = 0.2 }) => {
   const controls = useAnimation();
   const [ref, inView] = useInView({ threshold, triggerOnce: true });
-  useEffect(() => {
-    if (inView) controls.start("visible");
-  }, [controls, inView]);
-  const variants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: "easeOut" },
-    },
-  };
-  return (
-    <motion.section
-      ref={ref}
-      animate={controls}
-      initial="hidden"
-      variants={variants}
-    >
-      {children}
-    </motion.section>
-  );
+  useEffect(() => { if (inView) controls.start("visible"); }, [controls, inView]);
+  const variants = { hidden: { opacity: 0, y: 50 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } } };
+  return <motion.section ref={ref} animate={controls} initial="hidden" variants={variants}>{children}</motion.section>;
 };
 
 const AnimatedVideoSection = ({ children }) => (
@@ -143,9 +126,7 @@ const SectionTitle = ({ title, icon: Icon }) => (
 
 const SectionHigherTitle = ({ title }) => (
   <div className="flex justify-center items-center text-center p-6 border-b border-secondary-700">
-    <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
-      {title}
-    </h2>
+    <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">{title}</h2>
   </div>
 );
 
@@ -300,11 +281,11 @@ const ContentImageSlider = ({ slides }) => {
     const timer = setTimeout(() => {
       if (innerImageIndex < images.length - 1) {
         // If there are more images in the current gallery, show the next one
-        setInnerImageIndex((prev) => prev + 1);
+        setInnerImageIndex(prev => prev + 1);
       } else {
         // If it's the last image, move to the next main slide and reset the inner image index
         setInnerImageIndex(0);
-        setCurrentSlideIndex((prev) => (prev + 1) % slides.length);
+        setCurrentSlideIndex(prev => (prev + 1) % slides.length);
       }
     }, innerImageDuration);
 
@@ -317,14 +298,11 @@ const ContentImageSlider = ({ slides }) => {
     setInnerImageIndex(0);
   }, [currentSlideIndex]);
 
+
   const slideVariants = {
     enter: (direction) => ({ x: direction > 0 ? 50 : -50, opacity: 0 }),
     center: { zIndex: 1, x: 0, opacity: 1 },
-    exit: (direction) => ({
-      zIndex: 0,
-      x: direction < 0 ? 50 : -50,
-      opacity: 0,
-    }),
+    exit: (direction) => ({ zIndex: 0, x: direction < 0 ? 50 : -50, opacity: 0 }),
   };
 
   const currentSlide = slides[currentSlideIndex];
@@ -341,35 +319,30 @@ const ContentImageSlider = ({ slides }) => {
               initial="enter"
               animate="center"
               exit="exit"
-              transition={{
-                x: { type: "spring", stiffness: 300, damping: 30 },
-                opacity: { duration: 0.4 },
-              }}
+              transition={{ x: { type: "spring", stiffness: 300, damping: 30 }, opacity: { duration: 0.4 } }}
               custom={1}
             >
               <h3 className="text-3xl font-bold text-primary-400 mb-4 flex items-center">
                 <Check className="w-8 h-8 mr-3 text-primary-500" />
                 {currentSlide.subtitle}
               </h3>
-              <p className="text-lg text-gray-300">
-                {currentSlide.description}
-              </p>
+              <p className="text-lg text-gray-300">{currentSlide.description}</p>
             </motion.div>
           </AnimatePresence>
         </div>
         <div className="relative min-h-[300px] md:min-h-0 order-1 md:order-2">
-          <AnimatePresence mode="wait">
-            <motion.img
-              key={`${currentSlideIndex}-${innerImageIndex}`}
-              src={images[innerImageIndex]}
-              alt={`Service image ${innerImageIndex + 1}`}
-              className="absolute inset-0 w-full h-full object-cover"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.8, ease: "easeInOut" }}
-            />
-          </AnimatePresence>
+           <AnimatePresence mode="wait">
+                <motion.img
+                    key={`${currentSlideIndex}-${innerImageIndex}`}
+                    src={images[innerImageIndex]}
+                    alt={`Service image ${innerImageIndex + 1}`}
+                    className="absolute inset-0 w-full h-full object-cover"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.8, ease: "easeInOut" }}
+                />
+            </AnimatePresence>
         </div>
       </div>
     </div>
@@ -377,34 +350,35 @@ const ContentImageSlider = ({ slides }) => {
 };
 
 const InnerImageCarousel = ({ images }) => {
-  const [innerImageIndex, setInnerImageIndex] = useState(0);
+    const [innerImageIndex, setInnerImageIndex] = useState(0);
 
-  useEffect(() => {
-    setInnerImageIndex(0); // reset index when images change
-  }, [images]);
+   useEffect(() => {
+  setInnerImageIndex(0); // reset index when images change
+}, [images]);
 
-  useEffect(() => {
-    if (images.length <= 1) return;
-    const imageTimer = setInterval(() => {
-      setInnerImageIndex((prev) => (prev + 1) % images.length);
-    }, 3000);
-    return () => clearInterval(imageTimer);
-  }, [images]);
+useEffect(() => {
+  if (images.length <= 1) return;
+  const imageTimer = setInterval(() => {
+    setInnerImageIndex(prev => (prev + 1) % images.length);
+  }, 3000);
+  return () => clearInterval(imageTimer);
+}, [images]);
 
-  return (
-    <AnimatePresence mode="wait">
-      <motion.img
-        key={innerImageIndex}
-        src={images[innerImageIndex]}
-        alt={`Service image ${innerImageIndex + 1}`}
-        className="absolute inset-0 w-full h-full object-cover"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.8, ease: "easeInOut" }}
-      />
-    </AnimatePresence>
-  );
+
+    return (
+        <AnimatePresence mode="wait">
+            <motion.img
+                key={innerImageIndex}
+                src={images[innerImageIndex]}
+                alt={`Service image ${innerImageIndex + 1}`}
+                className="absolute inset-0 w-full h-full object-cover"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.8, ease: "easeInOut" }}
+            />
+        </AnimatePresence>
+    );
 };
 
 // old carousel
@@ -470,6 +444,65 @@ const AboutUsCarouselCard = ({ item }) => (
 );
 
 
+const AboutUsSection = () => {
+   const {
+    t,
+    i18n: { changeLanguage, language },
+  } = useTranslation();
+    const [showcaseIndex, setShowcaseIndex] = useState(0);
+
+    const missionAndVision = [
+        { title: t("our_mission"), description: t("our_mission_desc") },
+        { title: t("our_vision"), description: t("our_vision_desc") },
+    ];
+
+    const showcaseImages = [
+        { src: produit1, title: t("image1_title") },
+        { src: produit2, title: t("image2_title") },
+        { src: produit3, title: t("image3_title") },
+    ];
+
+    // This useEffect is now safely inside its own component
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            setShowcaseIndex((prevIndex) => (prevIndex + 1) % showcaseImages.length);
+        }, 3000);
+        return () => clearInterval(intervalId);
+    }, [showcaseImages.length]);
+
+    const currentShowcaseItem = showcaseImages[showcaseIndex];
+
+    return (
+        <AnimatedSection>
+            <section id="about" className="scroll-mt-20 max-w-7xl mx-auto py-16">
+                <div className="flex justify-center items-center mb-12 text-center">
+                    <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">{t("about_title")}</h2>
+                </div>
+                <div className="grid md:grid-cols-2 gap-8 items-stretch">
+                    <div className="flex flex-col gap-8">
+                        {missionAndVision.map((item) => (
+                            <motion.div
+                                key={item.title}
+                                className="bg-secondary-800 p-8 rounded-2xl shadow-lg h-full"
+                                whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                            >
+                                <h3 className="text-2xl font-bold text-white mb-4">{item.title}</h3>
+                                <div className="flex items-start">
+                                    <CheckCircle className="w-7 h-7 text-amber-400 mr-3 mt-1 flex-shrink-0" />
+                                    <p className="text-lg text-gray-200">{item.description}</p>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+                    <div className="min-h-[400px] md:min-h-full">
+                        <AboutUsCarouselCard item={currentShowcaseItem} />
+                    </div>
+                </div>
+            </section>
+        </AnimatedSection>
+    );
+};
+
 const AboutUsTitle = ({ title }) => (
   <div className="flex justify-center items-center mb-12 text-center">
     <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
@@ -477,8 +510,6 @@ const AboutUsTitle = ({ title }) => (
     </h2>
   </div>
 );
-
-
 
 const useMediaQuery = (query) => {
   const [matches, setMatches] = useState(false);
@@ -626,60 +657,38 @@ const App = () => {
     }),
   };
 
- const AboutUsSection = () => {
-    const [showcaseIndex, setShowcaseIndex] = useState(0);
+  const aboutUs = [
+    {
+      title: t("fiability.title"),
+      images: [produit1, produit2, produit3],
+    },
+  ];
 
-    const missionAndVision = [
-        { title: t("our_mission"), description: t("our_mission_desc") },
-        { title: t("our_vision"), description: t("our_vision_desc") },
-    ];
+  const missionAndVision = [
+    {
+      title: t("our_mission"),
+      description: t("our_mission_desc"),
+    },
+    {
+      title: t("our_vision"),
+      description: t("our_vision_desc"),
+    },
+  ];
 
-    const showcaseImages = [
-        { src: produit1, title: t("image1_title") },
-        { src: produit2, title: t("image2_title") },
-        { src: produit3, title: t("image3_title") },
-    ];
+  const showcaseImages = [
+    { src: produit1, title: t("our_vision") },
+    { src: produit2, title: t("our_mission") },
+    { src: produit3, title: t("our_vision") },
+  ];
 
-    // This useEffect is now safely inside its own component
-    useEffect(() => {
-        const intervalId = setInterval(() => {
-            setShowcaseIndex((prevIndex) => (prevIndex + 1) % showcaseImages.length);
-        }, 3000);
-        return () => clearInterval(intervalId);
-    }, [showcaseImages.length]);
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     setShowcaseIndex((prevIndex) => (prevIndex + 1) % showcaseImages.length);
+  //   }, 3000);
+  //   return () => clearInterval(intervalId);
+  // }, [showcaseImages.length]);
 
-    const currentShowcaseItem = showcaseImages[showcaseIndex];
-
-    return (
-        <AnimatedSection>
-            <section id="about" className="scroll-mt-20 max-w-7xl mx-auto py-16">
-                <div className="flex justify-center items-center mb-12 text-center">
-                    <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">{t("about_title")}</h2>
-                </div>
-                <div className="grid md:grid-cols-2 gap-8 items-stretch">
-                    <div className="flex flex-col gap-8">
-                        {missionAndVision.map((item) => (
-                            <motion.div
-                                key={item.title}
-                                className="bg-secondary-800 p-8 rounded-2xl shadow-lg h-full"
-                                whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                            >
-                                <h3 className="text-2xl font-bold text-white mb-4">{item.title}</h3>
-                                <div className="flex items-start">
-                                    <CheckCircle className="w-7 h-7 text-amber-400 mr-3 mt-1 flex-shrink-0" />
-                                    <p className="text-lg text-gray-200">{item.description}</p>
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
-                    <div className="min-h-[400px] md:min-h-full">
-                        <AboutUsCarouselCard item={currentShowcaseItem} />
-                    </div>
-                </div>
-            </section>
-        </AnimatedSection>
-    );
-};
+  const currentShowcaseItem = showcaseImages[showcaseIndex];
 
   const values = [
     {
@@ -805,6 +814,7 @@ const App = () => {
       description: "Convoi exceptionnel pour pièces hors gabarit.",
       images: [trans3],
     },
+    
   ];
 
   cardRefs.current = achievements.map(
@@ -1046,13 +1056,15 @@ const App = () => {
 
       {/* --- Hero Section --- */}
       <header className="flex flex-col justify-center items-center text-center">
-<AboutUsSection />
+       <AboutUsSection/>
       </header>
 
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 space-y-24 sm:space-y-32">
         {/* --- Products 1 Section --- */}
+                      
 
         <AnimatedSection>
+          
           <section id="products" className="scroll-mt-20 max-w-7xl mx-auto">
             <SectionTitle title={t("products_title")} />
             <div className="bg-secondary-800 rounded-2xl shadow-2xl border-secondary-700 overflow-hidden">
@@ -1206,14 +1218,16 @@ const App = () => {
                 </section>
             </AnimatedSection> */}
 
-        <AnimatedSection>
-          <section id="workshop" className="scroll-mt-20 max-w-7xl mx-auto">
-            <div className="bg-secondary-800 rounded-2xl shadow-2xl border-secondary-700 overflow-hidden">
-              <SectionHigherTitle title={t("service2")} />
-              <ContentImageSlider slides={services2} />
-            </div>
-          </section>
-        </AnimatedSection>
+      <AnimatedSection>
+                <section id="workshop" className="scroll-mt-20 max-w-7xl mx-auto">
+                    <div className="bg-secondary-800 rounded-2xl shadow-2xl border-secondary-700 overflow-hidden">
+                        <SectionHigherTitle title={t("service2")} />
+                        <ContentImageSlider slides={services2} />
+                    </div>
+                </section>
+            </AnimatedSection>
+        
+
 
         {/* --- Values Section --- */}
 
@@ -1276,7 +1290,7 @@ const App = () => {
             </p>
             {/* The title and content are now wrapped in a single styled card */}
             <div className="bg-secondary-800 rounded-2xl shadow-2xl border border-secondary-700 overflow-hidden">
-              <SectionHigherTitle title={t("achiev")} />
+              <SectionHigherTitle title={t("achiev")}/>
               <ContentImageSlider slides={achievements} />
             </div>
           </section>
