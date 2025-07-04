@@ -7,5 +7,5 @@ i18n.use(initReactI18next).init({
     EN: { ...enJSON },
     FR: { ...frJSON},
 }, // Where we're gonna put translations' files
- lng: "FR",     // Set the initial language of the App
+ lng: "EN",     // Set the initial language of the App
 });
