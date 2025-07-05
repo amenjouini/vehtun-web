@@ -475,67 +475,83 @@ const AboutUsCarouselCard = ({ item }) => (
   </div>
 );
 
-
-
 const AboutUsSection = () => {
   const {
     t,
     i18n: { changeLanguage, language },
   } = useTranslation();
-    const [showcaseIndex, setShowcaseIndex] = useState(0);
+  const [showcaseIndex, setShowcaseIndex] = useState(0);
 
-    const missionAndVision = [
-        { title: t("our_mission"), description: t("our_mission_desc") },
-        { title: t("our_vision"), description: t("our_vision_desc") },
-    ];
+  const missionAndVision = [
+    { title: t("our_mission"), description: t("our_mission_desc") },
+    { title: t("our_vision"), description: t("our_vision_desc") },
+  ];
 
-    const showcaseImages = [
-        { src: produit1, title: t("image1_title") },
-        { src: produit2, title: t("image2_title") },
-        { src: produit3, title: t("image3_title") },
-    ];
+  const showcaseImages = [
+    { src: produit1, title: t("clients1") },
+    { src: laser, title: t("service1_subtitle") },
+    { src: citerne1, title: t("clients2") },
+    { src: reparation, title: t("service2") },
+    { src: trans2, title: t("clients1") },
+    { src: indus, title: t("clients4") },
+    { src: collec, title: t("clients5") },
+    { src: pliage, title: t("service2_subtitle") },
+    { src: trans3, title: t("clients1") },
+    { src: btp2, title: t("clients3") },
+    { src: agr, title: t("clients2") },
+    { src: pliage2, title: t("service2_subtitle") },
+    { src: welding, title: t("service3_subtitle") },
+    { src: benne1, title: t("clients2") },
+    { src: laser2, title: t("service1_subtitle") },
+    { src: produit3, title: t("clients1") },
+  ];
 
-    useEffect(() => {
-        const intervalId = setInterval(() => {
-            setShowcaseIndex((prevIndex) => (prevIndex + 1) % showcaseImages.length);
-        }, 3000);
-        return () => clearInterval(intervalId);
-    }, [showcaseImages.length]);
+  // This useEffect is now safely inside its own component
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setShowcaseIndex((prevIndex) => (prevIndex + 1) % showcaseImages.length);
+    }, 3000);
+    return () => clearInterval(intervalId);
+  }, [showcaseImages.length]);
 
-    const currentShowcaseItem = showcaseImages[showcaseIndex];
+  const currentShowcaseItem = showcaseImages[showcaseIndex];
 
-    return (
-        <AnimatedSection>
-            <section id="about" className="scroll-mt-20 max-w-7xl mx-auto py-16 px-4 md:px-0">
-                <div className="mt-10">
-                    <AboutUsTitle title={t("about_title")} />
-                </div>
-                {/* Grid gap is now larger on mobile and smaller on desktop */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-  <div className="flex flex-col gap-8">
-    {missionAndVision.map((item) => (
-      <motion.div
-        key={item.title}
-        className="bg-secondary-800 p-6 rounded-2xl shadow-lg"
-        whileHover={{ y: -5, transition: { duration: 0.2 } }}
+  return (
+    <AnimatedSection>
+      <section
+        id="about"
+        className="scroll-mt-20 max-w-7xl mx-auto py-16  mt-10 px-4 md:px-0"
       >
-        <h3 className="text-2xl font-bold text-white mb-3">{item.title}</h3>
-        <div className="flex items-start">
-          <CheckCircle className="w-6 h-6 text-amber-400 mr-3 mt-1 flex-shrink-0" />
-          <p className="text-base text-gray-200">{item.description}</p>
+        <div className="flex justify-center items-center mb-12 text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
+            {t("about_title")}
+          </h2>
         </div>
-      </motion.div>
-    ))}
-  </div>
-
-  <div className="min-h-[300px] sm:min-h-[400px] md:min-h-full">
-    <AboutUsCarouselCard item={currentShowcaseItem} />
-  </div>
-</div>
-
-            </section>
-        </AnimatedSection>
-    );
+        <div className="grid md:grid-cols-2 gap-8 items-stretch">
+          <div className="flex flex-col gap-8">
+            {missionAndVision.map((item) => (
+              <motion.div
+                key={item.title}
+                className="bg-secondary-800 p-8 rounded-2xl shadow-lg h-full"
+                whileHover={{ y: -5, transition: { duration: 0.2 } }}
+              >
+                <h3 className="text-2xl font-bold text-white mb-4">
+                  {item.title}
+                </h3>
+                <div className="flex items-start">
+                  <CheckCircle className="w-7 h-7 text-amber-400 mr-3 mt-1 flex-shrink-0" />
+                  <p className="text-lg text-gray-200 text-left">{item.description}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+          <div className="min-h-[400px] md:min-h-full">
+            <AboutUsCarouselCard item={currentShowcaseItem} />
+          </div>
+        </div>
+      </section>
+    </AnimatedSection>
+  );
 };
 
 const AboutUsTitle = ({ title }) => (
@@ -1293,7 +1309,7 @@ const App = () => {
         <AnimatedSection>
           <section id="values" className="scroll-mt-20 max-w-7xl mx-auto">
             <SectionTitle title={t("added_values")} />
-            <p className="text-center text-lg text-gray-400 mb-12 max-w-3xl mx-auto">
+            <p className="text-center text-lg text-white-400 mb-12 max-w-3xl mx-auto">
               {t("added_values_desc")}
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 items-stretch">
@@ -1456,47 +1472,46 @@ const App = () => {
               </h3>
 
               {/* --- Contact Details --- */}
-              <div className="flex flex-wrap justify-center items-start gap-x-12 gap-y-8 text-center sm:text-left">
-                <div className="flex items-center gap-4">
-                  <MapPin className="w-7 h-7 text-primary-500 flex-shrink-0" />
-                  <div>
-                    <p className="font-bold text-lg text-white">
-                      {t("contact_address")}
-                    </p>
-                    <p className="text-white-400">
-                      {t("contact_address_value")}
-                    </p>
-                  </div>
-                </div>
+          {/* --- Contact Details --- */}
+<div className="flex flex-col sm:flex-row sm:flex-wrap gap-8 sm:gap-x-12 text-left">
+  {/* Address */}
+  <div className="flex items-start gap-4">
+    <MapPin className="w-7 h-7 text-primary-500 flex-shrink-0" />
+    <div>
+      <p className="font-bold text-lg text-white">{t("contact_address")}</p>
+      <p className="text-gray-400">{t("contact_address_value")}</p>
+    </div>
+  </div>
 
-                <div className="flex items-center gap-4">
-                  <Phone className="w-7 h-7 text-primary-500 flex-shrink-0" />
-                  <div>
-                    <p className="font-bold text-lg text-white">
-                      {t("contact_phone")}
-                    </p>
-                    <a
-                      href={`tel:${t("contact_phone_value")}`}
-                      className="text-primary-400 hover:text-primary-300 transition-colors"
-                    >
-                      +216 94 888 342
-                    </a>
-                  </div>
-                </div>
+  {/* Phone */}
+  <div className="flex items-start gap-4">
+    <Phone className="w-7 h-7 text-primary-500 flex-shrink-0" />
+    <div>
+      <p className="font-bold text-lg text-white">{t("contact_phone")}</p>
+      <a
+        href={`tel:${t("contact_phone_value")}`}
+        className="text-primary-400 hover:text-primary-300 transition-colors block"
+      >
+        +216 94 888 342
+      </a>
+    </div>
+  </div>
 
-                <div className="flex items-center gap-4">
-                  <Mail className="w-7 h-7 text-primary-500 flex-shrink-0" />
-                  <div>
-                    <p className="font-bold text-lg text-white">Email</p>
-                    <a
-                      href={`mailto:${t("contact_email_value")}`}
-                      className="text-primary-400 hover:text-primary-300 transition-colors"
-                    >
-                      contact@vehtun.com
-                    </a>
-                  </div>
-                </div>
-              </div>
+  {/* Email */}
+  <div className="flex items-start gap-4">
+    <Mail className="w-7 h-7 text-primary-500 flex-shrink-0" />
+    <div>
+      <p className="font-bold text-lg text-white">Email</p>
+      <a
+        href={`mailto:${t("contact_email_value")}`}
+        className="text-primary-400 hover:text-primary-300 transition-colors block"
+      >
+        contact@vehtun.com
+      </a>
+    </div>
+  </div>
+</div>
+
 
               {/* --- Divider --- */}
               <hr className="my-10 border-t-2 border-dashed border-secondary-700" />
