@@ -520,7 +520,7 @@ const AboutUsSection = () => {
     <AnimatedSection>
       <section id="about" className="scroll-mt-20 max-w-7xl mx-auto py-16 mt-10 px-4 md:px-0">
         {/* This is the new main card that encapsulates everything */}
-        <div className="bg-primary-1100 rounded-2xl shadow-2xl p-8 sm:pt-8 sm:pb-8 sm:pr-0 sm:pl-0">
+        <div className="bg-primary-1100 rounded-2xl shadow-2xl py-8 px-2 sm:pt-8 sm:pb-8 sm:pr-0 sm:pl-0">
           <AboutUsTitle title={t("about_title")} />
 
           <div className="grid md:grid-cols-2 gap-8 items-stretch">
@@ -1145,7 +1145,7 @@ const App = () => {
 
         <AnimatedSection>
           <section id="products" className="scroll-mt-20 max-w-7xl mx-auto">
-            <div className="bg-primary-1100 rounded-2xl shadow-2xl p-8 sm:pt-8 sm:pb-8 sm:pr-0 sm:pl-0">
+            <div className="bg-primary-1100 rounded-2xl shadow-2xl py-8 px-2 sm:pt-8 sm:pb-8 sm:pr-0 sm:pl-0">
               <SectionTitle title={t("products_title")} />
               <div className="bg-white rounded-2xl shadow-2xl border-secondary-700 overflow-hidden">
                 <SectionHigherTitle title={t("products_subtitle1")} />
@@ -1210,7 +1210,7 @@ const App = () => {
 
         <AnimatedVideoSection>
           <section id="services" className="scroll-mt-20 max-w-7xl mx-auto">
-                        <div className="bg-primary-1100 rounded-2xl shadow-2xl p-8 sm:pt-8 sm:pb-8 sm:pr-0 sm:pl-0">
+                        <div className="bg-primary-1100 rounded-2xl shadow-2xl py-8 px-2 sm:pt-8 sm:pb-8 sm:pr-0 sm:pl-0">
 
             <SectionTitle title={t("our_workshop")} />
 
@@ -1314,7 +1314,7 @@ const App = () => {
 
         <AnimatedSection>
           <section id="values" className="scroll-mt-20 max-w-7xl mx-auto">
-                        <div className="bg-primary-1100 rounded-2xl shadow-2xl p-8 sm:pt-8 sm:pb-8 sm:pr-0 sm:pl-0">
+                        <div className="bg-primary-1100 rounded-2xl shadow-2xl py-8 px-2 sm:pt-8 sm:pb-8 sm:pr-0 sm:pl-0">
 
             <SectionTitle title={t("added_values")} />
             <p className="text-center text-lg text-secondary-700 mb-12 max-w-3xl mx-auto">
@@ -1369,7 +1369,7 @@ const App = () => {
             id="clients-achievements"
             className="scroll-mt-20 max-w-7xl mx-auto"
           >
-                        <div className="bg-primary-1100 rounded-2xl shadow-2xl p-8 sm:pt-8 sm:pb-8 sm:pr-0 sm:pl-0">
+                        <div className="bg-primary-1100 rounded-2xl shadow-2xl py-8 px-2 sm:pt-8 sm:pb-8 sm:pr-0 sm:pl-0">
 
             <SectionTitle title={t("achiev")} />
             {/* The title and content are now wrapped in a single styled card */}
@@ -1460,7 +1460,7 @@ const App = () => {
         {/* --- Contact Section --- */}
         <AnimatedSection>
           <section id="contact" className="scroll-mt-20">
-                        <div className=" max-w-4xl mx-auto bg-primary-1100 rounded-2xl shadow-2xl p-8 sm:pt-8 sm:pb-8 sm:pr-0 sm:pl-0">
+                        <div className=" max-w-4xl mx-auto bg-primary-1100 rounded-2xl shadow-2xl py-8 px-2 sm:pt-8 sm:pb-8 sm:pr-0 sm:pl-0">
 
             <SectionTitle title={t("contact_title")} />
             <div className="bg-white p-8 sm:p-12 rounded-2xl shadow-2xl">
