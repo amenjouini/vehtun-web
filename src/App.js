@@ -518,7 +518,7 @@ const AboutUsSection = () => {
 
   return (
     <AnimatedSection>
-      <section id="about" className="scroll-mt-20 max-w-7xl mx-auto py-24">
+      <section id="about" className="scroll-mt-20 max-w-7xl mx-auto py-16 mt-10 px-4 md:px-0">
         {/* This is the new main card that encapsulates everything */}
         <div className="bg-primary-1100 rounded-2xl shadow-2xl p-8 sm:pt-8 sm:pb-8 sm:pr-0 sm:pl-0">
           <AboutUsTitle title={t("about_title")} />
