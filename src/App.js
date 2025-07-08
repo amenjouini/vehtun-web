@@ -141,7 +141,7 @@ const getYouTubeEmbedUrl = (url) => {
 
 // Updated SectionTitle with animation
 const SectionTitle = ({ title, icon: Icon }) => (
-  <h2 className="text-3xl sm:text-4xl font-bold text-center text-primary-400 mb-12 flex items-center justify-center gap-3">
+  <h2 className="text-3xl sm:text-4xl font-bold text-center text-secondary-700 mb-8 flex items-center justify-center gap-3">
     {Icon && <Icon className="w-8 h-8 sm:w-10 sm:h-10" />}
     <span>{title}</span>
   </h2>
@@ -149,7 +149,7 @@ const SectionTitle = ({ title, icon: Icon }) => (
 
 const SectionHigherTitle = ({ title }) => (
   <div className="flex justify-center items-center text-center p-6 border-b border-secondary-700">
-    <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
+    <h2 className="text-3xl sm:text-2xl font-bold text-secondary-700 tracking-tight">
       {title}
     </h2>
   </div>
@@ -337,7 +337,7 @@ const ContentImageSlider = ({ slides }) => {
   const images = currentSlide?.images || [];
 
   return (
-    <div className="bg-secondary-800 rounded-b-2xl shadow-2xl border-x border-b border-secondary-700 overflow-hidden">
+    <div className="bg-white rounded-b-2xl shadow-2xl border-x overflow-hidden">
       <div className="grid grid-cols-1 md:grid-cols-2">
         <div className="p-8 md:p-12 flex flex-col justify-center order-2 md:order-1 md:min-h-[450px]">
           <AnimatePresence mode="wait">
@@ -353,11 +353,11 @@ const ContentImageSlider = ({ slides }) => {
               }}
               custom={1}
             >
-              <h3 className="text-3xl font-bold text-primary-400 mb-4 flex items-center">
+              <h3 className="text-3xl font-bold text-secondary-700 mb-4 flex items-center">
                 <Check className="w-8 h-8 mr-3 text-primary-500" />
                 {currentSlide.subtitle}
               </h3>
-              <p className="text-lg text-gray-300">
+              <p className="text-lg text-secondary-700">
                 {currentSlide.description}
               </p>
             </motion.div>
@@ -518,35 +518,37 @@ const AboutUsSection = () => {
 
   return (
     <AnimatedSection>
-      <section
-        id="about"
-        className="scroll-mt-20 max-w-7xl mx-auto py-16  mt-10 px-4 md:px-0"
-      >
-        <div className="flex justify-center items-center mb-12 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
-            {t("about_title")}
-          </h2>
-        </div>
-        <div className="grid md:grid-cols-2 gap-8 items-stretch">
-          <div className="flex flex-col gap-8">
-            {missionAndVision.map((item) => (
-              <motion.div
-                key={item.title}
-                className="bg-secondary-800 p-8 rounded-2xl shadow-lg h-full"
-                whileHover={{ y: -5, transition: { duration: 0.2 } }}
-              >
-                <h3 className="text-2xl font-bold text-white mb-4">
-                  {item.title}
-                </h3>
-                <div className="flex items-start">
-                  <CheckCircle className="w-7 h-7 text-amber-400 mr-3 mt-1 flex-shrink-0" />
-                  <p className="text-lg text-gray-200 text-left">{item.description}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-          <div className="min-h-[400px] md:min-h-full">
-            <AboutUsCarouselCard item={currentShowcaseItem} />
+      <section id="about" className="scroll-mt-20 max-w-7xl mx-auto py-24">
+        {/* This is the new main card that encapsulates everything */}
+        <div className="bg-primary-1100 rounded-2xl shadow-2xl p-8 sm:pt-8 sm:pb-8 sm:pr-0 sm:pl-0">
+          <AboutUsTitle title={t("about_title")} />
+
+          <div className="grid md:grid-cols-2 gap-8 items-stretch">
+            {/* Left Column: Mission and Vision Cards */}
+            <div className="flex flex-col gap-8">
+              {missionAndVision.map((item) => (
+                <motion.div
+                  key={item.title}
+                  className="bg-white p-8 rounded-2xl shadow-lg h-full "
+                  whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                >
+                  <h3 className="text-2xl font-bold text-secondary-700 mb-4">
+                    {item.title}
+                  </h3>
+                  <div className="flex items-start">
+                    <CheckCircle className="w-7 h-7 text-amber-400 mr-3 mt-1 flex-shrink-0" />
+                    <p className="text-lg text-secondary-700 text-left">
+                      {item.description}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Right Column: Image Carousel Card */}
+            <div className="min-h-[400px] md:min-h-full">
+              <AboutUsCarouselCard item={currentShowcaseItem} />
+            </div>
           </div>
         </div>
       </section>
@@ -556,7 +558,7 @@ const AboutUsSection = () => {
 
 const AboutUsTitle = ({ title }) => (
   <div className="flex justify-center items-center mb-12 text-center">
-    <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
+    <h2 className="text-3xl sm:text-4xl font-bold text-secondary-700 tracking-tight">
       {title}
     </h2>
   </div>
@@ -989,7 +991,7 @@ const App = () => {
   };
 
   return (
-    <div className="bg-secondary-900 text-gray-200 font-poppins leading-relaxed antialiased">
+    <div className="bg-secondary-700 text-gray-200 font-poppins leading-relaxed antialiased">
       {/* --- Google Font Import & Global Styles --- */}
       <style jsx global>{`
         @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap");
@@ -1143,33 +1145,31 @@ const App = () => {
 
         <AnimatedSection>
           <section id="products" className="scroll-mt-20 max-w-7xl mx-auto">
-            <SectionTitle title={t("products_title")} />
-            <div className="bg-secondary-800 rounded-2xl shadow-2xl border-secondary-700 overflow-hidden">
-              <SectionHigherTitle title={t("products_subtitle1")} />
+            <div className="bg-primary-1100 rounded-2xl shadow-2xl p-8 sm:pt-8 sm:pb-8 sm:pr-0 sm:pl-0">
+              <SectionTitle title={t("products_title")} />
+              <div className="bg-white rounded-2xl shadow-2xl border-secondary-700 overflow-hidden">
+                <SectionHigherTitle title={t("products_subtitle1")} />
 
-              <ContentImageSlider slides={products1} />
-            </div>
-          </section>
-        </AnimatedSection>
+                <ContentImageSlider slides={products1} />
+              </div>
 
-        {/* --- Products 2 Section --- */}
-        <AnimatedSection>
-          <section id="products" className="scroll-mt-20 max-w-7xl mx-auto">
-            <div className="bg-secondary-800 rounded-2xl shadow-2xl border-secondary-700 overflow-hidden">
-              <SectionHigherTitle title={t("products_subtitle2")} />
+              <br></br>
+              <br></br>
 
-              <ContentImageSlider slides={products2} />
-            </div>
-          </section>
-        </AnimatedSection>
+              <div className="bg-white rounded-2xl shadow-2xl border-secondary-700 overflow-hidden">
+                <SectionHigherTitle title={t("products_subtitle2")} />
 
-        {/* --- Products 3 Section --- */}
-        <AnimatedSection>
-          <section id="products" className="scroll-mt-20 max-w-7xl mx-auto">
-            <div className="bg-secondary-800 rounded-2xl shadow-2xl border-secondary-700 overflow-hidden">
-              <SectionHigherTitle title={t("products_subtitle3")} />
+                <ContentImageSlider slides={products2} />
+              </div>
 
-              <ContentImageSlider slides={products3} />
+              <br></br>
+              <br></br>
+
+              <div className="bg-white rounded-2xl shadow-2xl border-secondary-700 overflow-hidden">
+                <SectionHigherTitle title={t("products_subtitle3")} />
+
+                <ContentImageSlider slides={products3} />
+              </div>
             </div>
           </section>
         </AnimatedSection>
@@ -1210,9 +1210,11 @@ const App = () => {
 
         <AnimatedVideoSection>
           <section id="services" className="scroll-mt-20 max-w-7xl mx-auto">
+                        <div className="bg-primary-1100 rounded-2xl shadow-2xl p-8 sm:pt-8 sm:pb-8 sm:pr-0 sm:pl-0">
+
             <SectionTitle title={t("our_workshop")} />
 
-            <div className="bg-secondary-800 rounded-2xl shadow-2xl border-secondary-700 overflow-hidden">
+            <div className="bg-white   rounded-2xl shadow-2xl border-secondary-700 overflow-hidden">
               <SectionHigherTitle title={t("service1")} icon={Award} />
               <div className="grid grid-cols-1 md:grid-cols-2">
                 {/* Left Column: Text Content & Navigation */}
@@ -1230,10 +1232,10 @@ const App = () => {
                       }}
                       custom={1}
                     >
-                      <h3 className="text-3xl font-bold text-primary-400 mb-4">
+                      <h3 className="text-3xl font-bold text-secondary-700 mb-4">
                         {videos[currentIndex].title}
                       </h3>
-                      <p className="text-lg text-gray-300">
+                      <p className="text-lg text-secondary-700">
                         {videos[currentIndex].description}
                       </p>
                     </motion.div>
@@ -1281,6 +1283,17 @@ const App = () => {
                 </div>
               </div>
             </div>
+<br></br>
+<br></br>
+
+                   <AnimatedSection>
+            <div className="bg-white rounded-2xl shadow-2xl border-secondary-700 overflow-hidden">
+              <SectionHigherTitle title={t("service2")} />
+              <ContentImageSlider slides={services2} />
+            </div>
+        </AnimatedSection>
+                        </div>
+
           </section>
         </AnimatedVideoSection>
 
@@ -1295,21 +1308,16 @@ const App = () => {
                 </section>
             </AnimatedSection> */}
 
-        <AnimatedSection>
-          <section id="workshop" className="scroll-mt-20 max-w-7xl mx-auto">
-            <div className="bg-secondary-800 rounded-2xl shadow-2xl border-secondary-700 overflow-hidden">
-              <SectionHigherTitle title={t("service2")} />
-              <ContentImageSlider slides={services2} />
-            </div>
-          </section>
-        </AnimatedSection>
+ 
 
         {/* --- Values Section --- */}
 
         <AnimatedSection>
           <section id="values" className="scroll-mt-20 max-w-7xl mx-auto">
+                        <div className="bg-primary-1100 rounded-2xl shadow-2xl p-8 sm:pt-8 sm:pb-8 sm:pr-0 sm:pl-0">
+
             <SectionTitle title={t("added_values")} />
-            <p className="text-center text-lg text-white-400 mb-12 max-w-3xl mx-auto">
+            <p className="text-center text-lg text-secondary-700 mb-12 max-w-3xl mx-auto">
               {t("added_values_desc")}
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 items-stretch">
@@ -1318,7 +1326,7 @@ const App = () => {
                 return (
                   <div
                     key={value.title}
-                    className="bg-secondary-800 rounded-2xl border border-secondary-700 shadow-lg flex flex-col text-center h-full"
+                    className="bg-white rounded-2xl border border-secondary-700 shadow-lg flex flex-col text-center h-full"
                   >
                     {/* Content Wrapper */}
                     <div>
@@ -1326,20 +1334,20 @@ const App = () => {
                         <div className="mb-4 text-primary-500">
                           <Icon size={36} strokeWidth={1.5} />
                         </div>
-                        <h4 className="text-lg font-bold text-white mb-3 min-h-[56px] flex items-center justify-center">
+                        <h4 className="text-lg font-bold text-secondary-700 mb-3 min-h-[56px] flex items-center justify-center">
                           {value.title}
                         </h4>
                       </div>
                       <div className="overflow-hidden w-full">
-                        <div className="border-t border-secondary-700/50">
+                        <div className="border-secondary-700">
                           <div className="aspect-video">
                             <img
                               src={value.img}
                               alt={value.title}
-                              className="w-full h-full object-cover"
+                              className="w-full h-full border-t border-b border-secondary-700 object-cover"
                             />
                           </div>
-                          <div className="p-6 text-gray-300">
+                          <div className="p-6 text-secondary-700">
                             <p>{value.desc}</p>
                           </div>
                         </div>
@@ -1351,6 +1359,7 @@ const App = () => {
                 );
               })}
             </div>
+            </div>
           </section>
         </AnimatedSection>
 
@@ -1360,71 +1369,57 @@ const App = () => {
             id="clients-achievements"
             className="scroll-mt-20 max-w-7xl mx-auto"
           >
+                        <div className="bg-primary-1100 rounded-2xl shadow-2xl p-8 sm:pt-8 sm:pb-8 sm:pr-0 sm:pl-0">
+
             <SectionTitle title={t("achiev")} />
             {/* The title and content are now wrapped in a single styled card */}
-            <div className="bg-secondary-800 rounded-2xl shadow-2xl border border-secondary-700 overflow-hidden">
+            <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
               <SectionHigherTitle title={t("clients1")} />
               <ContentImageSlider slides={achievements} />
             </div>
-          </section>
-        </AnimatedSection>
+       
+<br></br>
+<br></br>
 
         {/* --- Achievements Section 2 --- */}
-        <AnimatedSection>
-          <section
-            id="clients-achievements"
-            className="scroll-mt-20 max-w-7xl mx-auto"
-          >
+       
             {/* The title and content are now wrapped in a single styled card */}
-            <div className="bg-secondary-800 rounded-2xl shadow-2xl border border-secondary-700 overflow-hidden">
+            <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
               <SectionHigherTitle title={t("clients2")} />
               <ContentImageSlider slides={achievements2} />
             </div>
-          </section>
-        </AnimatedSection>
-
-        {/* --- Achievements Section 3 --- */}
-        <AnimatedSection>
-          <section
-            id="clients-achievements"
-            className="scroll-mt-20 max-w-7xl mx-auto"
-          >
+          
+      <br></br>
+<br></br>
             {/* The title and content are now wrapped in a single styled card */}
-            <div className="bg-secondary-800 rounded-2xl shadow-2xl border border-secondary-700 overflow-hidden">
+            <div className="bg-white rounded-2xl shadow-2xl  overflow-hidden">
               <SectionHigherTitle title={t("clients3")} />
               <ContentImageSlider slides={achievements3} />
             </div>
-          </section>
-        </AnimatedSection>
-
-        {/* --- Achievements Section 4 --- */}
-        <AnimatedSection>
-          <section
-            id="clients-achievements"
-            className="scroll-mt-20 max-w-7xl mx-auto"
-          >
+          
+       <br></br>
+<br></br>
+        
             {/* The title and content are now wrapped in a single styled card */}
-            <div className="bg-secondary-800 rounded-2xl shadow-2xl border border-secondary-700 overflow-hidden">
+            <div className="bg-white rounded-2xl shadow-2xl  overflow-hidden">
               <SectionHigherTitle title={t("clients4")} />
               <ContentImageSlider slides={achievements4} />
             </div>
-          </section>
-        </AnimatedSection>
-
+                   
+<br></br>
+<br></br>
         {/* --- Achievements Section 5 --- */}
-        <AnimatedSection>
-          <section
-            id="clients-achievements"
-            className="scroll-mt-20 max-w-7xl mx-auto"
-          >
+     
             {/* The title and content are now wrapped in a single styled card */}
-            <div className="bg-secondary-800 rounded-2xl shadow-2xl border border-secondary-700 overflow-hidden">
+            <div className="bg-white rounded-2xl shadow-2xl  overflow-hidden">
               <SectionHigherTitle title={t("clients5")} />
               <ContentImageSlider slides={achievements5} />
             </div>
+                </div>
           </section>
         </AnimatedSection>
-        {/* <AnimatedSection>
+
+       {/* <AnimatedSection>
           <section id="clients-achievements" className="scroll-mt-20">
             <SectionTitle title={t("achiev")} />
             <SectionSubTitle title={t("possible_clients_desc")} />
@@ -1465,53 +1460,60 @@ const App = () => {
         {/* --- Contact Section --- */}
         <AnimatedSection>
           <section id="contact" className="scroll-mt-20">
+                        <div className=" max-w-4xl mx-auto bg-primary-1100 rounded-2xl shadow-2xl p-8 sm:pt-8 sm:pb-8 sm:pr-0 sm:pl-0">
+
             <SectionTitle title={t("contact_title")} />
-            <div className="max-w-4xl mx-auto bg-gradient-to-br from-secondary-800 to-secondary-700/80 p-8 sm:p-12 rounded-2xl shadow-2xl border border-secondary-700">
-              <h3 className="text-3xl font-bold text-primary-400 mb-8 text-center">
+            <div className="bg-white p-8 sm:p-12 rounded-2xl shadow-2xl">
+              <h3 className="text-3xl font-bold text-secondary-700 mb-8 text-center">
                 {t("contact_heading")}
               </h3>
 
               {/* --- Contact Details --- */}
-          {/* --- Contact Details --- */}
-<div className="flex flex-col sm:flex-row sm:flex-wrap gap-8 sm:gap-x-12 text-left">
-  {/* Address */}
-  <div className="flex items-start gap-4">
-    <MapPin className="w-7 h-7 text-primary-500 flex-shrink-0" />
-    <div>
-      <p className="font-bold text-lg text-white">{t("contact_address")}</p>
-      <p className="text-gray-400">{t("contact_address_value")}</p>
-    </div>
-  </div>
+              {/* --- Contact Details --- */}
+              <div className="flex flex-col sm:flex-row sm:flex-wrap gap-8 sm:gap-x-12 text-left">
+                {/* Address */}
+                <div className="flex items-start gap-4">
+                  <MapPin className="w-7 h-7 text-primary-500 flex-shrink-0" />
+                  <div>
+                    <p className="font-bold text-lg text-secondary-700">
+                      {t("contact_address")}
+                    </p>
+                    <p className="text-secondary-700">
+                      {t("contact_address_value")}
+                    </p>
+                  </div>
+                </div>
 
-  {/* Phone */}
-  <div className="flex items-start gap-4">
-    <Phone className="w-7 h-7 text-primary-500 flex-shrink-0" />
-    <div>
-      <p className="font-bold text-lg text-white">{t("contact_phone")}</p>
-      <a
-        href={`tel:${t("contact_phone_value")}`}
-        className="text-primary-400 hover:text-primary-300 transition-colors block"
-      >
-        +216 94 888 342
-      </a>
-    </div>
-  </div>
+                {/* Phone */}
+                <div className="flex items-start gap-4">
+                  <Phone className="w-7 h-7 text-primary-500 flex-shrink-0" />
+                  <div>
+                    <p className="font-bold text-lg text-secondary-700">
+                      {t("contact_phone")}
+                    </p>
+                    <a
+                      href={`tel:${t("contact_phone_value")}`}
+                      className="text-secondary-700 hover:text-primary-500 transition-colors block"
+                    >
+                      +216 94 888 342
+                    </a>
+                  </div>
+                </div>
 
-  {/* Email */}
-  <div className="flex items-start gap-4">
-    <Mail className="w-7 h-7 text-primary-500 flex-shrink-0" />
-    <div>
-      <p className="font-bold text-lg text-white">Email</p>
-      <a
-        href={`mailto:${t("contact_email_value")}`}
-        className="text-primary-400 hover:text-primary-300 transition-colors block"
-      >
-        contact@vehtun.com
-      </a>
-    </div>
-  </div>
-</div>
-
+                {/* Email */}
+                <div className="flex items-start gap-4">
+                  <Mail className="w-7 h-7 text-primary-500 flex-shrink-0" />
+                  <div>
+                    <p className="font-bold text-lg text-secondary-700">Email</p>
+                    <a
+                      href={`mailto:${t("contact_email_value")}`}
+                      className="text-secondary-700 hover:text-primary-500 transition-colors block"
+                    >
+                      contact@vehtun.com
+                    </a>
+                  </div>
+                </div>
+              </div>
 
               {/* --- Divider --- */}
               <hr className="my-10 border-t-2 border-dashed border-secondary-700" />
@@ -1523,7 +1525,7 @@ const App = () => {
                     <div>
                       <label
                         htmlFor="full-name"
-                        className="block text-sm font-semibold text-gray-300 mb-2"
+                        className="block text-sm font-semibold text-secondary-700 mb-2"
                       >
                         {t("contact_form_name")}
                       </label>
@@ -1538,7 +1540,7 @@ const App = () => {
                     <div>
                       <label
                         htmlFor="phone"
-                        className="block text-sm font-semibold text-gray-300 mb-2"
+                        className="block text-sm font-semibold text-secondary-700 mb-2"
                       >
                         {t("contact_form_phone")}
                       </label>
@@ -1553,7 +1555,7 @@ const App = () => {
                   <div>
                     <label
                       htmlFor="email"
-                      className="block text-sm font-semibold text-gray-300 mb-2"
+                      className="block text-sm font-semibold text-secondary-700 mb-2"
                     >
                       {t("contact_form_email")}
                     </label>
@@ -1568,7 +1570,7 @@ const App = () => {
                   <div>
                     <label
                       htmlFor="message"
-                      className="block text-sm font-semibold text-gray-300 mb-2"
+                      className="block text-sm font-semibold text-secondary-700 mb-2"
                     >
                       {t("contact_form_message")}
                     </label>
@@ -1592,6 +1594,8 @@ const App = () => {
                 </form>
               </div>
             </div>
+                        </div>
+
           </section>
           <SuccessModal
             isOpen={isModalOpen}

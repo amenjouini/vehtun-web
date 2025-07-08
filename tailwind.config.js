@@ -15,6 +15,7 @@ module.exports = {
           '500': '#FF8A18', // Main orange
           '600': '#E86C2B', // Slightly darker orange for hover
           '900': '#B35A2A', // Even darker orange if needed
+          '1100': '#FEF3C7'
         },
         secondary: {
           '500': '#2E8074', // Main teal
