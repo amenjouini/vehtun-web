@@ -518,7 +518,10 @@ const AboutUsSection = () => {
 
   return (
     <AnimatedSection>
-      <section id="about" className="scroll-mt-20 max-w-7xl mx-auto py-16 mt-10 px-4 md:px-0">
+      <section
+        id="about"
+        className="scroll-mt-20 max-w-7xl mx-auto py-16 mt-10 px-4 md:px-0"
+      >
         {/* This is the new main card that encapsulates everything */}
         <div className="bg-primary-1100 rounded-2xl shadow-2xl py-8 px-2 sm:pt-8 sm:pb-8 sm:pr-0 sm:pl-0">
           <AboutUsTitle title={t("about_title")} />
@@ -843,21 +846,21 @@ const App = () => {
     },
   ];
 
-  const achievements = [
+  const achievements1 = [
     {
       subtitle: t("sector_trans1"),
       description: t("sector_trans1_desc"),
-      images: [trans1],
+      images: [btp],
     },
     {
       subtitle: t("sector_trans2"),
       description: t("sector_trans2_desc"),
-      images: [trans2],
+      images: [btp],
     },
     {
       subtitle: t("sector_trans3"),
       description: t("sector_trans3_desc"),
-      images: [trans3],
+      images: [btp],
     },
   ];
 
@@ -898,9 +901,9 @@ const App = () => {
     },
   ];
 
-  cardRefs.current = achievements.map(
-    (_, i) => cardRefs.current[i] ?? React.createRef()
-  );
+  // cardRefs.current = achievements.map(
+  //   (_, i) => cardRefs.current[i] ?? React.createRef()
+  // );
 
   const handleCardClick = (index) => {
     const newIndex = expandedIndex === index ? null : index;
@@ -1210,90 +1213,88 @@ const App = () => {
 
         <AnimatedVideoSection>
           <section id="services" className="scroll-mt-20 max-w-7xl mx-auto">
-                        <div className="bg-primary-1100 rounded-2xl shadow-2xl py-8 px-2 sm:pt-8 sm:pb-8 sm:pr-0 sm:pl-0">
+            <div className="bg-primary-1100 rounded-2xl shadow-2xl py-8 px-2 sm:pt-8 sm:pb-8 sm:pr-0 sm:pl-0">
+              <SectionTitle title={t("our_workshop")} />
 
-            <SectionTitle title={t("our_workshop")} />
+              <div className="bg-white   rounded-2xl shadow-2xl border-secondary-700 overflow-hidden">
+                <SectionHigherTitle title={t("service1")} icon={Award} />
+                <div className="grid grid-cols-1 md:grid-cols-2">
+                  {/* Left Column: Text Content & Navigation */}
+                  <div className="p-8 md:p-12 flex flex-col justify-between order-2 md:order-1 min-h-[350px]">
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={currentIndex}
+                        variants={slideVariants}
+                        initial="enter"
+                        animate="center"
+                        exit="exit"
+                        transition={{
+                          x: { type: "spring", stiffness: 300, damping: 30 },
+                          opacity: { duration: 0.3 },
+                        }}
+                        custom={1}
+                      >
+                        <h3 className="text-3xl font-bold text-secondary-700 mb-4">
+                          {videos[currentIndex].title}
+                        </h3>
+                        <p className="text-lg text-secondary-700">
+                          {videos[currentIndex].description}
+                        </p>
+                      </motion.div>
+                    </AnimatePresence>
 
-            <div className="bg-white   rounded-2xl shadow-2xl border-secondary-700 overflow-hidden">
-              <SectionHigherTitle title={t("service1")} icon={Award} />
-              <div className="grid grid-cols-1 md:grid-cols-2">
-                {/* Left Column: Text Content & Navigation */}
-                <div className="p-8 md:p-12 flex flex-col justify-between order-2 md:order-1 min-h-[350px]">
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={currentIndex}
-                      variants={slideVariants}
-                      initial="enter"
-                      animate="center"
-                      exit="exit"
-                      transition={{
-                        x: { type: "spring", stiffness: 300, damping: 30 },
-                        opacity: { duration: 0.3 },
-                      }}
-                      custom={1}
-                    >
-                      <h3 className="text-3xl font-bold text-secondary-700 mb-4">
-                        {videos[currentIndex].title}
-                      </h3>
-                      <p className="text-lg text-secondary-700">
-                        {videos[currentIndex].description}
-                      </p>
-                    </motion.div>
-                  </AnimatePresence>
+                    {/* Navigation Buttons */}
+                    <div className="mt-8 flex justify-end space-x-4">
+                      <button
+                        onClick={handlePrev}
+                        className="bg-secondary-700 text-white p-3 rounded-full hover:bg-primary-500 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400"
+                      >
+                        <ChevronLeft size={24} />
+                      </button>
+                      <button
+                        onClick={handleNext}
+                        className="bg-secondary-700 text-white p-3 rounded-full hover:bg-primary-500 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400"
+                      >
+                        <ChevronRight size={24} />
+                      </button>
+                    </div>
+                  </div>
 
-                  {/* Navigation Buttons */}
-                  <div className="mt-8 flex justify-end space-x-4">
-                    <button
-                      onClick={handlePrev}
-                      className="bg-secondary-700 text-white p-3 rounded-full hover:bg-primary-500 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400"
-                    >
-                      <ChevronLeft size={24} />
-                    </button>
-                    <button
-                      onClick={handleNext}
-                      className="bg-secondary-700 text-white p-3 rounded-full hover:bg-primary-500 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400"
-                    >
-                      <ChevronRight size={24} />
-                    </button>
+                  {/* Right Column: Video Player */}
+                  <div className="relative order-1 md:order-2 aspect-video overflow-hidden">
+                    <AnimatePresence mode="wait">
+                      <motion.iframe
+                        key={currentIndex}
+                        className="absolute inset-0 w-full h-full"
+                        src={getYouTubeEmbedUrl(videos[currentIndex].videoUrl)}
+                        title={videos[currentIndex].title}
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        variants={slideVariants}
+                        initial="enter"
+                        animate="center"
+                        exit="exit"
+                        transition={{
+                          x: { type: "spring", stiffness: 300, damping: 30 },
+                          opacity: { duration: 0.3 },
+                        }}
+                        custom={-1}
+                      ></motion.iframe>
+                    </AnimatePresence>
                   </div>
                 </div>
-
-                {/* Right Column: Video Player */}
-                <div className="relative order-1 md:order-2 aspect-video overflow-hidden">
-                  <AnimatePresence mode="wait">
-                    <motion.iframe
-                      key={currentIndex}
-                      className="absolute inset-0 w-full h-full"
-                      src={getYouTubeEmbedUrl(videos[currentIndex].videoUrl)}
-                      title={videos[currentIndex].title}
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      variants={slideVariants}
-                      initial="enter"
-                      animate="center"
-                      exit="exit"
-                      transition={{
-                        x: { type: "spring", stiffness: 300, damping: 30 },
-                        opacity: { duration: 0.3 },
-                      }}
-                      custom={-1}
-                    ></motion.iframe>
-                  </AnimatePresence>
-                </div>
               </div>
-            </div>
-<br></br>
-<br></br>
+              <br></br>
+              <br></br>
 
-                   <AnimatedSection>
-            <div className="bg-white rounded-2xl shadow-2xl border-secondary-700 overflow-hidden">
-              <SectionHigherTitle title={t("service2")} />
-              <ContentImageSlider slides={services2} />
+              <AnimatedSection>
+                <div className="bg-white rounded-2xl shadow-2xl border-secondary-700 overflow-hidden">
+                  <SectionHigherTitle title={t("service2")} />
+                  <ContentImageSlider slides={services2} />
+                </div>
+              </AnimatedSection>
             </div>
-        </AnimatedSection>
-                        </div>
-
           </section>
         </AnimatedVideoSection>
 
@@ -1308,57 +1309,54 @@ const App = () => {
                 </section>
             </AnimatedSection> */}
 
- 
-
         {/* --- Values Section --- */}
 
         <AnimatedSection>
           <section id="values" className="scroll-mt-20 max-w-7xl mx-auto">
-                        <div className="bg-primary-1100 rounded-2xl shadow-2xl py-8 px-2 sm:pt-8 sm:pb-8 sm:pr-0 sm:pl-0">
-
-            <SectionTitle title={t("added_values")} />
-            <p className="text-center text-lg text-secondary-700 mb-12 max-w-3xl mx-auto">
-              {t("added_values_desc")}
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 items-stretch">
-              {values.map((value, index) => {
-                const Icon = value.icon;
-                return (
-                  <div
-                    key={value.title}
-                    className="bg-white rounded-2xl border border-secondary-700 shadow-lg flex flex-col text-center h-full"
-                  >
-                    {/* Content Wrapper */}
-                    <div>
-                      <div className="p-6 w-full flex flex-col items-center">
-                        <div className="mb-4 text-primary-500">
-                          <Icon size={36} strokeWidth={1.5} />
-                        </div>
-                        <h4 className="text-lg font-bold text-secondary-700 mb-3 min-h-[56px] flex items-center justify-center">
-                          {value.title}
-                        </h4>
-                      </div>
-                      <div className="overflow-hidden w-full">
-                        <div className="border-secondary-700">
-                          <div className="aspect-video">
-                            <img
-                              src={value.img}
-                              alt={value.title}
-                              className="w-full h-full border-t border-b border-secondary-700 object-cover"
-                            />
+            <div className="bg-primary-1100 rounded-2xl shadow-2xl py-8 px-2 sm:pt-8 sm:pb-8 sm:pr-0 sm:pl-0">
+              <SectionTitle title={t("added_values")} />
+              <p className="text-center text-lg text-secondary-700 mb-12 max-w-3xl mx-auto">
+                {t("added_values_desc")}
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 items-stretch">
+                {values.map((value, index) => {
+                  const Icon = value.icon;
+                  return (
+                    <div
+                      key={value.title}
+                      className="bg-white rounded-2xl border border-secondary-700 shadow-lg flex flex-col text-center h-full"
+                    >
+                      {/* Content Wrapper */}
+                      <div>
+                        <div className="p-6 w-full flex flex-col items-center">
+                          <div className="mb-4 text-primary-500">
+                            <Icon size={36} strokeWidth={1.5} />
                           </div>
-                          <div className="p-6 text-secondary-700">
-                            <p>{value.desc}</p>
+                          <h4 className="text-lg font-bold text-secondary-700 mb-3 min-h-[56px] flex items-center justify-center">
+                            {value.title}
+                          </h4>
+                        </div>
+                        <div className="overflow-hidden w-full">
+                          <div className="border-secondary-700">
+                            <div className="aspect-video">
+                              <img
+                                src={value.img}
+                                alt={value.title}
+                                className="w-full h-full border-t border-b border-secondary-700 object-cover"
+                              />
+                            </div>
+                            <div className="p-6 text-secondary-700">
+                              <p>{value.desc}</p>
+                            </div>
                           </div>
                         </div>
                       </div>
+                      {/* Spacer div to push content to the top */}
+                      <div className="flex-grow"></div>
                     </div>
-                    {/* Spacer div to push content to the top */}
-                    <div className="flex-grow"></div>
-                  </div>
-                );
-              })}
-            </div>
+                  );
+                })}
+              </div>
             </div>
           </section>
         </AnimatedSection>
@@ -1369,57 +1367,55 @@ const App = () => {
             id="clients-achievements"
             className="scroll-mt-20 max-w-7xl mx-auto"
           >
-                        <div className="bg-primary-1100 rounded-2xl shadow-2xl py-8 px-2 sm:pt-8 sm:pb-8 sm:pr-0 sm:pl-0">
+            <div className="bg-primary-1100 rounded-2xl shadow-2xl py-8 px-2 sm:pt-8 sm:pb-8 sm:pr-0 sm:pl-0">
+              <SectionTitle title={t("achiev")} />
+              {/* The title and content are now wrapped in a single styled card */}
 
-            <SectionTitle title={t("achiev")} />
-            {/* The title and content are now wrapped in a single styled card */}
-            <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
-              <SectionHigherTitle title={t("clients1")} />
-              <ContentImageSlider slides={achievements} />
-            </div>
-       
-<br></br>
-<br></br>
+              <div className="bg-white rounded-2xl shadow-2xl border-secondary-700 overflow-hidden">
+                <SectionHigherTitle title={t("clients1")} />
+                <ContentImageSlider slides={achievements1} />
+              </div>
+              <br></br>
+              <br></br>
+              {/* --- Achievements Section 2 --- */}
 
-        {/* --- Achievements Section 2 --- */}
-       
-            {/* The title and content are now wrapped in a single styled card */}
-            <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
-              <SectionHigherTitle title={t("clients2")} />
-              <ContentImageSlider slides={achievements2} />
+              {/* The title and content are now wrapped in a single styled card */}
+              <div className="bg-white rounded-2xl shadow-2xl border-secondary-700 overflow-hidden">
+                <SectionHigherTitle title={t("clients2")} />
+                <ContentImageSlider slides={achievements2} />
+              </div>
+
+              <br></br>
+              <br></br>
+              {/* The title and content are now wrapped in a single styled card */}
+              <div className="bg-white rounded-2xl shadow-2xl border-secondary-700 overflow-hidden">
+                <SectionHigherTitle title={t("clients3")} />
+                <ContentImageSlider slides={achievements3} />
+              </div>
+
+              <br></br>
+              <br></br>
+
+              {/* The title and content are now wrapped in a single styled card */}
+              <div className="bg-white rounded-2xl shadow-2xl border-secondary-700 overflow-hidden">
+                <SectionHigherTitle title={t("clients4")} />
+                <ContentImageSlider slides={achievements4} />
+              </div>
+
+              <br></br>
+              <br></br>
+              {/* --- Achievements Section 5 --- */}
+
+              {/* The title and content are now wrapped in a single styled card */}
+              <div className="bg-white rounded-2xl shadow-2xl border-secondary-700 overflow-hidden">
+                <SectionHigherTitle title={t("clients5")} />
+                <ContentImageSlider slides={achievements5} />
+              </div>
             </div>
-          
-      <br></br>
-<br></br>
-            {/* The title and content are now wrapped in a single styled card */}
-            <div className="bg-white rounded-2xl shadow-2xl  overflow-hidden">
-              <SectionHigherTitle title={t("clients3")} />
-              <ContentImageSlider slides={achievements3} />
-            </div>
-          
-       <br></br>
-<br></br>
-        
-            {/* The title and content are now wrapped in a single styled card */}
-            <div className="bg-white rounded-2xl shadow-2xl  overflow-hidden">
-              <SectionHigherTitle title={t("clients4")} />
-              <ContentImageSlider slides={achievements4} />
-            </div>
-                   
-<br></br>
-<br></br>
-        {/* --- Achievements Section 5 --- */}
-     
-            {/* The title and content are now wrapped in a single styled card */}
-            <div className="bg-white rounded-2xl shadow-2xl  overflow-hidden">
-              <SectionHigherTitle title={t("clients5")} />
-              <ContentImageSlider slides={achievements5} />
-            </div>
-                </div>
           </section>
         </AnimatedSection>
 
-       {/* <AnimatedSection>
+        {/* <AnimatedSection>
           <section id="clients-achievements" className="scroll-mt-20">
             <SectionTitle title={t("achiev")} />
             <SectionSubTitle title={t("possible_clients_desc")} />
@@ -1460,142 +1456,142 @@ const App = () => {
         {/* --- Contact Section --- */}
         <AnimatedSection>
           <section id="contact" className="scroll-mt-20">
-                        <div className=" max-w-4xl mx-auto bg-primary-1100 rounded-2xl shadow-2xl py-8 px-2 sm:pt-8 sm:pb-8 sm:pr-0 sm:pl-0">
+            <div className=" max-w-4xl mx-auto bg-primary-1100 rounded-2xl shadow-2xl py-8 px-2 sm:pt-8 sm:pb-8 sm:pr-0 sm:pl-0">
+              <SectionTitle title={t("contact_title")} />
+              <div className="bg-white p-8 sm:p-12 rounded-2xl shadow-2xl">
+                <h3 className="text-3xl font-bold text-secondary-700 mb-8 text-center">
+                  {t("contact_heading")}
+                </h3>
 
-            <SectionTitle title={t("contact_title")} />
-            <div className="bg-white p-8 sm:p-12 rounded-2xl shadow-2xl">
-              <h3 className="text-3xl font-bold text-secondary-700 mb-8 text-center">
-                {t("contact_heading")}
-              </h3>
+                {/* --- Contact Details --- */}
+                {/* --- Contact Details --- */}
+                <div className="flex flex-col sm:flex-row sm:flex-wrap gap-8 sm:gap-x-12 text-left">
+                  {/* Address */}
+                  <div className="flex items-start gap-4">
+                    <MapPin className="w-7 h-7 text-primary-500 flex-shrink-0" />
+                    <div>
+                      <p className="font-bold text-lg text-secondary-700">
+                        {t("contact_address")}
+                      </p>
+                      <p className="text-secondary-700">
+                        {t("contact_address_value")}
+                      </p>
+                    </div>
+                  </div>
 
-              {/* --- Contact Details --- */}
-              {/* --- Contact Details --- */}
-              <div className="flex flex-col sm:flex-row sm:flex-wrap gap-8 sm:gap-x-12 text-left">
-                {/* Address */}
-                <div className="flex items-start gap-4">
-                  <MapPin className="w-7 h-7 text-primary-500 flex-shrink-0" />
-                  <div>
-                    <p className="font-bold text-lg text-secondary-700">
-                      {t("contact_address")}
-                    </p>
-                    <p className="text-secondary-700">
-                      {t("contact_address_value")}
-                    </p>
+                  {/* Phone */}
+                  <div className="flex items-start gap-4">
+                    <Phone className="w-7 h-7 text-primary-500 flex-shrink-0" />
+                    <div>
+                      <p className="font-bold text-lg text-secondary-700">
+                        {t("contact_phone")}
+                      </p>
+                      <a
+                        href={`tel:${t("contact_phone_value")}`}
+                        className="text-secondary-700 hover:text-primary-500 transition-colors block"
+                      >
+                        +216 94 888 342
+                      </a>
+                    </div>
+                  </div>
+
+                  {/* Email */}
+                  <div className="flex items-start gap-4">
+                    <Mail className="w-7 h-7 text-primary-500 flex-shrink-0" />
+                    <div>
+                      <p className="font-bold text-lg text-secondary-700">
+                        Email
+                      </p>
+                      <a
+                        href={`mailto:${t("contact_email_value")}`}
+                        className="text-secondary-700 hover:text-primary-500 transition-colors block"
+                      >
+                        contact@vehtun.com
+                      </a>
+                    </div>
                   </div>
                 </div>
 
-                {/* Phone */}
-                <div className="flex items-start gap-4">
-                  <Phone className="w-7 h-7 text-primary-500 flex-shrink-0" />
-                  <div>
-                    <p className="font-bold text-lg text-secondary-700">
-                      {t("contact_phone")}
-                    </p>
-                    <a
-                      href={`tel:${t("contact_phone_value")}`}
-                      className="text-secondary-700 hover:text-primary-500 transition-colors block"
-                    >
-                      +216 94 888 342
-                    </a>
-                  </div>
-                </div>
+                {/* --- Divider --- */}
+                <hr className="my-10 border-t-2 border-dashed border-secondary-700" />
 
-                {/* Email */}
-                <div className="flex items-start gap-4">
-                  <Mail className="w-7 h-7 text-primary-500 flex-shrink-0" />
-                  <div>
-                    <p className="font-bold text-lg text-secondary-700">Email</p>
-                    <a
-                      href={`mailto:${t("contact_email_value")}`}
-                      className="text-secondary-700 hover:text-primary-500 transition-colors block"
-                    >
-                      contact@vehtun.com
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              {/* --- Divider --- */}
-              <hr className="my-10 border-t-2 border-dashed border-secondary-700" />
-
-              {/* --- Contact Form --- */}
-              <div className="max-w-2xl mx-auto">
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid sm:grid-cols-2 gap-6">
+                {/* --- Contact Form --- */}
+                <div className="max-w-2xl mx-auto">
+                  <form onSubmit={handleSubmit} className="space-y-6">
+                    <div className="grid sm:grid-cols-2 gap-6">
+                      <div>
+                        <label
+                          htmlFor="full-name"
+                          className="block text-sm font-semibold text-secondary-700 mb-2"
+                        >
+                          {t("contact_form_name")}
+                        </label>
+                        <input
+                          type="text"
+                          name="full-name"
+                          id="full-name"
+                          required
+                          className="block w-full rounded-lg border-secondary-600 bg-secondary-900/50 px-4 py-3 text-white shadow-sm transition-colors focus:border-primary-400 focus:ring-1 focus:ring-primary-400"
+                        />
+                      </div>
+                      <div>
+                        <label
+                          htmlFor="phone"
+                          className="block text-sm font-semibold text-secondary-700 mb-2"
+                        >
+                          {t("contact_form_phone")}
+                        </label>
+                        <input
+                          type="tel"
+                          name="phone"
+                          id="phone"
+                          className="block w-full rounded-lg border-secondary-600 bg-secondary-900/50 px-4 py-3 text-white shadow-sm transition-colors focus:border-primary-400 focus:ring-1 focus:ring-primary-400"
+                        />
+                      </div>
+                    </div>
                     <div>
                       <label
-                        htmlFor="full-name"
+                        htmlFor="email"
                         className="block text-sm font-semibold text-secondary-700 mb-2"
                       >
-                        {t("contact_form_name")}
+                        {t("contact_form_email")}
                       </label>
                       <input
-                        type="text"
-                        name="full-name"
-                        id="full-name"
+                        type="email"
+                        name="email"
+                        id="email"
                         required
                         className="block w-full rounded-lg border-secondary-600 bg-secondary-900/50 px-4 py-3 text-white shadow-sm transition-colors focus:border-primary-400 focus:ring-1 focus:ring-primary-400"
                       />
                     </div>
                     <div>
                       <label
-                        htmlFor="phone"
+                        htmlFor="message"
                         className="block text-sm font-semibold text-secondary-700 mb-2"
                       >
-                        {t("contact_form_phone")}
+                        {t("contact_form_message")}
                       </label>
-                      <input
-                        type="tel"
-                        name="phone"
-                        id="phone"
+                      <textarea
+                        name="message"
+                        id="message"
+                        rows={5}
+                        required
                         className="block w-full rounded-lg border-secondary-600 bg-secondary-900/50 px-4 py-3 text-white shadow-sm transition-colors focus:border-primary-400 focus:ring-1 focus:ring-primary-400"
                       />
                     </div>
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="email"
-                      className="block text-sm font-semibold text-secondary-700 mb-2"
-                    >
-                      {t("contact_form_email")}
-                    </label>
-                    <input
-                      type="email"
-                      name="email"
-                      id="email"
-                      required
-                      className="block w-full rounded-lg border-secondary-600 bg-secondary-900/50 px-4 py-3 text-white shadow-sm transition-colors focus:border-primary-400 focus:ring-1 focus:ring-primary-400"
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="message"
-                      className="block text-sm font-semibold text-secondary-700 mb-2"
-                    >
-                      {t("contact_form_message")}
-                    </label>
-                    <textarea
-                      name="message"
-                      id="message"
-                      rows={5}
-                      required
-                      className="block w-full rounded-lg border-secondary-600 bg-secondary-900/50 px-4 py-3 text-white shadow-sm transition-colors focus:border-primary-400 focus:ring-1 focus:ring-primary-400"
-                    />
-                  </div>
-                  <div>
-                    <button
-                      type="submit"
-                      className="w-full flex justify-center items-center gap-3 py-3 px-4 rounded-xl font-bold text-secondary-black bg-primary-500 hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-secondary-800 transition-all duration-300 transform hover:scale-105"
-                    >
-                      Contact
-                    </button>
-                  </div>
-                  <input type="hidden" name="_captcha" value="false" />
-                </form>
+                    <div>
+                      <button
+                        type="submit"
+                        className="w-full flex justify-center items-center gap-3 py-3 px-4 rounded-xl font-bold text-secondary-black bg-primary-500 hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-secondary-800 transition-all duration-300 transform hover:scale-105"
+                      >
+                        Contact
+                      </button>
+                    </div>
+                    <input type="hidden" name="_captcha" value="false" />
+                  </form>
+                </div>
               </div>
             </div>
-                        </div>
-
           </section>
           <SuccessModal
             isOpen={isModalOpen}
