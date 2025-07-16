@@ -1463,7 +1463,7 @@ const App = () => {
             id="clients-achievements"
             className="scroll-mt-20 max-w-7xl mx-auto"
           >
-            <div className="bg-primary-1100 rounded-2xl shadow-2xl py-8 px-2 sm:pt-8 sm:pb-8 sm:pr-0 sm:pl-0 flex flex-col gap-8">
+            <div className="bg-primary-1100 rounded-2xl shadow-2xl py-8 px-2 sm:pt-8 sm:pb-8 sm:pr-0 sm:pl-0">
               <SectionTitle title={t("achiev")} />
               {/* The title and content are now wrapped in a single styled card */}
 
