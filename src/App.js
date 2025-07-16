@@ -336,6 +336,102 @@ const ContentImageSlider = ({ slides }) => {
   const currentSlide = slides[currentSlideIndex];
   const images = currentSlide?.images || [];
 
+  useEffect(() => {
+  console.log("Mounted slider with slides:", slides);
+}, []);
+
+
+  return (
+    <div className="bg-white rounded-b-2xl shadow-2xl border-x overflow-hidden">
+      <div className="grid grid-cols-1 md:grid-cols-2">
+        <div className="p-8 md:p-12 flex flex-col justify-center order-2 md:order-1 md:min-h-[450px]">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentSlideIndex}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{
+                x: { type: "spring", stiffness: 300, damping: 30 },
+                opacity: { duration: 0.4 },
+              }}
+              custom={1}
+            >
+              <h3 className="text-3xl font-bold text-secondary-700 mb-4 flex items-center">
+                <Check className="w-8 h-8 mr-3 text-primary-500" />
+                {currentSlide.subtitle}
+              </h3>
+              <p className="text-lg text-secondary-700">
+                {currentSlide.description}
+              </p>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+        <div className="relative min-h-[300px] md:min-h-0 order-1 md:order-2">
+          <AnimatePresence mode="wait">
+            <motion.img
+              key={`${currentSlideIndex}-${innerImageIndex}`}
+              src={images[innerImageIndex]}
+              alt={`Service image ${innerImageIndex + 1}`}
+              className="absolute inset-0 w-full h-full object-cover"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.8, ease: "easeInOut" }}
+            />
+          </AnimatePresence>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const ContentImageSlider2 = ({ slides }) => {
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const [innerImageIndex, setInnerImageIndex] = useState(0);
+
+  useEffect(() => {
+    if (!slides || slides.length === 0) return;
+
+    const currentSlide = slides[currentSlideIndex];
+    const images = currentSlide.images || [];
+    const innerImageDuration = 3000; // Each inner image shows for 3 seconds
+
+    // This timer now correctly waits for the inner gallery to finish
+    const timer = setTimeout(() => {
+      if (innerImageIndex < images.length - 1) {
+        // If there are more images in the current gallery, show the next one
+        setInnerImageIndex((prev) => prev + 1);
+      } else {
+        // If it's the last image, move to the next main slide and reset the inner image index
+        setInnerImageIndex(0);
+        setCurrentSlideIndex((prev) => (prev + 1) % slides.length);
+      }
+    }, innerImageDuration);
+
+    return () => clearTimeout(timer);
+  }, [currentSlideIndex, innerImageIndex, slides]);
+
+  // This effect resets the inner image index whenever the main slide changes
+  // This is crucial for starting each new slide's gallery from the beginning
+  useEffect(() => {
+    setInnerImageIndex(0);
+  }, [currentSlideIndex]);
+
+  const slideVariants = {
+    enter: (direction) => ({ x: direction > 0 ? 50 : -50, opacity: 0 }),
+    center: { zIndex: 1, x: 0, opacity: 1 },
+    exit: (direction) => ({
+      zIndex: 0,
+      x: direction < 0 ? 50 : -50,
+      opacity: 0,
+    }),
+  };
+
+  const currentSlide = slides[currentSlideIndex];
+  const images = currentSlide?.images || [];
+
   return (
     <div className="bg-white rounded-b-2xl shadow-2xl border-x overflow-hidden">
       <div className="grid grid-cols-1 md:grid-cols-2">
@@ -846,21 +942,21 @@ const App = () => {
     },
   ];
 
-  const achievements1 = [
+  const achievements01 = [
     {
       subtitle: t("sector_trans1"),
       description: t("sector_trans1_desc"),
-      images: [btp],
+      images: [agr],
     },
     {
       subtitle: t("sector_trans2"),
       description: t("sector_trans2_desc"),
-      images: [btp],
+      images: [agr],
     },
     {
       subtitle: t("sector_trans3"),
       description: t("sector_trans3_desc"),
-      images: [btp],
+      images: [agr],
     },
   ];
 
@@ -1367,16 +1463,15 @@ const App = () => {
             id="clients-achievements"
             className="scroll-mt-20 max-w-7xl mx-auto"
           >
-            <div className="bg-primary-1100 rounded-2xl shadow-2xl py-8 px-2 sm:pt-8 sm:pb-8 sm:pr-0 sm:pl-0">
+            <div className="bg-primary-1100 rounded-2xl shadow-2xl py-8 px-2 sm:pt-8 sm:pb-8 sm:pr-0 sm:pl-0 flex flex-col gap-8">
               <SectionTitle title={t("achiev")} />
               {/* The title and content are now wrapped in a single styled card */}
 
-              <div className="bg-white rounded-2xl shadow-2xl border-secondary-700 overflow-hidden">
+              {/* <div className="bg-white rounded-2xl shadow-2xl border-secondary-700 overflow-hidden">
                 <SectionHigherTitle title={t("clients1")} />
-                <ContentImageSlider slides={achievements1} />
-              </div>
-              <br></br>
-              <br></br>
+                <ContentImageSlider slides={achievements01} />
+              </div> */}
+            
               {/* --- Achievements Section 2 --- */}
 
               {/* The title and content are now wrapped in a single styled card */}
@@ -1385,25 +1480,30 @@ const App = () => {
                 <ContentImageSlider slides={achievements2} />
               </div>
 
-              <br></br>
-              <br></br>
+          
+                   <div className="bg-white rounded-2xl shadow-2xl border-secondary-700 overflow-hidden">
+                    <SectionHigherTitle title={t("clients1")} />
+       
+                    
+                    <ContentImageSlider slides={achievements01}/>
+
+                  </div>
+             
               {/* The title and content are now wrapped in a single styled card */}
-              <div className="bg-white rounded-2xl shadow-2xl border-secondary-700 overflow-hidden">
+             <div className="bg-white rounded-2xl shadow-2xl border-secondary-700 overflow-hidden">
                 <SectionHigherTitle title={t("clients3")} />
                 <ContentImageSlider slides={achievements3} />
-              </div>
+              </div> 
 
-              <br></br>
-              <br></br>
+            
 
               {/* The title and content are now wrapped in a single styled card */}
-              <div className="bg-white rounded-2xl shadow-2xl border-secondary-700 overflow-hidden">
-                <SectionHigherTitle title={t("clients4")} />
+            <div className="bg-white rounded-2xl shadow-2xl border-secondary-700 overflow-hidden">
+                <SectionHigherTitle title={t("clients3")} />
                 <ContentImageSlider slides={achievements4} />
-              </div>
+              </div> 
 
-              <br></br>
-              <br></br>
+         
               {/* --- Achievements Section 5 --- */}
 
               {/* The title and content are now wrapped in a single styled card */}
