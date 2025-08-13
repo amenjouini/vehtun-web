@@ -294,55 +294,74 @@ const placeholderImg = (
 const ContentImageSlider = ({ slides }) => {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [innerImageIndex, setInnerImageIndex] = useState(0);
+  const [showLastAchievement, setShowLastAchievement] = useState(false);
 
   useEffect(() => {
-    if (!slides || slides.length === 0) return;
+    const timeout = setTimeout(() => setShowLastAchievement(true), 5000);
+    return () => clearTimeout(timeout);
+  }, []);
+
+  const { ref, inView } = useInView({
+    triggerOnce: false,
+    threshold: 0.1,            // a bit looser than 0.3 for small screens
+    rootMargin: "100px 0px",   // start loading just before it enters
+  });
+
+  // Only start loading images once this slider has been seen at least once
+  const [shouldLoad, setShouldLoad] = useState(false);
+  useEffect(() => {
+    if (inView) setShouldLoad(true);
+  }, [inView]);
+
+  // Drive the inner slideshow only when visible and we have slides
+  useEffect(() => {
+    if (!slides || slides.length === 0 || !inView) return;
 
     const currentSlide = slides[currentSlideIndex];
-    const images = currentSlide.images || [];
-    const innerImageDuration = 3000; // Each inner image shows for 3 seconds
+    const images = currentSlide?.images || [];
+    if (images.length === 0) return;
 
-    // This timer now correctly waits for the inner gallery to finish
+    const innerImageDuration = 3000;
     const timer = setTimeout(() => {
       if (innerImageIndex < images.length - 1) {
-        // If there are more images in the current gallery, show the next one
         setInnerImageIndex((prev) => prev + 1);
       } else {
-        // If it's the last image, move to the next main slide and reset the inner image index
         setInnerImageIndex(0);
         setCurrentSlideIndex((prev) => (prev + 1) % slides.length);
       }
     }, innerImageDuration);
 
     return () => clearTimeout(timer);
-  }, [currentSlideIndex, innerImageIndex, slides]);
+  }, [currentSlideIndex, innerImageIndex, slides, inView]);
 
-  // This effect resets the inner image index whenever the main slide changes
-  // This is crucial for starting each new slide's gallery from the beginning
+  // Reset inner index when slide changes
+  useEffect(() => setInnerImageIndex(0), [currentSlideIndex]);
+
+  // Preload the *next* image only after we’ve started loading
+  const currentSlide = slides?.[currentSlideIndex] || {};
+  const images = currentSlide.images || [];
   useEffect(() => {
-    setInnerImageIndex(0);
-  }, [currentSlideIndex]);
+    if (!shouldLoad || images.length <= 1) return;
+    const nextIdx = (innerImageIndex + 1) % images.length;
+    const img = new Image();
+    img.decoding = "async";
+    img.loading = "lazy";
+    img.src = images[nextIdx];
+    return () => { /* let GC handle it */ };
+  }, [innerImageIndex, images, shouldLoad]);
 
   const slideVariants = {
     enter: (direction) => ({ x: direction > 0 ? 50 : -50, opacity: 0 }),
     center: { zIndex: 1, x: 0, opacity: 1 },
-    exit: (direction) => ({
-      zIndex: 0,
-      x: direction < 0 ? 50 : -50,
-      opacity: 0,
-    }),
+    exit: (direction) => ({ zIndex: 0, x: direction < 0 ? 50 : -50, opacity: 0 }),
   };
 
-  const currentSlide = slides[currentSlideIndex];
-  const images = currentSlide?.images || [];
-
-  useEffect(() => {
-  console.log("Mounted slider with slides:", slides);
-}, []);
-
-
   return (
-    <div className="bg-white rounded-b-2xl shadow-2xl border-x overflow-hidden">
+    <div
+      ref={ref}
+      className="bg-white rounded-b-2xl shadow-2xl border-x overflow-hidden"
+      style={{ contentVisibility: "auto" }} // lets the browser skip work when offscreen
+    >
       <div className="grid grid-cols-1 md:grid-cols-2">
         <div className="p-8 md:p-12 flex flex-col justify-center order-2 md:order-1 md:min-h-[450px]">
           <AnimatePresence mode="wait">
@@ -368,24 +387,36 @@ const ContentImageSlider = ({ slides }) => {
             </motion.div>
           </AnimatePresence>
         </div>
-        <div className="relative min-h-[300px] md:min-h-0 order-1 md:order-2">
-          <AnimatePresence mode="wait">
-            <motion.img
-              key={`${currentSlideIndex}-${innerImageIndex}`}
-              src={images[innerImageIndex]}
-              alt={`Service image ${innerImageIndex + 1}`}
-              className="absolute inset-0 w-full h-full object-cover"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.8, ease: "easeInOut" }}
-            />
-          </AnimatePresence>
+
+        <div className="relative h-[300px] md:min-h-0 order-1 md:order-2">
+          {shouldLoad ? (
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={`${currentSlideIndex}-${innerImageIndex}`}
+                src={images[innerImageIndex]}
+                alt={`Service image ${innerImageIndex + 1}`}
+                className="absolute inset-0 w-full h-full object-cover"
+                loading="lazy"
+                decoding="async"
+                // Serve smaller resources to mobile; adjust to your layout
+                sizes="(max-width: 768px) 100vw, 50vw"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.6, ease: "easeInOut" }}
+              />
+            </AnimatePresence>
+          ) : (
+            // Lightweight placeholder until we decide to load
+            <div className="absolute inset-0 w-full h-full animate-pulse bg-secondary-100" />
+          )}
         </div>
       </div>
     </div>
   );
 };
+
+
 
 const ContentImageSlider2 = ({ slides }) => {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
@@ -1463,7 +1494,7 @@ const App = () => {
             id="clients-achievements"
             className="scroll-mt-20 max-w-7xl mx-auto"
           >
-            <div className="bg-primary-1100 rounded-2xl shadow-2xl py-8 px-2 sm:pt-8 sm:pb-8 sm:pr-0 sm:pl-0">
+            <div className="bg-primary-1100 rounded-2xl shadow-2xl py-8 px-2 sm:pt-8 sm:pb-8 sm:pr-0 sm:pl-0 space-y-12">
               <SectionTitle title={t("achiev")} />
               {/* The title and content are now wrapped in a single styled card */}
 
@@ -1488,7 +1519,6 @@ const App = () => {
                     <ContentImageSlider slides={achievements01}/>
 
                   </div>
-             
               {/* The title and content are now wrapped in a single styled card */}
              <div className="bg-white rounded-2xl shadow-2xl border-secondary-700 overflow-hidden">
                 <SectionHigherTitle title={t("clients3")} />
