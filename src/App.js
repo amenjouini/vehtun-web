@@ -65,6 +65,8 @@ import btp from "./assets/clients/btp.jpg";
 import btp2 from "./assets/clients/btp2.jpg";
 import collec from "./assets/clients/collec.jpg";
 import indus from "./assets/clients/indus.jpg";
+import plateau3 from "./assets/clients/plateau3.jpg";
+import cam from "./assets/clients/cam.jpg";
 
 import laser from "./assets/services/laser.jpg";
 import pliage from "./assets/services/pliage.jpg";
@@ -76,9 +78,10 @@ import reparation2 from "./assets/services/reparation2.jpg";
 import laser2 from "./assets/services/laser2.jpg";
 import pliage2 from "./assets/services/pliage2.jpg";
 
-import cr from "./assets/services/c&r.jpg";
-import cr2 from "./assets/services/c&r2.jpg";
-import cr3 from "./assets/services/c&r3.jpg";
+import laserVID from "./assets/videos/laser.mp4";
+import pliageVID from "./assets/videos/pliage.mp4";
+import soudureVID from "./assets/videos/soudure.mp4";
+
 
 // Component to handle scroll-triggered animations for sections
 const AnimatedSection = ({ children, threshold = 0.2 }) => {
@@ -321,7 +324,7 @@ const ContentImageSlider = ({ slides }) => {
     const images = currentSlide?.images || [];
     if (images.length === 0) return;
 
-    const innerImageDuration = 10000;
+    const innerImageDuration = 12000;
     const timer = setTimeout(() => {
       if (innerImageIndex < images.length - 1) {
         setInnerImageIndex((prev) => prev + 1);
@@ -803,20 +806,19 @@ const App = () => {
     {
       title: t("service1_subtitle"),
       description: t("service1_desc"),
-      videoUrl:
-        "https://www.youtube.com/watch?v=ksArEYzLXho&ab_channel=Laserlux",
+      videoUrl: laserVID,
     },
     {
       title: t("service2_subtitle"),
       description: t("service2_desc"),
       videoUrl:
-        "https://www.youtube.com/watch?v=GnE-vJ3qpWQ&ab_channel=T%C3%B4lerieFineElectronique",
+        pliageVID,
     },
     {
       title: t("service3_subtitle"),
       description: t("service3_desc"),
       videoUrl:
-        "https://www.youtube.com/watch?v=5vIoKulITxc&ab_channel=GalagarSoudage",
+        soudureVID,
     },
   ];
 
@@ -977,17 +979,17 @@ const App = () => {
     {
       subtitle: t("sector_trans1"),
       description: t("sector_trans1_desc"),
-      images: [agr],
+      images: [cam],
     },
     {
       subtitle: t("sector_trans2"),
       description: t("sector_trans2_desc"),
-      images: [agr],
+      images: [plateau3],
     },
     {
       subtitle: t("sector_trans3"),
       description: t("sector_trans3_desc"),
-      images: [agr],
+      images: [trans1],
     },
   ];
 
@@ -1393,7 +1395,7 @@ const App = () => {
                       <motion.iframe
                         key={currentIndex}
                         className="absolute inset-0 w-full h-full"
-                        src={getYouTubeEmbedUrl(videos[currentIndex].videoUrl)}
+                        src={(videos[currentIndex].videoUrl)}
                         title={videos[currentIndex].title}
                         frameBorder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -1515,13 +1517,6 @@ const App = () => {
                 <ContentImageSlider slides={achievements3} />
               </div> 
 
-            
-
-              {/* The title and content are now wrapped in a single styled card */}
-            <div className="bg-white rounded-2xl shadow-2xl border-secondary-700 overflow-hidden">
-                <SectionHigherTitle title={t("clients3")} />
-                <ContentImageSlider slides={achievements4} />
-              </div> 
 
          
               {/* --- Achievements Section 5 --- */}
