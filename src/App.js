@@ -321,7 +321,7 @@ const ContentImageSlider = ({ slides }) => {
     const images = currentSlide?.images || [];
     if (images.length === 0) return;
 
-    const innerImageDuration = 3000;
+    const innerImageDuration = 10000;
     const timer = setTimeout(() => {
       if (innerImageIndex < images.length - 1) {
         setInnerImageIndex((prev) => prev + 1);
@@ -1438,55 +1438,45 @@ const App = () => {
 
         {/* --- Values Section --- */}
 
-        <AnimatedSection>
-          <section id="values" className="scroll-mt-20 max-w-7xl mx-auto">
-            <div className="bg-primary-1100 rounded-2xl shadow-2xl py-8 px-2 sm:pt-8 sm:pb-8 sm:pr-2 sm:pl-2">
-              <SectionTitle title={t("added_values")} />
-              <p className="text-center text-lg text-secondary-700 mb-12 max-w-3xl mx-auto">
-                {t("added_values_desc")}
-              </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 items-stretch">
-                {values.map((value, index) => {
-                  const Icon = value.icon;
-                  return (
-                    <div
-                      key={value.title}
-                      className="bg-white rounded-2xl border border-secondary-700 shadow-lg flex flex-col text-center h-full"
-                    >
-                      {/* Content Wrapper */}
-                      <div>
-                        <div className="p-6 w-full flex flex-col items-center">
-                          <div className="mb-4 text-primary-500">
-                            <Icon size={36} strokeWidth={1.5} />
-                          </div>
-                          <h4 className="text-lg font-bold text-secondary-700 mb-3 min-h-[56px] flex items-center justify-center">
-                            {value.title}
-                          </h4>
-                        </div>
-                        <div className="overflow-hidden w-full">
-                          <div className="border-secondary-700">
-                            <div className="aspect-video">
-                              <img
-                                src={value.img}
-                                alt={value.title}
-                                className="w-full h-full border-t border-b border-secondary-700 object-cover"
-                              />
-                            </div>
-                            <div className="p-6 text-secondary-700">
-                              <p>{value.desc}</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      {/* Spacer div to push content to the top */}
-                      <div className="flex-grow"></div>
-                    </div>
-                  );
-                })}
-              </div>
+<AnimatedSection>
+  <section id="values" className="scroll-mt-20 max-w-7xl mx-auto">
+    <div className="bg-primary-1100 rounded-2xl shadow-2xl py-12 px-6 sm:px-10">
+      {/* Title */}
+      <SectionTitle title={t("added_values")} />
+      <p className="text-center text-lg text-secondary-700 mb-12 max-w-3xl mx-auto">
+        {t("added_values_desc")}
+      </p>
+
+      {/* Values Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
+        {values.map((value) => (
+          <div
+            key={value.title}
+            className="bg-white rounded-2xl border border-secondary-200 shadow-md flex flex-col overflow-hidden transition-transform hover:scale-105 hover:shadow-xl"
+          >
+            {/* Image */}
+            <div className="h-40 w-full overflow-hidden">
+              <img
+                src={value.img}
+                alt={value.title}
+                className="w-full h-full border-b border-secondary-700 object-cover"
+              />
             </div>
-          </section>
-        </AnimatedSection>
+
+            {/* Content */}
+            <div className="flex flex-col flex-grow p-6 text-center">
+              <h4 className="text-lg font-bold text-secondary-800 mb-3 min-h-[48px] flex items-center justify-center">
+                {value.title}
+              </h4>
+              <p className="text-sm text-black flex-grow">{value.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</AnimatedSection>
+
 
         {/* --- Achievements Section --- */}
         <AnimatedSection>
