@@ -1189,7 +1189,7 @@ const App = () => {
             </div>
             <div className="ml-4 flex items-center space-x-4">
               <a
-                href="https://www.facebook.com/profile.php?id=100083210768748"
+                href="https://www.facebook.com/profile.php?id=61580949951319"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Facebook"
@@ -1203,7 +1203,7 @@ const App = () => {
                 />
               </a>
               <a
-                href="YOUR_LINKEDIN_URL_HERE"
+                href="https://www.linkedin.com/company/vehtun-2025/"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn"
