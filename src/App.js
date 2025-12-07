@@ -1169,7 +1169,7 @@ const App = () => {
                     <a href="#" className="flex-shrink-0">
                       {/* Replace the h1 with an img tag */}
                       <img
-                        src={require("./assets/vehtun-stroke.png")}
+                        src={require("./assets/vehtun-logo.png")}
                         alt="VehTun Logo"
                         className="h-10 w-auto" // Control the height here, width will adjust automatically
                       />
